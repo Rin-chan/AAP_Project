@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\assets",
+    "\\src\\scenes",
+    "\\src\\scenes\\home",
+    "\\src\\scenes\\login",
+    "\\src\\scenes\\register"
+  ],
+  "SelectedNode": "\\src\\scenes\\login\\index.js",
+  "PreviewInSolutionExplorer": false
+}

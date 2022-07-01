@@ -1,5 +1,5 @@
 {
-  "name": "aap_project_new1",
+  "name": "aap_project",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -15,10 +15,20 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
-    "react-native-web": "0.17.7"
+    "react-native-gesture-handler": "~2.2.1",
+    "react-native-paper": "^4.12.2",
+    "react-native-reanimated": "~2.8.0",
+    "react-native-tab-view": "2.14.2",
+    "react-native-web": "0.17.7",
+    "react-navigation": "^4.4.4",
+    "react-navigation-stack": "^2.10.4",
+    "react-navigation-tabs": "^2.11.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "eslint-import-resolver-babel-module": "^5.3.1",
+    "eslint-plugin-import": "^2.26.0"
   },
   "private": true
 }

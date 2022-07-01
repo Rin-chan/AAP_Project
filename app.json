@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AAP_Project_New1",
-    "slug": "AAP_Project_New1",
+    "name": "AAP_Project",
+    "slug": "AAP_Project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
