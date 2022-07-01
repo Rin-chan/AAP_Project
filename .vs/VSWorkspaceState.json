@@ -3,11 +3,10 @@
     "",
     "\\src",
     "\\src\\assets",
+    "\\src\\assets\\images",
     "\\src\\scenes",
-    "\\src\\scenes\\home",
-    "\\src\\scenes\\login",
-    "\\src\\scenes\\register"
+    "\\src\\scenes\\home"
   ],
-  "SelectedNode": "\\src\\scenes\\login\\index.js",
+  "SelectedNode": "\\src\\scenes\\home\\index.js",
   "PreviewInSolutionExplorer": false
 }

@@ -1,11 +1,17 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView } from 'react-native';
 
 const HomeScreen = ({ navigation }) => {
     const _width = Dimensions.get('screen').width * 0.2;
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={{ padding: 10, backgroundColor: 'white', borderBottomWidth: 1,}}>
+                <Image
+                    style={styles.title}
+                    source={require("../../assets/images/logo.png")} />
+            </View>
+
             <View style={styles.userCard}>
                 <Image
                     style={{ height: _width, width: _width }}
@@ -16,52 +22,92 @@ const HomeScreen = ({ navigation }) => {
                 </View>
             </View>
 
-            <View style={styles.innerContainer}>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
                 <View style={styles.row}>
-                    <TouchableHighlight
-                        style={styles.box}
-                        onPress={() => navigation.navigate('Home')}>
-                        <Image
-                            style={{ height: _width, width: _width }}
-                            source={require("../../assets/images/favicon.png")} />
-                    </TouchableHighlight>
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>1</Text>
+                    </View>
 
-                    <TouchableHighlight
-                        style={styles.box}
-                        onPress={() => navigation.navigate('Home')}>
-                        <Image
-                            style={{ height: _width, width: _width }}
-                            source={require("../../assets/images/favicon.png")} />
-                    </TouchableHighlight>
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>2</Text>
+                    </View>
                 </View>
 
                 <View style={styles.row}>
-                    <TouchableHighlight
-                        style={styles.box}
-                        onPress={() => navigation.navigate('Home')}>
-                        <Image
-                            style={{ height: _width, width: _width }}
-                            source={require("../../assets/images/favicon.png")} />
-                    </TouchableHighlight>
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>3</Text>
+                    </View>
 
-                    <TouchableHighlight
-                        style={styles.box}
-                        onPress={() => navigation.navigate('Home')}>
-                        <Image
-                            style={{ height: _width, width: _width }}
-                            source={require("../../assets/images/favicon.png")} />
-                    </TouchableHighlight>
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>4</Text>
+                    </View>
                 </View>
-            </View>
+
+                <View style={styles.row}>
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>5</Text>
+                    </View>
+
+                    <View style={styles.outterBox}>
+                        <TouchableHighlight
+                            style={styles.box}
+                            onPress={() => navigation.navigate('Home')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                        </TouchableHighlight>
+                        <Text style={styles.textCenter}>6</Text>
+                    </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    title: {
+        resizeMode: 'center',
+        width: '100%',
+        height: 30,
+    },
     container: {
-        margin: '10%',
         flex: 1,
-        justifyContent: 'space-evenly',
+        backgroundColor: '#E8EBE8'
     },
     userCard: {
         borderWidth: 1,
@@ -69,19 +115,40 @@ const styles = StyleSheet.create({
         padding: 15,
         flexDirection: 'row',
         justifyContent: 'space-around',
+        position: 'absolute',
+        left: '10%',
+        right: '10%',
+        top: '10%',
+        backgroundColor: '#399ED5',
+        zIndex: 100
     },
     innerContainer: {
-        justifyContent: 'space-evenly',
+        borderTopWidth: 1,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        position: 'absolute',
+        bottom: 0,
+        top: '20%',
+        left: 0,
+        right: 0,
+        paddingTop: '10%',
+        backgroundColor: 'white',
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center'
     },
+    outterBox: {
+        margin: 20
+    },
     box: {
         borderWidth: 1,
-        margin: 20,
+        margin: 5,
         padding: 15
+    },
+    textCenter: {
+        textAlign: "center"
     },
 });
 
