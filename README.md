@@ -9,6 +9,14 @@ https://reactnative.dev/docs/environment-setup
 
 ## Database:
 You will need your own database for a private key for easier debugging. We will share one database for final presentation.
+Create a file called database.json in the project.
+```
+{
+    "endpoint": "Your-Website-Here",
+    "key": "Your-Key-Here"
+}
+```
+
 - Azure Cosmos: https://www.npmjs.com/package/@azure/cosmos
 - Azure portal: https://azure.microsoft.com/en-us/
 - Azure Cosmos documentation: https://docs.microsoft.com/en-us/azure/cosmos-db/try-free
