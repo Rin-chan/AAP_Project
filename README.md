@@ -8,7 +8,7 @@ https://reactnative.dev/docs/environment-setup
 - Organisation: https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
 
 ## Database:
-You will need your own database for a private key for easier debugging. We will share one database for final presentation.
+You will need your own database for a private key for easier debugging. We will share one database for final presentation.<br>
 Create a file called database.json in the project.
 ```
 {
