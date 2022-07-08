@@ -4,8 +4,13 @@
     "\\src",
     "\\src\\assets",
     "\\src\\assets\\images",
+    "\\src\\components",
+    "\\src\\components\\organisms",
     "\\src\\scenes",
-    "\\src\\scenes\\home"
+    "\\src\\scenes\\about",
+    "\\src\\scenes\\home",
+    "\\src\\scenes\\login",
+    "\\src\\scenes\\register"
   ],
   "SelectedNode": "\\src\\scenes\\home\\index.js",
   "PreviewInSolutionExplorer": false
