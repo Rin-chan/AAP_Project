@@ -1,10 +1,34 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
 //import { Round_Green_Button } from '../../components/atoms';
 
+import UserDB from '../../utils/database/userdb'
+
 const LoginScreen = ({ navigation }) => {
-    const [email, onChangeEmail] = React.useState(null);
-    const [password, onChangePassword] = React.useState(null);
+    const [email, onChangeEmail] = React.useState("");
+    const [password, onChangePassword] = React.useState("");
+
+    const [warning1, onWarning1] = useState(false);
+
+    const loginClick = () => {
+        onWarning1(false);
+
+        UserDB.getUser(email).then((result) => {
+            if(result.length < 1) {
+                onWarning1(true);
+                return;
+            }
+            else {
+                if (email == result['0']['email']) {
+                    if (password == result['0']['password']){
+                        navigation.navigate('Home');
+                    }
+                }
+                onWarning1(true);
+                return;
+            }
+        })
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -22,6 +46,7 @@ const LoginScreen = ({ navigation }) => {
             <TextInput
                 style={styles.inputText}
                 onChangeText={onChangePassword}
+                secureTextEntry={true}
                 value={password}
                 placeholder="Enter your password"
             />
@@ -29,11 +54,13 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.row}>
                 <TouchableOpacity
                     style={styles.loginScreenButton}
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => loginClick()}
                     underlayColor='#fff'>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
             </View>
+
+            <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Email or password is incorrect</Text>
 
             <Text onPress={() => navigation.navigate('Register')} style={styles.redirectText}>Create an account</Text>
         </SafeAreaView>
@@ -82,6 +109,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 'auto',
         fontWeight: 'bold',
+    },
+    warning: {
+        color: "red",
+        display: 'none'
     },
 });
 
