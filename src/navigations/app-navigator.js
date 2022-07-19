@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createDrawerNavigator } from "react-navigation-drawer";
 
 import HomeScreen from '../scenes/home';
 import AboutScreen from '../scenes/about';
@@ -18,6 +18,6 @@ const RouteConfigs = {
     },
 };
 
-const AppNavigator = createBottomTabNavigator(RouteConfigs, TabNavigatorConfig);
+const AppNavigator = createDrawerNavigator(RouteConfigs, TabNavigatorConfig);
 
 export default AppNavigator;
