@@ -11,7 +11,7 @@ const AuthNavigatorConfig = {
 
 const RouteConfigs = {
     Login: LoginScreen,
-    Register: RegisterScreen
+    Register: RegisterScreen,
 };
 
 const AuthNavigator = createStackNavigator(RouteConfigs, AuthNavigatorConfig);

@@ -7,7 +7,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderBar />
+            <HeaderBar navigation={navigation}/>
 
             <View style={styles.userCard}>
                 <Image
