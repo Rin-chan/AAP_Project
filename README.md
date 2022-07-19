@@ -20,6 +20,3 @@ Create a file called database.json in the project.
 - Azure Cosmos: https://www.npmjs.com/package/@azure/cosmos
 - Azure portal: https://azure.microsoft.com/en-us/
 - Azure Cosmos documentation: https://docs.microsoft.com/en-us/azure/cosmos-db/try-free
-
-## Issue with Drawer that might require you to fix on your own
-https://stackoverflow.com/questions/67840220/getting-typeerror-interpolate-is-not-a-function-in-react-native
