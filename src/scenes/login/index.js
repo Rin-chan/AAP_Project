@@ -1,14 +1,26 @@
 import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import CryptoJS from 'crypto-js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import { Round_Green_Button } from '../../components/atoms';
 
-import UserDB from '../../utils/database/userdb'
+import UserDB from '../../utils/database/userdb';
+import { Colors } from '../../styles';
 
 const LoginScreen = ({ navigation }) => {
     const [email, onChangeEmail] = React.useState("");
     const [password, onChangePassword] = React.useState("");
 
     const [warning1, onWarning1] = useState(false);
+
+    const storeData = async (location, value) => {
+        try {
+          await AsyncStorage.setItem(location, value)
+        } catch (e) {
+          console.log("Error in storing userToken");
+          console.log(e);
+        }
+      }
 
     const loginClick = () => {
         onWarning1(false);
@@ -20,7 +32,15 @@ const LoginScreen = ({ navigation }) => {
             }
             else {
                 if (email == result['0']['email']) {
-                    if (password == result['0']['password']){
+                    var hashedPassword = CryptoJS.SHA256(password).toString()
+
+                    if (hashedPassword == result['0']['password']){
+                        var randomNum = Math.floor(Math.random() * 999999) + 100000 // Generate a random number between 100000 and 999999
+                        var userToken = CryptoJS.SHA256(email+randomNum.toString()).toString() // Generate a token
+
+                        storeData('userToken', userToken);
+                        storeData('user', email);
+
                         navigation.navigate('Home');
                     }
                 }
@@ -90,7 +110,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: '#9CE8A8',
+        backgroundColor: Colors.GREEN_BUTTON,
         borderRadius: 20,
         borderWidth: 1,
         borderColor: '#fff'

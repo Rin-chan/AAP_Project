@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from "react-navigation-drawer";
 
-import HomeScreen from '../scenes/home';
 import AboutScreen from '../scenes/about';
+import ProfileNavigator from './profile-navigation';
 
 const TabNavigatorConfig = {
     initialRouteName: 'Home',
@@ -11,7 +11,7 @@ const TabNavigatorConfig = {
 
 const RouteConfigs = {
     Home: {
-        screen: HomeScreen,
+        screen: ProfileNavigator,
     },
     About: {
         screen: AboutScreen,

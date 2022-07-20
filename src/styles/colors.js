@@ -12,3 +12,10 @@ export const ALERT = '#cc4b37';
 export const GRAY_LIGHT = '#e6e6e6';
 export const GRAY_MEDIUM = '#cacaca';
 export const GRAY_DARK = '#8a8a8a';
+
+// BUTTONS
+export const GREEN_BUTTON = '#9CE8A8';
+export const RED_BUTTON = '#E8A89C';
+
+// BACKGROUND
+export const GREY_BACKGROUND = '#E8EBE8';

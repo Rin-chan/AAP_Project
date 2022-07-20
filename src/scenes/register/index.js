@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import CryptoJS from 'crypto-js';
 
 import User from '../../utils/models/user'
 import UserDB from '../../utils/database/userdb'
+import { Colors } from '../../styles';
 
 const RegisterScreen = ({ navigation }) => {
     const [username, onChangeUsername] = useState("");
@@ -60,7 +62,9 @@ const RegisterScreen = ({ navigation }) => {
                 return;
             }
             else {
-                let user = new User(username, email, password);
+                var hashedPassword = CryptoJS.SHA256(password).toString()
+
+                let user = new User(username, email, hashedPassword);
                 UserDB.addUser(user);
                 navigation.navigate('Login');
             }
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: '#9CE8A8',
+        backgroundColor: Colors.GREEN_BUTTON,
         borderRadius: 20,
         borderWidth: 1,
         borderColor: '#fff'

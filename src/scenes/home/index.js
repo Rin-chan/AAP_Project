@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView } from 'react-native';
-import { HeaderBar } from "../../components/organisms"
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+
+import { HeaderBar } from "../../components/organisms";
+import { Colors } from '../../styles';
 
 const HomeScreen = ({ navigation }) => {
     const _width = Dimensions.get('screen').width * 0.2;
@@ -9,7 +11,9 @@ const HomeScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
-            <View style={styles.userCard}>
+            <TouchableOpacity 
+                style={styles.userCard}
+                onPress={() => navigation.navigate('Profile')}>
                 <Image
                     style={{ height: _width, width: _width }}
                     source={require("../../assets/images/favicon.png")} />
@@ -17,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
                     <Text>User</Text>
                     <Text>Detail</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
 
             <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
                 <View style={styles.row}>
@@ -99,7 +103,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E8EBE8'
+        backgroundColor: Colors.GREY_BACKGROUND
     },
     userCard: {
         borderWidth: 1,
