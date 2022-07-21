@@ -14,7 +14,7 @@ const ProfileScreen = ({ navigation }) => {
     const [birthday, setBirthday] = useState("");
     const [contact, setContact] = useState("");
     const [address, setAddress] = useState("");
-    const [face, setFace] = useState("");
+    const [face, setFace] = useState(false);
 
     const getUser = async () => {
         await AsyncStorage.getItem('user')
@@ -72,25 +72,25 @@ const ProfileScreen = ({ navigation }) => {
                 <Text style={styles.information}>Email:</Text>
                 <Text style={styles.details}>{email}</Text>
 
-                {birthday == ''? (<View>
+                {birthday != ""? (<View>
                     <Text style={styles.information}>Birthday:</Text>
                     <Text style={styles.details}>{birthday}</Text>
                     </View>)
                     : null }
 
-                {contact == ''? (<View>
+                {contact != ""? (<View>
                     <Text style={styles.information}>Contact:</Text>
                     <Text style={styles.details}>{contact}</Text>
                     </View>)
                     : null }
 
-                {address == ''? (<View>
+                {address != ""? (<View>
                     <Text style={styles.information}>Address:</Text>
                     <Text style={styles.details}>{address}</Text>
                     </View>)
                     : null }
                 
-                {face == "" || face == "false"? (<View style={styles.row}>
+                {face == false? (<View style={styles.row}>
                     <Text style={styles.information}>Face Verification Status:</Text>
                     <Text style={styles.faceVeriDetails}>Up and working</Text>
                     <TouchableOpacity

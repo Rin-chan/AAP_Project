@@ -5,6 +5,8 @@ function User(username, email, password) {
     this.birthday = "";
     this.contact = "";
     this.address = "";
+    this.face = "false";
+    this.points = 0;
 }
 
 export default User;

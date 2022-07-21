@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
+import UserDB from '../../utils/database/userdb';
 
 const HomeScreen = ({ navigation }) => {
     const _width = Dimensions.get('screen').width * 0.2;
+
+    const [username, setUsername] = useState("");
+    const [points, setPoints] = useState("0");
+
+    const getUser = async () => {
+        await AsyncStorage.getItem('user')
+        .then(email => {
+            UserDB.getUser(email).then((result) => {
+                if(result.length < 1) {
+                    console.log("USER NOT FOUND");
+                    return;
+                }
+                else {
+                    setUsername(result['0']['username']);
+                    setPoints(result['0']['points']);
+                }
+            });
+        });
+    };
+
+    getUser();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -17,9 +40,11 @@ const HomeScreen = ({ navigation }) => {
                 <Image
                     style={{ height: _width, width: _width }}
                     source={require("../../assets/images/favicon.png")} />
-                <View>
-                    <Text>User</Text>
-                    <Text>Detail</Text>
+                <View style={{width: "60%"}}>
+                    <Text style={{fontWeight: "bold"}}>{username}</Text>
+                    <Text>Points: {points}</Text>
+
+                    <Text style={{fontSize: 10, marginTop: "auto"}}>Profile &gt;</Text>
                 </View>
             </TouchableOpacity>
 
