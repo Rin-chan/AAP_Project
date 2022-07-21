@@ -11,15 +11,17 @@ const faceVerificationScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
-            <TouchableHighlight
-                style={{padding: 10}}
-                onPress={() => navigation.navigate('Profile')}>
-                    <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
-            </TouchableHighlight>
+            <View style={{flex: 1}}>
+                <TouchableHighlight
+                    style={{padding: 10}}
+                    onPress={() => navigation.navigate('Profile')}>
+                        <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
+                </TouchableHighlight>
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
-                <Text>faceVerificationScreen</Text>
-            </ScrollView>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                    <Text>faceVerificationScreen</Text>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };

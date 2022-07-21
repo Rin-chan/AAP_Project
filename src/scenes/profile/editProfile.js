@@ -72,65 +72,67 @@ const editProfileScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
-            <TouchableHighlight
-                style={{padding: 10}}
-                onPress={() => navigation.navigate('Profile')}>
-                    <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
-            </TouchableHighlight>
+            <View style={{flex: 1}}>
+                <TouchableHighlight
+                    style={{padding: 10}}
+                    onPress={() => navigation.navigate('Profile')}>
+                        <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
+                </TouchableHighlight>
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
-                <View style={styles.row}>
-                    <Text style={styles.information}>Username:</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        onChangeText={(text) => {setUsername(text);
-                            setNoDB(true);}}
-                        value={username}
-                    />
-                </View>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                    <View style={styles.row}>
+                        <Text style={styles.information}>Username:</Text>
+                        <TextInput
+                            style={styles.inputText}
+                            onChangeText={(text) => {setUsername(text);
+                                setNoDB(true);}}
+                            value={username}
+                        />
+                    </View>
 
-                <View style={styles.row}>
-                    <Text style={styles.information}>Birthday:</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        onChangeText={(text) => {setBirthday(text);
-                            setNoDB(true);}}
-                        value={birthday}
-                    />
-                </View>
+                    <View style={styles.row}>
+                        <Text style={styles.information}>Birthday:</Text>
+                        <TextInput
+                            style={styles.inputText}
+                            onChangeText={(text) => {setBirthday(text);
+                                setNoDB(true);}}
+                            value={birthday}
+                        />
+                    </View>
 
-                <View style={styles.row}>
-                    <Text style={styles.information}>Contact:</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        keyboardType = 'numeric'
-                        onChangeText={(text) => {
-                            setContact(text);
-                            setNoDB(true);}}
-                        value={contact}
-                    />
-                </View>
+                    <View style={styles.row}>
+                        <Text style={styles.information}>Contact:</Text>
+                        <TextInput
+                            style={styles.inputText}
+                            keyboardType = 'numeric'
+                            onChangeText={(text) => {
+                                setContact(text);
+                                setNoDB(true);}}
+                            value={contact}
+                        />
+                    </View>
 
-                <View style={styles.row}>
-                    <Text style={styles.information}>Address:</Text>
-                    <TextInput
-                        style={styles.inputText}
-                        onChangeText={(text) => {setAddress(text);
-                            setNoDB(true);}}
-                        value={address}
-                    />
-                </View>
+                    <View style={styles.row}>
+                        <Text style={styles.information}>Address:</Text>
+                        <TextInput
+                            style={styles.inputText}
+                            onChangeText={(text) => {setAddress(text);
+                                setNoDB(true);}}
+                            value={address}
+                        />
+                    </View>
 
-                <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Username cannot be empty</Text>
-                <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers</Text>
+                    <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Username cannot be empty</Text>
+                    <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers</Text>
 
-                <TouchableOpacity
-                    style={styles.updateScreenButton}
-                    onPress={() => updateClick()}
-                    underlayColor='#fff'>
-                    <Text style={styles.updateButtonText}>Update</Text>
-                </TouchableOpacity>
-            </ScrollView>
+                    <TouchableOpacity
+                        style={styles.updateScreenButton}
+                        onPress={() => updateClick()}
+                        underlayColor='#fff'>
+                        <Text style={styles.updateButtonText}>Update</Text>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -160,7 +162,8 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
-        width: "100%"
+        width: "100%",
+        flex: 1,
     },
     information: {
         flexDirection: "column",

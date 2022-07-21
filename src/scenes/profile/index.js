@@ -55,86 +55,88 @@ const ProfileScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
-            <TouchableHighlight
-                style={{padding: 10}}
-                onPress={() => navigation.navigate('Main')}>
-                    <Text style={{fontWeight: "bold"}}>Go back to home</Text>
-            </TouchableHighlight>
+            <View style={{flex: 1}}>
+                <TouchableHighlight
+                    style={{padding: 10}}
+                    onPress={() => navigation.navigate('Main')}>
+                        <Text style={{fontWeight: "bold"}}>Go back to home</Text>
+                </TouchableHighlight>
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
-                <Image
-                    style={{ height: _width, width: _width, alignSelf: "center" }}
-                    source={require("../../assets/images/favicon.png")} />
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                    <Image
+                        style={{ height: _width, width: _width, alignSelf: "center" }}
+                        source={require("../../assets/images/favicon.png")} />
 
-                <Text style={styles.information}>Username:</Text>
-                <Text style={styles.details}>{username}</Text>
+                    <Text style={styles.information}>Username:</Text>
+                    <Text style={styles.details}>{username}</Text>
 
-                <Text style={styles.information}>Email:</Text>
-                <Text style={styles.details}>{email}</Text>
+                    <Text style={styles.information}>Email:</Text>
+                    <Text style={styles.details}>{email}</Text>
 
-                {birthday != ""? (<View>
-                    <Text style={styles.information}>Birthday:</Text>
-                    <Text style={styles.details}>{birthday}</Text>
-                    </View>)
-                    : null }
+                    {birthday != ""? (<View>
+                        <Text style={styles.information}>Birthday:</Text>
+                        <Text style={styles.details}>{birthday}</Text>
+                        </View>)
+                        : null }
 
-                {contact != ""? (<View>
-                    <Text style={styles.information}>Contact:</Text>
-                    <Text style={styles.details}>{contact}</Text>
-                    </View>)
-                    : null }
+                    {contact != ""? (<View>
+                        <Text style={styles.information}>Contact:</Text>
+                        <Text style={styles.details}>{contact}</Text>
+                        </View>)
+                        : null }
 
-                {address != ""? (<View>
-                    <Text style={styles.information}>Address:</Text>
-                    <Text style={styles.details}>{address}</Text>
-                    </View>)
-                    : null }
-                
-                {face == false? (<View style={styles.row}>
-                    <Text style={styles.information}>Face Verification Status:</Text>
-                    <Text style={styles.faceVeriDetails}>Up and working</Text>
-                    <TouchableOpacity
-                        style={styles.faceVeriButton}
-                        onPress={() => navigation.navigate("faceVerification")}
-                        underlayColor='#fff'>
-                        <Text style={styles.logoutButtonText}>Reset face verification</Text>
-                    </TouchableOpacity>
-                    </View>)
-                    : (<View style={styles.row}>
+                    {address != ""? (<View>
+                        <Text style={styles.information}>Address:</Text>
+                        <Text style={styles.details}>{address}</Text>
+                        </View>)
+                        : null }
+                    
+                    {face == false? (<View style={styles.row}>
                         <Text style={styles.information}>Face Verification Status:</Text>
-                        <Text style={styles.faceVeriDetails}>Not set up</Text>
+                        <Text style={styles.faceVeriDetails}>Up and working</Text>
                         <TouchableOpacity
                             style={styles.faceVeriButton}
                             onPress={() => navigation.navigate("faceVerification")}
                             underlayColor='#fff'>
-                            <Text style={styles.buttonText}>Add face verification</Text>
+                            <Text style={styles.logoutButtonText}>Reset face verification</Text>
                         </TouchableOpacity>
                         </View>)
-                        }
+                        : (<View style={styles.row}>
+                            <Text style={styles.information}>Face Verification Status:</Text>
+                            <Text style={styles.faceVeriDetails}>Not set up</Text>
+                            <TouchableOpacity
+                                style={styles.faceVeriButton}
+                                onPress={() => navigation.navigate("faceVerification")}
+                                underlayColor='#fff'>
+                                <Text style={styles.buttonText}>Add face verification</Text>
+                            </TouchableOpacity>
+                            </View>)
+                            }
 
-                <View style={styles.row}>
+                    <View style={styles.buttonRow}>
+                        <TouchableOpacity
+                            style={styles.editButton}
+                            onPress={() => navigation.navigate("editProfile")}
+                            underlayColor='#fff'>
+                            <Text style={styles.buttonText}>Edit Profile</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.editButton}
+                            onPress={() => navigation.navigate("editPassword")}
+                            underlayColor='#fff'>
+                            <Text style={styles.buttonText}>Change Password</Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <TouchableOpacity
-                        style={styles.editButton}
-                        onPress={() => navigation.navigate("editProfile")}
+                        style={styles.logoutButton}
+                        onPress={() => logout()}
                         underlayColor='#fff'>
-                        <Text style={styles.buttonText}>Edit Profile</Text>
+                        <Text style={styles.buttonText}>Log Out</Text>
                     </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={styles.editButton}
-                        onPress={() => navigation.navigate("editPassword")}
-                        underlayColor='#fff'>
-                        <Text style={styles.buttonText}>Change Password</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity
-                    style={styles.logoutButton}
-                    onPress={() => logout()}
-                    underlayColor='#fff'>
-                    <Text style={styles.buttonText}>Log Out</Text>
-                </TouchableOpacity>
-            </ScrollView>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -185,10 +187,18 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         marginBottom: "5%",
-        marginTop: "5%"
+        marginTop: "5%",
+        flexWrap: "wrap"
+    },
+    buttonRow: {
+        flex: 1,
+        flexDirection: "row",
+        marginBottom: "5%",
+        marginTop: "5%",
+        flexWrap: "nowrap"
     },
     faceVeriDetails: {
-        margin: "2%"
+        margin: "2%",
     },
     faceVeriButton: {
         padding: 10,

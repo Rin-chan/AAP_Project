@@ -9,11 +9,13 @@ const AboutScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
-                <Text>
-                    This app is made by Nian Ci, Sonia and Jaden.
-                </Text>
-            </ScrollView>
+            <View style={{flex: 1}}>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                    <Text>
+                        This app is made by Nian Ci, Sonia and Jaden.
+                    </Text>
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
