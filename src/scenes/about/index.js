@@ -13,11 +13,6 @@ const AboutScreen = ({ navigation }) => {
                 <Text>
                     This app is made by Nian Ci, Sonia and Jaden.
                 </Text>
-
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('Home')}>
-                    <Text>Go to Home</Text>
-                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     );

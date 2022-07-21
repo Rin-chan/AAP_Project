@@ -7,6 +7,7 @@ const TabNavigatorConfig = {
     initialRouteName: 'Home',
     header: null,
     headerMode: 'none',
+    unmountInactiveRoutes: true,
 };
 
 const RouteConfigs = {

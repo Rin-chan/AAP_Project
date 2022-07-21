@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import { Round_Green_Button } from '../../components/atoms';
 
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
