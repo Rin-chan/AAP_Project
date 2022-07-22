@@ -114,10 +114,10 @@ const editPasswordScreen = ({ navigation }) => {
                         />
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Current password is incorrect</Text>
-                    <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Passwords are not the same</Text>
-                    <Text style={warning3?[styles.warning, {display: 'inline'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
-                    <Text style={warning4?[styles.warning, {display: 'inline'}]:styles.warning}>Fill in all the blanks</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Current password is incorrect</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
+                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
+                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
 
                     <View style={styles.row}>
                         <TouchableOpacity

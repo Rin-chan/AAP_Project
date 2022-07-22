@@ -51,6 +51,28 @@ const ProfileScreen = ({ navigation }) => {
 
     getUser();
 
+    async function resetFaceVeri() {
+        await AsyncStorage.getItem('user')
+        .then(email => {
+            UserDB.getUser(email).then((result) => {
+                if(result.length < 1) {
+                    console.log("USER NOT FOUND");
+                    return;
+                }
+                else {
+                    UserDB.updateUserFace(email, "", false);
+                    setFace(false);
+                    return;
+                }
+            });
+        });
+    }
+
+    async function addFaceVeri() {
+        navigation.navigate("faceVerification");
+        return;
+    }
+
     return (
         <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
@@ -91,12 +113,12 @@ const ProfileScreen = ({ navigation }) => {
                         </View>)
                         : null }
                     
-                    {face == false? (<View style={styles.row}>
+                    {face == true? (<View style={styles.row}>
                         <Text style={styles.information}>Face Verification Status:</Text>
                         <Text style={styles.faceVeriDetails}>Up and working</Text>
                         <TouchableOpacity
                             style={styles.faceVeriButton}
-                            onPress={() => navigation.navigate("faceVerification")}
+                            onPress={resetFaceVeri}
                             underlayColor='#fff'>
                             <Text style={styles.logoutButtonText}>Reset face verification</Text>
                         </TouchableOpacity>
@@ -106,7 +128,7 @@ const ProfileScreen = ({ navigation }) => {
                             <Text style={styles.faceVeriDetails}>Not set up</Text>
                             <TouchableOpacity
                                 style={styles.faceVeriButton}
-                                onPress={() => navigation.navigate("faceVerification")}
+                                onPress={addFaceVeri}
                                 underlayColor='#fff'>
                                 <Text style={styles.buttonText}>Add face verification</Text>
                             </TouchableOpacity>

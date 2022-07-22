@@ -85,4 +85,26 @@ const updateUserPassword = async (email, password) => {
     container.items.upsert(user);
 }
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword };
+// Update User Face Verification
+const updateUserFace = async (email, faceImage, face) => {
+    const { database } = await client.databases.createIfNotExists({ id: "aap" });
+    const { container } = await database.containers.createIfNotExists({ id: "User" });
+
+    const { resources } = await container.items
+    .query({
+        query: "SELECT * FROM c WHERE c.email = @email",
+        parameters: [
+            { name: "@email", value: email }
+        ]
+    })
+    .fetchAll();
+
+    const user = resources[0];
+    
+    user.faceImage = faceImage;
+    user.face = face;
+
+    container.items.upsert(user);
+}
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace };
