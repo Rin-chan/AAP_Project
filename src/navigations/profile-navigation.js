@@ -1,4 +1,4 @@
-import { createStackNavigator } from 'react-navigation-stack';
+import { createSwitchNavigator } from 'react-navigation';
 
 import HomeScreen from '../scenes/home';
 import ProfileScreen from '../scenes/profile';
@@ -30,6 +30,6 @@ const RouteConfigs = {
     }
 };
 
-const ProfileNavigator = createStackNavigator(RouteConfigs, TabNavigatorConfig);
+const ProfileNavigator = createSwitchNavigator(RouteConfigs, TabNavigatorConfig);
 
 export default ProfileNavigator;

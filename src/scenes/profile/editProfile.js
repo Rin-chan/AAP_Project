@@ -56,6 +56,11 @@ const editProfileScreen = ({ navigation }) => {
             }
         }
 
+        if (contact.length != 8) {
+            onWarning2(true);
+            return;
+        }
+
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
@@ -73,7 +78,7 @@ const editProfileScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
             <View style={{flex: 1}}>
@@ -129,7 +134,7 @@ const editProfileScreen = ({ navigation }) => {
                     </View>
 
                     <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Username cannot be empty</Text>
-                    <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers</Text>
+                    <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
 
                     <View style={styles.row}>
                         <TouchableOpacity
@@ -148,7 +153,7 @@ const editProfileScreen = ({ navigation }) => {
                     </View>
                 </ScrollView>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 

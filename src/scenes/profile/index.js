@@ -52,7 +52,7 @@ const ProfileScreen = ({ navigation }) => {
     getUser();
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
             <View style={{flex: 1}}>
@@ -62,7 +62,7 @@ const ProfileScreen = ({ navigation }) => {
                         <Text style={{fontWeight: "bold"}}>Go back to home</Text>
                 </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer} contentInsetAdjustmentBehavior="automatic">
                     <Image
                         style={{ height: _width, width: _width, alignSelf: "center" }}
                         source={require("../../assets/images/favicon.png")} />
@@ -128,16 +128,18 @@ const ProfileScreen = ({ navigation }) => {
                             <Text style={styles.buttonText}>Change Password</Text>
                         </TouchableOpacity>
                     </View>
-
-                    <TouchableOpacity
-                        style={styles.logoutButton}
-                        onPress={() => logout()}
-                        underlayColor='#fff'>
-                        <Text style={styles.buttonText}>Log Out</Text>
-                    </TouchableOpacity>
+                    
+                    <SafeAreaView>
+                        <TouchableOpacity
+                            style={styles.logoutButton}
+                            onPress={() => logout()}
+                            underlayColor='#fff'>
+                            <Text style={styles.buttonText}>Log Out</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
                 </ScrollView>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 

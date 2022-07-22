@@ -8,7 +8,7 @@ import UserDB from '../../utils/database/userdb';
 
 const faceVerificationScreen = ({ navigation }) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
             <View style={{flex: 1}}>
@@ -22,7 +22,7 @@ const faceVerificationScreen = ({ navigation }) => {
                     <Text>faceVerificationScreen</Text>
                 </ScrollView>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 

@@ -71,7 +71,7 @@ const editPasswordScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
 
             <View style={{flex: 1}}>
@@ -136,7 +136,7 @@ const editPasswordScreen = ({ navigation }) => {
                     </View>
                 </ScrollView>
             </View>
-        </SafeAreaView>
+        </View>
     );
 };
 
