@@ -23,10 +23,8 @@ async function addUser(user) {
     container.items.create(user);
 }
 
-// Specific User
+// Get Specific User
 const getUser = async (email) => {
-    let userList = [];
-
     const { database } = await client.databases.createIfNotExists({ id: "aap" });
     const { container } = await database.containers.createIfNotExists({ id: "User" });
 
@@ -42,4 +40,49 @@ const getUser = async (email) => {
     return resources;
 }
 
-export default { addUser, getUser };
+// Update User Info
+const updateUserDetails = async (email, username, birthday, contact, address) => {
+    const { database } = await client.databases.createIfNotExists({ id: "aap" });
+    const { container } = await database.containers.createIfNotExists({ id: "User" });
+
+    const { resources } = await container.items
+    .query({
+        query: "SELECT * FROM c WHERE c.email = @email",
+        parameters: [
+            { name: "@email", value: email }
+        ]
+    })
+    .fetchAll();
+
+    const user = resources[0];
+
+    user.username = username;
+    user.birthday = birthday;
+    user.contact = contact;
+    user.address = address;
+
+    await container.items.upsert(user);
+}
+
+// Update User Password
+const updateUserPassword = async (email, password) => {
+    const { database } = await client.databases.createIfNotExists({ id: "aap" });
+    const { container } = await database.containers.createIfNotExists({ id: "User" });
+
+    const { resources } = await container.items
+    .query({
+        query: "SELECT * FROM c WHERE c.email = @email",
+        parameters: [
+            { name: "@email", value: email }
+        ]
+    })
+    .fetchAll();
+
+    const user = resources[0];
+    
+    user.password = password;
+
+    container.items.upsert(user);
+}
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword };

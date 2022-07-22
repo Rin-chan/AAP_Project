@@ -49,9 +49,11 @@ const editProfileScreen = ({ navigation }) => {
 
         var re = /[^0-9]/g;
 
-        if (re.test(contact) && contact != ""){
-            onWarning2(true);
-            return;
+        if (re.test(contact) == true){
+            if (!(contact != undefined)) {
+                onWarning2(true);
+                return;
+            }
         }
 
         await AsyncStorage.getItem('user')
@@ -62,6 +64,8 @@ const editProfileScreen = ({ navigation }) => {
                     return;
                 }
                 else {
+                    UserDB.updateUserDetails(email, username, birthday, contact, address);
+                    navigation.push("Profile");
                     return;
                 }
             });
@@ -80,6 +84,8 @@ const editProfileScreen = ({ navigation }) => {
                 </TouchableHighlight>
 
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                    <Text style={{fontSize: 35, fontWeight: "bold"}}>Edit Profile</Text>
+
                     <View style={styles.row}>
                         <Text style={styles.information}>Username:</Text>
                         <TextInput
@@ -125,12 +131,21 @@ const editProfileScreen = ({ navigation }) => {
                     <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Username cannot be empty</Text>
                     <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers</Text>
 
-                    <TouchableOpacity
-                        style={styles.updateScreenButton}
-                        onPress={() => updateClick()}
-                        underlayColor='#fff'>
-                        <Text style={styles.updateButtonText}>Update</Text>
-                    </TouchableOpacity>
+                    <View style={styles.row}>
+                        <TouchableOpacity
+                            style={styles.cancelScreenButton}
+                            onPress={() => navigation.navigate('Profile')}
+                            underlayColor='#fff'>
+                            <Text style={styles.updateButtonText}>Cancel</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.updateScreenButton}
+                            onPress={() => updateClick()}
+                            underlayColor='#fff'>
+                            <Text style={styles.updateButtonText}>Update</Text>
+                        </TouchableOpacity>
+                    </View>
                 </ScrollView>
             </View>
         </SafeAreaView>
@@ -189,6 +204,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingLeft: 10,
         paddingRight: 10
+    },
+    cancelScreenButton: {
+        marginRight: 10,
+        marginTop: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        backgroundColor: Colors.RED_BUTTON,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: '#fff'
     },
 });
 
