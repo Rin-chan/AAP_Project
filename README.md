@@ -7,7 +7,7 @@ https://reactnative.dev/docs/environment-setup
 - General helps: https://www.tutorialspoint.com/react_native/react_native_app.htm
 - Organisation: https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
 
-## SCRATCH DATABASE, PLANNING TO REPLACE WITH LOCAL DATABASE OR AWS
+## SCRATCH DATABASE, PLANNING TO REPLACE WITH LOCAL DATABASE
 ~~You will need your own database for a private key for easier debugging. We will share one database for final presentation.<br>
 Create a file called database.json in the project.~~
 ```
