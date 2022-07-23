@@ -133,8 +133,8 @@ const editProfileScreen = ({ navigation }) => {
                         />
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Username cannot be empty</Text>
-                    <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Username cannot be empty</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
 
                     <View style={styles.row}>
                         <TouchableOpacity

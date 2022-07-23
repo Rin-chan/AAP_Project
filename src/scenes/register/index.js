@@ -67,6 +67,7 @@ const RegisterScreen = ({ navigation }) => {
                 let user = new User(username, email, hashedPassword);
                 UserDB.addUser(user);
                 navigation.navigate('Login');
+                return;
             }
         })
     }
@@ -118,10 +119,10 @@ const RegisterScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Fill in all the blanks</Text>
-            <Text style={warning2?[styles.warning, {display: 'inline'}]:styles.warning}>Passwords are not the same</Text>
-            <Text style={warning3?[styles.warning, {display: 'inline'}]:styles.warning}>This email is already in use</Text>
-            <Text style={warning4?[styles.warning, {display: 'inline'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
+            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
+            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
+            <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
+            <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
             
             <Text onPress={() => navigation.navigate('Login')} style={styles.redirectText}>Already have an account?</Text>
         </SafeAreaView>

@@ -5,7 +5,8 @@ function User(username, email, password) {
     this.birthday = "";
     this.contact = "";
     this.address = "";
-    this.face = "false";
+    this.face = false;
+    this.faceImage = "";
     this.points = 0;
 }
 

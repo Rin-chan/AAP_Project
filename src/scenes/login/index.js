@@ -41,6 +41,7 @@ const LoginScreen = ({ navigation }) => {
                         storeData('user', email);
 
                         navigation.navigate('Home');
+                        return;
                     }
                 }
                 onWarning1(true);
@@ -71,6 +72,8 @@ const LoginScreen = ({ navigation }) => {
             />
 
             <View style={styles.row}>
+                <Text onPress={() => navigation.navigate('LoginEmail')}>Face Verification</Text>
+
                 <TouchableOpacity
                     style={styles.loginScreenButton}
                     onPress={() => loginClick()}
@@ -79,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <Text style={warning1?[styles.warning, {display: 'inline'}]:styles.warning}>Email or password is incorrect</Text>
+            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
 
             <Text onPress={() => navigation.navigate('Register')} style={styles.redirectText}>Create an account</Text>
         </SafeAreaView>
@@ -121,8 +124,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        justifyContent: 'space-between',
     },
     redirectText: {
         textAlign: 'center',
