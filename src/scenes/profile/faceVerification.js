@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, TouchableOpacity, Image } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { manipulateAsync } from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
@@ -27,6 +29,16 @@ const faceVerificationScreen = ({ navigation }) => {
     if (hasPermission === false) {
         return <Text>No access to camera</Text>;
     }
+
+    async function manipResult() {
+        const manipResult = await manipulateAsync(
+            base64Image.uri,
+            [{ resize: { width: 92, height: 112 } }]
+        );
+        
+        const base64 = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+        return base64
+    };
     
     const snapPhoto = async() => {
         if (cam) {
@@ -45,6 +57,8 @@ const faceVerificationScreen = ({ navigation }) => {
     }
 
     const choosePhoto = async () => {
+        let image = await manipResult()
+
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
@@ -53,7 +67,7 @@ const faceVerificationScreen = ({ navigation }) => {
                     return;
                 }
                 else {
-                    UserDB.updateUserFace(email, base64Image.uri, true);
+                    UserDB.updateUserFace(email, image, true);
                     navigation.navigate("Profile");
                     return;
                 }
@@ -64,6 +78,8 @@ const faceVerificationScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <HeaderBar navigation={navigation}/>
+
+            <Text style={{fontSize: 35, fontWeight: "bold"}}>Edit Profile</Text>
 
             {stopCam == false ? (<View style={{flex: 1}}>
                 <TouchableHighlight

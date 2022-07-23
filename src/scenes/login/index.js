@@ -72,6 +72,8 @@ const LoginScreen = ({ navigation }) => {
             />
 
             <View style={styles.row}>
+                <Text onPress={() => navigation.navigate('LoginEmail')}>Face Verification</Text>
+
                 <TouchableOpacity
                     style={styles.loginScreenButton}
                     onPress={() => loginClick()}
@@ -122,8 +124,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        justifyContent: 'space-between',
     },
     redirectText: {
         textAlign: 'center',
