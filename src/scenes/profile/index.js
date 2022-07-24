@@ -9,32 +9,36 @@ import UserDB from '../../utils/database/userdb';
 const ProfileScreen = ({ navigation }) => {
     const _width = Dimensions.get('screen').width * 0.4;
 
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [contact, setContact] = useState("");
-    const [address, setAddress] = useState("");
+    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [contact, setContact] = useState('');
+    const [address, setAddress] = useState('');
     const [face, setFace] = useState(false);
 
-    const getUser = async () => {
-        await AsyncStorage.getItem('user')
-        .then(email => {
-            setEmail(email);
+    const [request, setRequest] = useState(false);
 
-            UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
-                    return;
-                }
-                else {
-                    setUsername(result['0']['username']);
-                    setBirthday(result['0']['birthday']);
-                    setContact(result['0']['contact']);
-                    setAddress(result['0']['address']);
-                    setFace(result['0']['face']);
-                }
+    const getUser = async () => {
+        if (request == false) {
+            setRequest(true);
+
+            await AsyncStorage.getItem('user')
+            .then(email => {
+                setEmail(email);
+
+                UserDB.getUser(email).then((result) => {
+                    if(result != undefined) {
+                        setUsername(result[0][1]);
+                        setContact(result[0][4]);
+                        setAddress(result[0][5]);
+                        setFace(result[0][6]);
+                    }
+                    else {
+                        console.log("USER NOT FOUND");
+                        return;
+                    }
+                });
             });
-        });
+        }
     };
 
     async function logout() {
@@ -55,13 +59,13 @@ const ProfileScreen = ({ navigation }) => {
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
+                if(result.length != 0) {
+                    UserDB.updateUserFace(email, "", 0);
+                    setFace(false);
                     return;
                 }
                 else {
-                    UserDB.updateUserFace(email, "", false);
-                    setFace(false);
+                    console.log("USER NOT FOUND");
                     return;
                 }
             });
@@ -95,19 +99,13 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={styles.information}>Email:</Text>
                     <Text style={styles.details}>{email}</Text>
 
-                    {birthday != ""? (<View>
-                        <Text style={styles.information}>Birthday:</Text>
-                        <Text style={styles.details}>{birthday}</Text>
-                        </View>)
-                        : null }
-
-                    {contact != ""? (<View>
+                    {contact != ''? (<View>
                         <Text style={styles.information}>Contact:</Text>
                         <Text style={styles.details}>{contact}</Text>
                         </View>)
                         : null }
 
-                    {address != ""? (<View>
+                    {address != ''? (<View>
                         <Text style={styles.information}>Address:</Text>
                         <Text style={styles.details}>{address}</Text>
                         </View>)

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView } from 'react-native';
 import CryptoJS from 'crypto-js';
 
-import User from '../../utils/models/user'
 import UserDB from '../../utils/database/userdb'
 import { Colors } from '../../styles';
 
@@ -57,16 +56,15 @@ const RegisterScreen = ({ navigation }) => {
         }
 
         UserDB.getUser(email).then((result) => {
-            if(result.length > 0) {
-                onWarning3(true);
+            if (result.length != 0) {
+                var hashedPassword = CryptoJS.SHA256(password).toString()
+
+                UserDB.addUser(username, email, hashedPassword);
+                navigation.navigate('Login');
                 return;
             }
             else {
-                var hashedPassword = CryptoJS.SHA256(password).toString()
-
-                let user = new User(username, email, hashedPassword);
-                UserDB.addUser(user);
-                navigation.navigate('Login');
+                onWarning3(true);
                 return;
             }
         })
@@ -74,57 +72,61 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Register</Text>
+            <ScrollView contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps='handled'
+            >
+                <Text style={styles.title}>Register</Text>
 
-            <Text>Username</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangeUsername}
-                value={username}
-                placeholder="Enter your username"
-            />
+                <Text>Username</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangeUsername}
+                    value={username}
+                    placeholder="Enter your username"
+                />
 
-            <Text>Email</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder="Enter your email"
-            />
+                <Text>Email</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangeEmail}
+                    value={email}
+                    placeholder="Enter your email"
+                />
 
-            <Text>Password</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangePassword}
-                secureTextEntry={true}
-                value={password}
-                placeholder="Enter your password"
-            />
+                <Text>Password</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangePassword}
+                    secureTextEntry={true}
+                    value={password}
+                    placeholder="Enter your password"
+                />
 
-            <Text>Retype Your Password</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangeRePassword}
-                secureTextEntry={true}
-                value={repassword}
-                placeholder="Enter your password again"
-            />
+                <Text>Retype Your Password</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangeRePassword}
+                    secureTextEntry={true}
+                    value={repassword}
+                    placeholder="Enter your password again"
+                />
 
-            <View style={styles.row}>
-                <TouchableOpacity
-                    style={styles.registerScreenButton}
-                    onPress={() => registerClick()}
-                    underlayColor='#fff'>
-                    <Text style={styles.registerButtonText}>Register</Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.row}>
+                    <TouchableOpacity
+                        style={styles.registerScreenButton}
+                        onPress={() => registerClick()}
+                        underlayColor='#fff'>
+                        <Text style={styles.registerButtonText}>Register</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
-            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
-            <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
-            <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
-            
-            <Text onPress={() => navigation.navigate('Login')} style={styles.redirectText}>Already have an account?</Text>
+                <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
+                <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
+                <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
+                <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
+                
+                <Text onPress={() => navigation.navigate('Login')} style={styles.redirectText}>Already have an account?</Text>
+            </ScrollView>
         </SafeAreaView>
     );
 };

@@ -89,7 +89,7 @@ const faceVerificationScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (cam){
-            const interval = setInterval(() => {setTimer(timer => timer+1)}, 5000);
+            const interval = setInterval(() => {setTimer(timer => timer+1)}, 3000);
 
             return () => {
                 clearInterval(interval);
@@ -100,7 +100,7 @@ const faceVerificationScreen = ({ navigation }) => {
     useEffect(() => {
         takePic();
 
-        if (timer >= 10) {
+        if (timer >= 3) {
             setStopCam(true);
         }
     }, [timer]);
@@ -134,14 +134,14 @@ const faceVerificationScreen = ({ navigation }) => {
                         ratio={"1:1"}>
                     </Camera>
                 </SafeAreaView>
-            </View>): (<View style={{flex: 1}}>
+            </View>): (<View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+                <Text style={styles.warning}>Email does not exist</Text>
+
                 <TouchableHighlight
-                    style={{padding: 10}}
+                    style={{padding: 10, alignSelf: "center"}}
                     onPress={() => navigation.navigate('Login')}>
                         <Text style={{fontWeight: "bold"}}>Go back to Login</Text>
                 </TouchableHighlight>
-
-                <Text style={styles.warning}>Email does not exist</Text>
             </View>
             )}
         </SafeAreaView>
@@ -169,7 +169,10 @@ const styles = StyleSheet.create({
         justifyContent: "space-around"
     },
     warning: {
-        color: "red"
+        color: "red",
+        fontWeight: "bold",
+        fontSize: 50,
+        alignSelf: "center"
     },
 });
 

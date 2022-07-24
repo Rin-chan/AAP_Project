@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Image, Dimensions, ScrollView } from 'react-native';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -7,6 +7,8 @@ import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
 const LoginScreen = ({ navigation }) => {
+    const _width = Dimensions.get('screen').width * 0.15;
+
     const [email, onChangeEmail] = React.useState("");
     const [password, onChangePassword] = React.useState("");
 
@@ -25,15 +27,11 @@ const LoginScreen = ({ navigation }) => {
         onWarning1(false);
 
         UserDB.getUser(email).then((result) => {
-            if(result.length < 1) {
-                onWarning1(true);
-                return;
-            }
-            else {
-                if (email == result['0']['email']) {
+            if(result.length != 0) {
+                if (email == result[0][2]) {
                     var hashedPassword = CryptoJS.SHA256(password).toString()
 
-                    if (hashedPassword == result['0']['password']){
+                    if (hashedPassword == result[0][3]){
                         var randomNum = Math.floor(Math.random() * 999999) + 100000 // Generate a random number between 100000 and 999999
                         var userToken = CryptoJS.SHA256(email+randomNum.toString()).toString() // Generate a token
 
@@ -47,44 +45,59 @@ const LoginScreen = ({ navigation }) => {
                 onWarning1(true);
                 return;
             }
+            else {
+                onWarning1(true);
+                return;
+            }
         })
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <ScrollView contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps='handled'
+            >
+                <Text style={styles.title}>Login</Text>
 
-            <Text>Email</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder="Enter your email"
-            />
+                <Text>Email</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangeEmail}
+                    value={email}
+                    placeholder="Enter your email"
+                />
 
-            <Text>Password</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangePassword}
-                secureTextEntry={true}
-                value={password}
-                placeholder="Enter your password"
-            />
+                <Text>Password</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangePassword}
+                    secureTextEntry={true}
+                    value={password}
+                    placeholder="Enter your password"
+                />
 
-            <View style={styles.row}>
-                <Text onPress={() => navigation.navigate('LoginEmail')}>Face Verification</Text>
+                <View style={styles.row}>
+                    <TouchableOpacity
+                        style={{marginLeft: 10, marginTop: 5}}
+                        onPress={() => navigation.navigate('LoginEmail')}
+                        underlayColor='#fff'>
+                        <Image 
+                            style={{ height: _width, width: _width }}
+                            source={require("../../assets/images/face-scan.png")}/>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.loginScreenButton}
-                    onPress={() => loginClick()}
-                    underlayColor='#fff'>
-                    <Text style={styles.loginButtonText}>Login</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity
+                        style={styles.loginScreenButton}
+                        onPress={() => loginClick()}
+                        underlayColor='#fff'>
+                        <Text style={styles.loginButtonText}>Login</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
+                <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
 
-            <Text onPress={() => navigation.navigate('Register')} style={styles.redirectText}>Create an account</Text>
+                <Text onPress={() => navigation.navigate('Register')} style={styles.redirectText}>Create an account</Text>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -120,7 +133,7 @@ const styles = StyleSheet.create({
     loginButtonText: {
         textAlign: 'center',
         paddingLeft: 10,
-        paddingRight: 10
+        paddingRight: 10,
     },
     row: {
         flexDirection: 'row',

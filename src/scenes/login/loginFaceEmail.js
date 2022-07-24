@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView } from 'react-native';
 
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
@@ -15,16 +15,16 @@ const FaceLoginScreen = ({ navigation }) => {
         onWarning2(false);
 
         UserDB.getUser(email).then((result) => {
-            if(result.length < 1) {
-                onWarning1(true);
-                return;
-            }
-            else {
-                if (result['0']['face']){
-                    navigation.navigate('LoginCam', {faceImage: result['0']['faceImage'], email: email});
+            if(result.length != 0) {
+                if (result[0][6]){
+                    navigation.navigate('LoginCam', {faceImage: result[0][7], email: email});
                     return;
                 }
                 onWarning2(true);
+                return;
+            }
+            else {
+                onWarning1(true);
                 return;
             }
         })
@@ -32,34 +32,38 @@ const FaceLoginScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Face Verification</Text>
+            <ScrollView contentContainerStyle={{flexGrow: 1}}
+                keyboardShouldPersistTaps='handled'
+            >
+                <Text style={styles.title}>Face Verification</Text>
 
-            <Text>Email</Text>
-            <TextInput
-                style={styles.inputText}
-                onChangeText={onChangeEmail}
-                value={email}
-                placeholder="Enter your email"
-            />
+                <Text>Email</Text>
+                <TextInput
+                    style={styles.inputText}
+                    onChangeText={onChangeEmail}
+                    value={email}
+                    placeholder="Enter your email"
+                />
 
-            <View style={styles.row}>
-                <TouchableOpacity
-                    style={styles.cancelScreenButton}
-                    onPress={() => navigation.navigate('Login')}
-                    underlayColor='#fff'>
-                    <Text style={styles.buttonText}>Cancel</Text>
-                </TouchableOpacity>
+                <View style={styles.row}>
+                    <TouchableOpacity
+                        style={styles.cancelScreenButton}
+                        onPress={() => navigation.navigate('Login')}
+                        underlayColor='#fff'>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity
-                    style={styles.continueScreenButton}
-                    onPress={() => continueClick()}
-                    underlayColor='#fff'>
-                    <Text style={styles.buttonText}>Continue</Text>
-                </TouchableOpacity>
-            </View>
+                    <TouchableOpacity
+                        style={styles.continueScreenButton}
+                        onPress={() => continueClick()}
+                        underlayColor='#fff'>
+                        <Text style={styles.buttonText}>Continue</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email does not exist</Text>
-            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account does not have face verification enabled</Text>
+                <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email does not exist</Text>
+                <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account does not have face verification enabled</Text>
+            </ScrollView>
         </SafeAreaView>
     );
 };
