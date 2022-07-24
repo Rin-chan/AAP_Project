@@ -56,7 +56,7 @@ const RegisterScreen = ({ navigation }) => {
         }
 
         UserDB.getUser(email).then((result) => {
-            if (result.length != 0) {
+            if (result.length == 0) {
                 var hashedPassword = CryptoJS.SHA256(password).toString()
 
                 UserDB.addUser(username, email, hashedPassword);
