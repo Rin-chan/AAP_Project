@@ -7,31 +7,35 @@ import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const editProfileScreen = ({ navigation }) => {
-    const [username, setUsername] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [contact, setContact] = useState("");
-    const [address, setAddress] = useState("");
+    const [username, setUsername] = useState('');
+    const [contact, setContact] = useState('');
+    const [address, setAddress] = useState('');
 
     const [warning1, onWarning1] = useState(false);
     const [warning2, onWarning2] = useState(false);
     const [noDB, setNoDB] = useState(false);
 
+    const [request, setRequest] = useState(false);
+
     const getUser = async () => {
-        await AsyncStorage.getItem('user')
-        .then(email => {
-            UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
-                    return;
-                }
-                else {
-                    setUsername(result['0']['username']);
-                    setBirthday(result['0']['birthday']);
-                    setContact(result['0']['contact']);
-                    setAddress(result['0']['address']);
-                }
+        if (request == false) {
+            setRequest(true);
+
+            await AsyncStorage.getItem('user')
+            .then(email => {
+                UserDB.getUser(email).then((result) => {
+                    if(result != undefined) {
+                        setUsername(result[0][1]);
+                        setContact(result[0][4]);
+                        setAddress(result[0][5]);
+                    }
+                    else {
+                        console.log("USER NOT FOUND");
+                        return;
+                    }
+                });
             });
-        });
+        }
     };
 
     if (noDB == false){
@@ -64,13 +68,13 @@ const editProfileScreen = ({ navigation }) => {
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
+                if(result.length != 0) {
+                    UserDB.updateUserDetails(email, username, contact, address);
+                    navigation.navigate("Profile");
                     return;
                 }
                 else {
-                    UserDB.updateUserDetails(email, username, birthday, contact, address);
-                    navigation.push("Profile");
+                    console.log("USER NOT FOUND");
                     return;
                 }
             });
@@ -88,7 +92,7 @@ const editProfileScreen = ({ navigation }) => {
                         <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
                 </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer} keyboardShouldPersistTaps='handled'>
                     <Text style={{fontSize: 35, fontWeight: "bold"}}>Edit Profile</Text>
 
                     <View style={styles.row}>
@@ -98,16 +102,6 @@ const editProfileScreen = ({ navigation }) => {
                             onChangeText={(text) => {setUsername(text);
                                 setNoDB(true);}}
                             value={username}
-                        />
-                    </View>
-
-                    <View style={styles.row}>
-                        <Text style={styles.information}>Birthday:</Text>
-                        <TextInput
-                            style={styles.inputText}
-                            onChangeText={(text) => {setBirthday(text);
-                                setNoDB(true);}}
-                            value={birthday}
                         />
                     </View>
 

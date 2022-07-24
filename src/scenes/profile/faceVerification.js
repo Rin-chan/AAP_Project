@@ -62,13 +62,13 @@ const faceVerificationScreen = ({ navigation }) => {
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
+                if(result.length != 0) {
+                    UserDB.updateUserFace(email, image, 1);
+                    navigation.navigate("Profile");
                     return;
                 }
                 else {
-                    UserDB.updateUserFace(email, image, true);
-                    navigation.navigate("Profile");
+                    console.log("USER NOT FOUND");
                     return;
                 }
             });

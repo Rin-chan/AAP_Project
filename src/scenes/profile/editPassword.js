@@ -48,14 +48,10 @@ const editPasswordScreen = ({ navigation }) => {
         await AsyncStorage.getItem('user')
         .then(email => {
             UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
-                    return;
-                }
-                else {
+                if(result.length != 0) {
                     var curHashedPassword = CryptoJS.SHA256(curPassword).toString()
 
-                    if (result['0']['password'] != curHashedPassword) {
+                    if (result[0][3] != curHashedPassword) {
                         onWarning1(true);
                         return;
                     }
@@ -63,7 +59,11 @@ const editPasswordScreen = ({ navigation }) => {
                     var newHashedPassword = CryptoJS.SHA256(newPassword).toString()
 
                     UserDB.updateUserPassword(email, newHashedPassword);
-                    navigation.push("Profile");
+                    navigation.navigate("Profile");
+                    return;
+                }
+                else {
+                    console.log("USER NOT FOUND");
                     return;
                 }
             });
@@ -81,7 +81,7 @@ const editPasswordScreen = ({ navigation }) => {
                         <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
                 </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
+                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer} keyboardShouldPersistTaps='handled'>
                 <Text style={{fontSize: 35, fontWeight: "bold"}}>Change Password</Text>
 
                     <View style={styles.row}>

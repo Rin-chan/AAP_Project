@@ -1,110 +1,73 @@
-// Database stuff
-import databaseValue  from '../../../database.json';
-
-const { CosmosClient } = require("@azure/cosmos");
-
-const endpoint = databaseValue.endpoint;
-const key = databaseValue.key;
-const client = new CosmosClient({ endpoint, key });
-
-// Open DB
-/*
-async function main() {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
-}
-*/
+import flaskServer from "../../../settings.json";
+const flaskIP = flaskServer.flaskServer;
 
 // Add User
-async function addUser(user) {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
-
-    container.items.create(user);
-}
+const addUser = async (username, email, hashedPassword) => {
+    fetch(`http://${flaskIP}/addUser`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: username, email: email, password: hashedPassword})
+    })
+};
 
 // Get Specific User
 const getUser = async (email) => {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
+    let result = undefined;
 
-    const { resources } = await container.items
-    .query({
-        query: "SELECT * FROM c WHERE c.email = @email",
-        parameters: [
-            { name: "@email", value: email }
-        ]
+    await fetch(`http://${flaskIP}/getSpecificUser`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
     })
-    .fetchAll();
+    .then(response => response.json())
+    .then(data => {
+        result = data.result;
+    })
+    .catch(err => console.error(err));
 
-    return resources;
+    return result
 }
 
 // Update User Info
-const updateUserDetails = async (email, username, birthday, contact, address) => {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
-
-    const { resources } = await container.items
-    .query({
-        query: "SELECT * FROM c WHERE c.email = @email",
-        parameters: [
-            { name: "@email", value: email }
-        ]
+const updateUserDetails = async (email, username, contact, address) => {
+    fetch(`http://${flaskIP}/updateUserDetails`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({username: username, email: email, contact: contact, address: address})
     })
-    .fetchAll();
-
-    const user = resources[0];
-
-    user.username = username;
-    user.birthday = birthday;
-    user.contact = contact;
-    user.address = address;
-
-    await container.items.upsert(user);
 }
 
 // Update User Password
 const updateUserPassword = async (email, password) => {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
-
-    const { resources } = await container.items
-    .query({
-        query: "SELECT * FROM c WHERE c.email = @email",
-        parameters: [
-            { name: "@email", value: email }
-        ]
+    fetch(`http://${flaskIP}/updateUserPassword`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, password: password})
     })
-    .fetchAll();
-
-    const user = resources[0];
-    
-    user.password = password;
-
-    container.items.upsert(user);
 }
 
 // Update User Face Verification
 const updateUserFace = async (email, faceImage, face) => {
-    const { database } = await client.databases.createIfNotExists({ id: "aap" });
-    const { container } = await database.containers.createIfNotExists({ id: "User" });
-
-    const { resources } = await container.items
-    .query({
-        query: "SELECT * FROM c WHERE c.email = @email",
-        parameters: [
-            { name: "@email", value: email }
-        ]
+    fetch(`http://${flaskIP}/updateUserFace`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, faceImage: faceImage, face: face})
     })
-    .fetchAll();
-
-    const user = resources[0];
-    
-    user.faceImage = faceImage;
-    user.face = face;
-
-    container.items.upsert(user);
 }
 
 export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace };

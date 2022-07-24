@@ -9,7 +9,6 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@azure/cosmos": "^3.16.3",
     "@expo/ngrok": "^4.1.0",
     "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-navigation/drawer": "^6.4.3",

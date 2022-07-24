@@ -12,20 +12,26 @@ const HomeScreen = ({ navigation }) => {
     const [username, setUsername] = useState("");
     const [points, setPoints] = useState("0");
 
+    const [request, setRequest] = useState(false);
+
     const getUser = async () => {
-        await AsyncStorage.getItem('user')
-        .then(email => {
-            UserDB.getUser(email).then((result) => {
-                if(result.length < 1) {
-                    console.log("USER NOT FOUND");
-                    return;
-                }
-                else {
-                    setUsername(result['0']['username']);
-                    setPoints(result['0']['points']);
-                }
+        if (request == false) {
+            setRequest(true);
+
+            await AsyncStorage.getItem('user')
+            .then(email => {
+                UserDB.getUser(email).then((result) => {
+                    if(result.length != 0) {
+                        setUsername(result[0][1]);
+                        setPoints(result[0][9]);
+                    }
+                    else {
+                        console.log("USER NOT FOUND");
+                        return;
+                    }
+                });
             });
-        });
+        }
     };
 
     getUser();
