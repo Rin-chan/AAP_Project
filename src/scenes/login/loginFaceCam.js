@@ -100,7 +100,7 @@ const faceVerificationScreen = ({ navigation }) => {
     useEffect(() => {
         takePic();
 
-        if (timer >= 3) {
+        if (timer >= 5) {
             setStopCam(true);
         }
     }, [timer]);
@@ -135,7 +135,7 @@ const faceVerificationScreen = ({ navigation }) => {
                     </Camera>
                 </SafeAreaView>
             </View>): (<View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
-                <Text style={styles.warning}>Email does not exist</Text>
+                <Text style={styles.warning}>Face Verification Failed</Text>
 
                 <TouchableHighlight
                     style={{padding: 10, alignSelf: "center"}}
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
         color: "red",
         fontWeight: "bold",
         fontSize: 50,
+        justifyContent: "center",
         alignSelf: "center"
     },
 });
