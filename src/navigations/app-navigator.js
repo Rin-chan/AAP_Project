@@ -3,6 +3,8 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import AboutScreen from '../scenes/about';
 import ProfileNavigator from './profile-navigation';
 import AlbaInfoNavigator from './albaInfo-navigator';
+import EWasteItScreen from '../scenes/games/EWasteIt';
+import StepItUpScreen from '../scenes/games/StepItUp';
 
 const TabNavigatorConfig = {
     initialRouteName: 'Home',
@@ -19,6 +21,18 @@ const RouteConfigs = {
         screen: AlbaInfoNavigator,
         navigationOptions: {
             title: "Information"
+        }
+    },
+    EWasteIt: {
+        screen: EWasteItScreen,
+        navigationOptions: {
+            title: "E-Waste It! Game"
+        }
+    },
+    StepItUp: {
+        screen: StepItUpScreen,
+        navigationOptions: {
+            title: "Step It Up Game"
         }
     },
     About: {
