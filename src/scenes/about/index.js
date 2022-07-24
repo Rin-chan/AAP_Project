@@ -13,7 +13,6 @@ const AboutScreen = ({ navigation }) => {
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
                     <Text>
                         This app is made by Nian Ci, Sonia and Jaden.
-                        Hello World
                     </Text>
                 </ScrollView>
             </View>
