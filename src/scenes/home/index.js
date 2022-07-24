@@ -10,7 +10,7 @@ const HomeScreen = ({ navigation }) => {
     const _width = Dimensions.get('screen').width * 0.2;
 
     const [username, setUsername] = useState("");
-    const [points, setPoints] = useState("0");
+    const [points, setPoints] = useState(0);
 
     const [request, setRequest] = useState(false);
 
@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
                 UserDB.getUser(email).then((result) => {
                     if(result.length != 0) {
                         setUsername(result[0][1]);
-                        setPoints(result[0][9]);
+                        setPoints(result[0][8]);
                     }
                     else {
                         console.log("USER NOT FOUND");

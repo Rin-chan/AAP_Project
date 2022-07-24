@@ -16,6 +16,7 @@ export const GRAY_DARK = '#8a8a8a';
 // BUTTONS
 export const GREEN_BUTTON = '#9CE8A8';
 export const RED_BUTTON = '#E8A89C';
+export const BLUE_BUTTON = '#9CDCE8';
 
 // BACKGROUND
 export const GREY_BACKGROUND = '#E8EBE8';
