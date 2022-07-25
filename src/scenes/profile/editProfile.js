@@ -1,12 +1,51 @@
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, TextInput, View, ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDarkMode } from 'react-native-dynamic';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const editProfileScreen = ({ navigation }) => {
+    const isDarkMode = useDarkMode();
+    var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        FOREGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+        },
+        foregroundColor: {
+            backgroundColor: FOREGROUND_COLOR,
+        },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+        inputColor: {
+            backgroundColor: INPUT_COLOR,
+            color: TEXT_COLOR,
+        },
+        primaryScreenButton: {
+            backgroundColor: PRIMARY_BUTTON,
+        },
+        dangerScreenButton: {
+            backgroundColor: DANGER_BUTTON,
+        }
+    })
+
     const [username, setUsername] = useState('');
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
@@ -82,23 +121,23 @@ const editProfileScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation}/>
 
             <View style={{flex: 1}}>
                 <TouchableHighlight
                     style={{padding: 10}}
                     onPress={() => navigation.navigate('Profile')}>
-                        <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
+                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
                 </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer} keyboardShouldPersistTaps='handled'>
-                    <Text style={{fontSize: 35, fontWeight: "bold"}}>Edit Profile</Text>
+                <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} keyboardShouldPersistTaps='handled'>
+                    <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>Edit Profile</Text>
 
                     <View style={styles.row}>
-                        <Text style={styles.information}>Username:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
                         <TextInput
-                            style={styles.inputText}
+                            style={[styles.inputText, schemeStyle.inputColor]}
                             onChangeText={(text) => {setUsername(text);
                                 setNoDB(true);}}
                             value={username}
@@ -106,9 +145,9 @@ const editProfileScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={styles.information}>Contact:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
                         <TextInput
-                            style={styles.inputText}
+                            style={[styles.inputText, schemeStyle.inputColor]}
                             keyboardType = 'numeric'
                             onChangeText={(text) => {
                                 setContact(text);
@@ -118,9 +157,9 @@ const editProfileScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={styles.information}>Address:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
                         <TextInput
-                            style={styles.inputText}
+                            style={[styles.inputText, schemeStyle.inputColor]}
                             onChangeText={(text) => {setAddress(text);
                                 setNoDB(true);}}
                             value={address}
@@ -130,19 +169,19 @@ const editProfileScreen = ({ navigation }) => {
                     <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Username cannot be empty</Text>
                     <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
 
-                    <View style={styles.row}>
+                    <View style={styles.buttonRow}>
                         <TouchableOpacity
-                            style={styles.cancelScreenButton}
+                            style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
                             onPress={() => navigation.navigate('Profile')}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Cancel</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            style={styles.updateScreenButton}
+                            style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
                             onPress={() => updateClick()}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Update</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -153,20 +192,22 @@ const editProfileScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.GREY_BACKGROUND,
         flex: 1,
     },
     innerContainer: {
         flex: 1,
         marginLeft: "5%",
         marginRight: "5%",
-        borderTopWidth: 1,
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         padding: "5%",
-        backgroundColor: "white"
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 5,
     },
     row: {
         flexDirection: "row",
@@ -174,10 +215,16 @@ const styles = StyleSheet.create({
     inputText: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
         padding: 10,
         width: "100%",
         flex: 1,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
     },
     information: {
         flexDirection: "column",
@@ -194,10 +241,14 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: Colors.GREEN_BUTTON,
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#fff'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
     },
     updateButtonText: {
         textAlign: 'center',
@@ -211,10 +262,18 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: Colors.RED_BUTTON,
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#fff'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
+    },
+    buttonRow: {
+        flexDirection: "row",
+        justifyContent: "space-between"
     },
 });
 

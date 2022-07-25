@@ -5,11 +5,30 @@ import { manipulateAsync } from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDarkMode } from 'react-native-dynamic';
 
 import flaskServer from "../../../settings.json";
 import { Colors } from '../../styles';
 
 const faceVerificationScreen = ({ navigation }) => {
+    const isDarkMode = useDarkMode();
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+            flex: 1,
+        },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+    })
+
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(CameraType.front);
     const [cam, setCam] = useState(false);
@@ -119,50 +138,48 @@ const faceVerificationScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            {stopCam == false ? (<View style={{flex: 1}}>
-                <TouchableHighlight
-                    style={{padding: 10}}
-                    onPress={() => navigation.navigate('Login')}>
-                        <Text style={{fontWeight: "bold"}}>Go back to Login</Text>
-                </TouchableHighlight>
+        <View style={schemeStyle.backgroundColor}>
+            <SafeAreaView style={styles.container}>
+                {stopCam == false ? (<View style={{flex: 1}}>
+                    <TouchableHighlight
+                        style={{padding: 10}}
+                        onPress={() => navigation.navigate('Login')}>
+                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to Login</Text>
+                    </TouchableHighlight>
 
-                <SafeAreaView style={styles.innerContainer}>
-                    <Camera style={styles.camera} 
-                        type={type}
-                        ref={ref => {setCam(ref)}}
-                        ratio={"1:1"}>
-                    </Camera>
-                </SafeAreaView>
-            </View>): (<View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
-                <Text style={styles.warning}>Face Verification Failed</Text>
+                    <SafeAreaView style={styles.innerContainer}>
+                        <Camera style={styles.camera} 
+                            type={type}
+                            ref={ref => {setCam(ref)}}
+                            ratio={"1:1"}>
+                        </Camera>
+                    </SafeAreaView>
+                </View>): (<View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
+                    <Text style={styles.warning}>Face Verification Failed</Text>
 
-                <TouchableHighlight
-                    style={{padding: 10, alignSelf: "center"}}
-                    onPress={() => navigation.navigate('Login')}>
-                        <Text style={{fontWeight: "bold"}}>Go back to Login</Text>
-                </TouchableHighlight>
-            </View>
-            )}
-        </SafeAreaView>
+                    <TouchableHighlight
+                        style={{padding: 10, alignSelf: "center"}}
+                        onPress={() => navigation.navigate('Login')}>
+                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to Login</Text>
+                    </TouchableHighlight>
+                </View>
+                )}
+            </SafeAreaView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.GREY_BACKGROUND,
         flex: 1,
     },
     innerContainer: {
         flex: 1,
         margin: "5%",
+        marginTop: '25%',
     },
     camera: {
         aspectRatio: 1,
-    },
-    text: {
-        fontSize: 18,
-        color: 'white',
     },
     row: {
         flexDirection: "row",
@@ -171,7 +188,7 @@ const styles = StyleSheet.create({
     warning: {
         color: "red",
         fontWeight: "bold",
-        fontSize: 50,
+        fontSize: 30,
         justifyContent: "center",
         alignSelf: "center"
     },

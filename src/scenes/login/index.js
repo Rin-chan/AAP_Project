@@ -2,11 +2,46 @@ import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Image, Dimensions, ScrollView } from 'react-native';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDarkMode } from 'react-native-dynamic'
 
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
 const LoginScreen = ({ navigation }) => {
+    const isDarkMode = useDarkMode();
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
+    var IMAGE_COLOR = "#000000"
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
+        IMAGE_COLOR = "#FFFFFF"
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+            flex: 1,
+        },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+        inputColor: {
+            backgroundColor: INPUT_COLOR,
+            color: TEXT_COLOR,
+        },
+        loginScreenButton: {
+            backgroundColor: PRIMARY_BUTTON
+        },
+        imageColor: {
+            tintColor: IMAGE_COLOR
+        }
+    })
+
     const _width = Dimensions.get('screen').width * 0.15;
 
     const [email, onChangeEmail] = React.useState("");
@@ -53,58 +88,60 @@ const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={{flexGrow: 1}}
-                keyboardShouldPersistTaps='handled'
-            >
-                <Text style={styles.title}>Login</Text>
+        <View style={schemeStyle.backgroundColor}>
+            <SafeAreaView style={styles.container}>
+                <ScrollView contentContainerStyle={{flexGrow: 1}}
+                    keyboardShouldPersistTaps='handled'>
+                    <Text style={[styles.title, schemeStyle.textColor]}>Login</Text>
 
-                <Text>Email</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangeEmail}
-                    value={email}
-                    placeholder="Enter your email"
-                />
+                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangeEmail}
+                        value={email}
+                        placeholder="Enter your email"
+                    />
 
-                <Text>Password</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangePassword}
-                    secureTextEntry={true}
-                    value={password}
-                    placeholder="Enter your password"
-                />
+                    <Text style={schemeStyle.textColor}>Password</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangePassword}
+                        secureTextEntry={true}
+                        value={password}
+                        placeholder="Enter your password"
+                    />
 
-                <View style={styles.row}>
-                    <TouchableOpacity
-                        style={{marginLeft: 10, marginTop: 5}}
-                        onPress={() => navigation.navigate('LoginEmail')}
-                        underlayColor='#fff'>
-                        <Image 
-                            style={{ height: _width, width: _width }}
-                            source={require("../../assets/images/face-scan.png")}/>
-                    </TouchableOpacity>
+                    <View style={styles.row}>
+                        <TouchableOpacity
+                            style={{marginLeft: 10, marginTop: 5}}
+                            onPress={() => navigation.navigate('LoginEmail')}
+                            underlayColor='#fff'>
+                            <Image 
+                                style={[schemeStyle.imageColor, { height: _width, width: _width }]}
+                                source={require("../../assets/images/face-scan.png")}/>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={styles.loginScreenButton}
-                        onPress={() => loginClick()}
-                        underlayColor='#fff'>
-                        <Text style={styles.loginButtonText}>Login</Text>
-                    </TouchableOpacity>
-                </View>
+                        <TouchableOpacity
+                            style={[styles.loginScreenButton, schemeStyle.loginScreenButton]}
+                            onPress={() => loginClick()}
+                            underlayColor='#fff'>
+                            <Text style={[styles.loginButtonText, schemeStyle.textColor]}>Login</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
 
-                <Text onPress={() => navigation.navigate('Register')} style={styles.redirectText}>Create an account</Text>
-            </ScrollView>
-        </SafeAreaView>
+                    <Text onPress={() => navigation.navigate('Register')} style={[styles.redirectText, schemeStyle.textColor]}>Create an account</Text>
+                </ScrollView>
+            </SafeAreaView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         margin: '10%',
+        marginTop: '25%',
         flex: 1,
     },
     title: {
@@ -115,8 +152,14 @@ const styles = StyleSheet.create({
     inputText: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
-        padding: 10
+        padding: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
     },
     loginScreenButton: {
         marginRight: 10,
@@ -125,10 +168,14 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: Colors.GREEN_BUTTON,
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#fff'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
     },
     loginButtonText: {
         textAlign: 'center',

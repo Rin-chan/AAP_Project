@@ -1,22 +1,23 @@
-export const PRIMARY = '#1779ba';
-export const SECONDARY = '#767676';
-export const WHITE = '#FFFFFF';
-export const BLACK = '#000000';
 
-// ACTIONS
-export const SUCCESS = '#3adb76';
-export const WARNING = '#ffae00';
-export const ALERT = '#cc4b37';
+// LIGHT MODE
+export const LIGHT_PRIMARY_BACKGROUND = '#FFFFFF';
+export const LIGHT_SECONDARY_BACKGROUND = '#FBFCF8';
+export const LIGHT_THIRD_BACKGROUND = '#E8EBE8';
+export const LIGHT_PRIMARY_TEXT = '#000000';
+export const LIGHT_BORDER = '#000000';
+export const LIGHT_GREEN_BUTTON = '#9CE8A8';
+export const LIGHT_PRIMARY_BUTTON = '#63bbf2';
+export const LIGHT_DANGER_BUTTON = '#E8A89C';
+export const LIGHT_BLUE_BUTTON = '#9CDCE8';
 
-// GRAYSCALE
-export const GRAY_LIGHT = '#e6e6e6';
-export const GRAY_MEDIUM = '#cacaca';
-export const GRAY_DARK = '#8a8a8a';
-
-// BUTTONS
-export const GREEN_BUTTON = '#9CE8A8';
-export const RED_BUTTON = '#E8A89C';
-export const BLUE_BUTTON = '#9CDCE8';
-
-// BACKGROUND
-export const GREY_BACKGROUND = '#E8EBE8';
+// DARK MODE
+export const DARK_PRIMARY_BACKGROUND = '#202225';
+export const DARK_SECONDARY_BACKGROUND = '#292b2f';
+export const DARK_THIRD_BACKGROUND = '#2f3136';
+export const DARK_FOURTH_BACKGROUND = '#40444b';
+export const DARK_PRIMARY_TEXT = '#FFFFFF';
+export const DARK_BORDER = '#FFFDD0';
+export const DARK_GREEN_BUTTON = '#73DE84';
+export const DARK_PRIMARY_BUTTON = '#1183ca';
+export const DARK_DANGER_BUTTON = '#D4604A';
+export const DARK_BLUE_BUTTON = '#73CDDE';
