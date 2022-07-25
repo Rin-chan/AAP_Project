@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { useDarkMode } from 'react-native-dynamic';
 
 import { HeaderBar } from "../../../components/organisms";
 import { Colors } from '../../../styles';
 
 const StepItUpScreen = ({ navigation }) => {
-    const _width = Dimensions.get('screen').width * 0.8;
+    const isDarkMode = useDarkMode();
+    var BACKGROUND_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+        }
+    })
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation}/>
 
 

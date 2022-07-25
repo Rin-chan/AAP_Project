@@ -4,12 +4,30 @@ import { Camera, CameraType } from 'expo-camera';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
+import { useDarkMode } from 'react-native-dynamic';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const faceVerificationScreen = ({ navigation }) => {
+    const isDarkMode = useDarkMode();
+    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+        },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+    })
+
     const [hasPermission, setHasPermission] = useState(null);
     const [type, setType] = useState(CameraType.front);
     const [cam, setCam] = useState(false);
@@ -76,16 +94,16 @@ const faceVerificationScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation}/>
 
-            <Text style={{fontSize: 35, fontWeight: "bold"}}>Edit Profile</Text>
+            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold", margin: 10}]}>Edit Profile</Text>
 
             {stopCam == false ? (<View style={{flex: 1}}>
                 <TouchableHighlight
                     style={{padding: 10}}
                     onPress={() => navigation.navigate('Profile')}>
-                        <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
+                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
                 </TouchableHighlight>
 
                 <SafeAreaView style={styles.innerContainer}>
@@ -104,7 +122,7 @@ const faceVerificationScreen = ({ navigation }) => {
                 <TouchableHighlight
                     style={{padding: 10}}
                     onPress={() => navigation.navigate('Profile')}>
-                        <Text style={{fontWeight: "bold"}}>Go back to profile page</Text>
+                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
                 </TouchableHighlight>
 
                 <View style={styles.innerContainer}>
@@ -112,11 +130,11 @@ const faceVerificationScreen = ({ navigation }) => {
 
                     <View style={styles.row}>
                         <TouchableOpacity style={{margin: 20}} onPress={retakePhoto}>
-                            <Text>Retake photo</Text>
+                            <Text style={schemeStyle.textColor}>Retake photo</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{margin: 20}} onPress={choosePhoto}>
-                            <Text>Choose this photo</Text>
+                            <Text style={schemeStyle.textColor}>Choose this photo</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -1,11 +1,41 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView } from 'react-native';
 import CryptoJS from 'crypto-js';
+import { useDarkMode } from 'react-native-dynamic';
 
 import UserDB from '../../utils/database/userdb'
 import { Colors } from '../../styles';
 
 const RegisterScreen = ({ navigation }) => {
+    const isDarkMode = useDarkMode();
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
+    if (isDarkMode) {
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
+    }
+
+    const schemeStyle = StyleSheet.create({
+        backgroundColor: {
+            backgroundColor: BACKGROUND_COLOR,
+            flex: 1,
+        },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+        inputColor: {
+            backgroundColor: INPUT_COLOR,
+            color: TEXT_COLOR,
+        },
+        registerScreenButton: {
+            backgroundColor: PRIMARY_BUTTON
+        }
+    })
+
     const [username, onChangeUsername] = useState("");
     const [email, onChangeEmail] = useState("");
     const [password, onChangePassword] = useState("");
@@ -71,69 +101,71 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={{flexGrow: 1}}
-                keyboardShouldPersistTaps='handled'
-            >
-                <Text style={styles.title}>Register</Text>
+        <View style={schemeStyle.backgroundColor}>
+            <SafeAreaView style={styles.container}>
+                <ScrollView contentContainerStyle={{flexGrow: 1}}
+                    keyboardShouldPersistTaps='handled'>
+                    <Text style={[styles.title, schemeStyle.textColor]}>Register</Text>
 
-                <Text>Username</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangeUsername}
-                    value={username}
-                    placeholder="Enter your username"
-                />
+                    <Text style={schemeStyle.textColor}>Username</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangeUsername}
+                        value={username}
+                        placeholder="Enter your username"
+                    />
 
-                <Text>Email</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangeEmail}
-                    value={email}
-                    placeholder="Enter your email"
-                />
+                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangeEmail}
+                        value={email}
+                        placeholder="Enter your email"
+                    />
 
-                <Text>Password</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangePassword}
-                    secureTextEntry={true}
-                    value={password}
-                    placeholder="Enter your password"
-                />
+                    <Text style={schemeStyle.textColor}>Password</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangePassword}
+                        secureTextEntry={true}
+                        value={password}
+                        placeholder="Enter your password"
+                    />
 
-                <Text>Retype Your Password</Text>
-                <TextInput
-                    style={styles.inputText}
-                    onChangeText={onChangeRePassword}
-                    secureTextEntry={true}
-                    value={repassword}
-                    placeholder="Enter your password again"
-                />
+                    <Text style={schemeStyle.textColor}>Retype Your Password</Text>
+                    <TextInput
+                        style={[styles.inputText, schemeStyle.inputColor]}
+                        onChangeText={onChangeRePassword}
+                        secureTextEntry={true}
+                        value={repassword}
+                        placeholder="Enter your password again"
+                    />
 
-                <View style={styles.row}>
-                    <TouchableOpacity
-                        style={styles.registerScreenButton}
-                        onPress={() => registerClick()}
-                        underlayColor='#fff'>
-                        <Text style={styles.registerButtonText}>Register</Text>
-                    </TouchableOpacity>
-                </View>
+                    <View style={styles.row}>
+                        <TouchableOpacity
+                            style={[styles.registerScreenButton, schemeStyle.registerScreenButton]}
+                            onPress={() => registerClick()}
+                            underlayColor='#fff'>
+                            <Text style={[styles.registerButtonText, schemeStyle.textColor]}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
-                <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
-                <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
-                <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
-                
-                <Text onPress={() => navigation.navigate('Login')} style={styles.redirectText}>Already have an account?</Text>
-            </ScrollView>
-        </SafeAreaView>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
+                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
+                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
+                    
+                    <Text onPress={() => navigation.navigate('Login')} style={[styles.redirectText, schemeStyle.textColor]}>Already have an account?</Text>
+                </ScrollView>
+            </SafeAreaView>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         margin: '10%',
+        marginTop: '25%',
         flex: 1,
     },
     title: {
@@ -144,8 +176,14 @@ const styles = StyleSheet.create({
     inputText: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
-        padding: 10
+        padding: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
     },
     registerScreenButton: {
         marginRight: 10,
@@ -154,10 +192,14 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        backgroundColor: Colors.GREEN_BUTTON,
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#fff'
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 3,
     },
     registerButtonText: {
         textAlign: 'center',
