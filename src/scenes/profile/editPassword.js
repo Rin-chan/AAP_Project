@@ -163,14 +163,14 @@ const editPasswordScreen = ({ navigation }) => {
                             style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
                             onPress={() => navigation.navigate('Profile')}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Cancel</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
                             onPress={() => updateClick()}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Update</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
