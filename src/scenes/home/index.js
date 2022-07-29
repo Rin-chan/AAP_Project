@@ -141,23 +141,23 @@ const HomeScreen = ({ navigation }) => {
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
+                                onPress={() => navigation.navigate('EWasteIt')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/games/EWasteItIcon.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>5</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>E-Waste It Game</Text>
                         </View>
 
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
+                                onPress={() => navigation.navigate('StepItUp')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/games/StepItUpIcon.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>6</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Step It Up Game</Text>
                         </View>
                     </View>
                 </ScrollView>
