@@ -208,6 +208,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 5,
+        elevation: 5
     },
     row: {
         flexDirection: "row",
@@ -225,6 +226,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     information: {
         flexDirection: "column",
@@ -249,6 +251,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     updateButtonText: {
         textAlign: 'center',
@@ -270,6 +273,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     buttonRow: {
         flexDirection: "row",

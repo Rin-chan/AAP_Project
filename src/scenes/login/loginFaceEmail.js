@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     continueScreenButton: {
         marginRight: 10,
@@ -143,6 +144,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     cancelScreenButton: {
         marginRight: 10,
@@ -159,6 +161,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     buttonText: {
         textAlign: 'center',

@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     registerScreenButton: {
         marginRight: 10,
@@ -200,6 +201,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     registerButtonText: {
         textAlign: 'center',

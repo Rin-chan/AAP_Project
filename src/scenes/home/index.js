@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.6,
         shadowRadius: 5,
+        elevation: 5
     },
     innerContainer: {
         borderTopLeftRadius: 20,
@@ -204,6 +205,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     row: {
         flexDirection: 'row',
@@ -223,6 +225,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     textCenter: {
         textAlign: "center"

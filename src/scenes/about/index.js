@@ -41,7 +41,6 @@ const AboutScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.GREY_BACKGROUND
     },
     innerContainer: {
         padding: 10,
