@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 5,
+        elevation: 5
     },
     information: {
         margin: "2%",
@@ -236,6 +237,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     logoutButton: {
         marginTop: 10,
@@ -253,6 +255,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     buttonText: {
         textAlign: 'center',
@@ -287,6 +290,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     editButton: {
         marginTop: 10,
@@ -306,6 +310,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     }
 });
 
