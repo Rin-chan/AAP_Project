@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
+import * as ImagePicker from 'expo-image-picker';
+import { Avatar } from 'react-native-paper';
 
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
@@ -53,6 +55,7 @@ const ProfileScreen = ({ navigation }) => {
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
     const [face, setFace] = useState(false);
+    const [image, setImage] = useState(null);
 
     const [request, setRequest] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
@@ -71,6 +74,7 @@ const ProfileScreen = ({ navigation }) => {
                         setContact(result[0][4]);
                         setAddress(result[0][5]);
                         setFace(result[0][6]);
+                        setImage(result[0][11]);
                         setPageLoading(true);
                     }
                     else {
@@ -118,6 +122,22 @@ const ProfileScreen = ({ navigation }) => {
         return;
     }
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+            base64: true,
+        });
+    
+        if (!result.cancelled) {
+            setImage(result.uri);
+            UserDB.updateUserProfilePic(email, result.uri);
+        }
+    };
+
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             {
@@ -137,9 +157,16 @@ const ProfileScreen = ({ navigation }) => {
                         </TouchableHighlight>
 
                         <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
-                            <Image
-                                style={{ height: _width, width: _width, alignSelf: "center" }}
-                                source={require("../../assets/images/favicon.png")} />
+                            <TouchableOpacity
+                                style={{alignSelf: "center"}}
+                                onPress={() => pickImage()}>
+                                {
+                                    image == null?
+                                    <Avatar.Text size={160} label={username[0]} />
+                                    :
+                                    <Avatar.Image size={160} source={{ uri: image }} />
+                                }
+                            </TouchableOpacity>
 
                             <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
                             <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{username}</Text>
@@ -164,7 +191,7 @@ const ProfileScreen = ({ navigation }) => {
                                 <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Up and working</Text>
                                 <TouchableOpacity
                                     style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
-                                    onPress={resetFaceVeri}
+                                    onPress={() => resetFaceVeri()}
                                     underlayColor='#fff'>
                                     <Text style={[styles.logoutButtonText, schemeStyle.textColor]}>Reset face verification</Text>
                                 </TouchableOpacity>
@@ -174,7 +201,7 @@ const ProfileScreen = ({ navigation }) => {
                                     <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Not set up</Text>
                                     <TouchableOpacity
                                         style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
-                                        onPress={addFaceVeri}
+                                        onPress={() => addFaceVeri()}
                                         underlayColor='#fff'>
                                         <Text style={[styles.buttonText, schemeStyle.textColor]}>Add face verification</Text>
                                     </TouchableOpacity>

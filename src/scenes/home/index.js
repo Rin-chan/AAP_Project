@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
+import { Avatar } from 'react-native-paper';
 
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
@@ -44,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
 
     const [username, setUsername] = useState("");
     const [points, setPoints] = useState(0);
+    const [image, setImage] = useState(null);
 
     const [request, setRequest] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
@@ -58,6 +60,7 @@ const HomeScreen = ({ navigation }) => {
                     if(result.length != 0) {
                         setUsername(result[0][1]);
                         setPoints(result[0][8]);
+                        setImage(result[0][11]);
                         setPageLoading(true);
                     }
                     else {
@@ -86,9 +89,12 @@ const HomeScreen = ({ navigation }) => {
                         <TouchableOpacity 
                             style={[styles.userCard, schemeStyle.cardColor]}
                             onPress={() => navigation.navigate('Profile')}>
-                            <Image
-                                style={{ height: _width, width: _width }}
-                                source={require("../../assets/images/favicon.png")} />
+                            {
+                                image == null?
+                                <Avatar.Text size={80} label={username[0]} />
+                                :
+                                <Avatar.Image size={80} source={{ uri: image }} />
+                            }
                             <View style={{width: "60%"}}>
                                 <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{username}</Text>
                                 <Text style={schemeStyle.textColor}>Points: {points}</Text>

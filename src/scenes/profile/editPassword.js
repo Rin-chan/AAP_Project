@@ -181,7 +181,6 @@ const editPasswordScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Colors.GREY_BACKGROUND,
         flex: 1,
     },
     innerContainer: {
