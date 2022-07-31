@@ -93,23 +93,23 @@ const HomeScreen = ({ navigation }) => {
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('RedeemList')}>
+                                onPress={() => navigation.navigate('ScanQRcode')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/scanqrcode.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Redeem List</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Scan QR Code</Text>
                         </View>
 
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('About')}>
+                                onPress={() => navigation.navigate('RedeemList')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/gift.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>About</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Redeem List</Text>
                         </View>
                     </View>
 
@@ -120,20 +120,20 @@ const HomeScreen = ({ navigation }) => {
                                 onPress={() => navigation.navigate('Home')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/mapbin.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>3</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Locate bins</Text>
                         </View>
 
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
+                                onPress={() => navigation.navigate('About')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
+                                    source={require("../../assets/images/abtus.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>4</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>About</Text>
                         </View>
                     </View>
 
