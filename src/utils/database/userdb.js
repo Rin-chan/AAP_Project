@@ -70,4 +70,37 @@ const updateUserFace = async (email, faceImage, face) => {
     })
 }
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace };
+// Get Specific User
+const getUserPoints = async (email) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/getUserPoints`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .then(data => {
+        result = data.result;
+    })
+    .catch(err => console.error(err));
+
+    return result
+}
+
+// Update User Points
+const updateUserPoints = async (email, points) => {
+    fetch(`http://${flaskIP}/updateUserPoints`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, points: points})
+    })
+}
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserPoints, getUserPoints };

@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+// Style Related
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity, TouchableHighlightBase } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
-
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
+// Camera Scanner Related
+import { BarCodeScanner } from 'expo-barcode-scanner';
+// DB Related
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import UserDB from '../../utils/database/userdb';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
 
 const ScanQRCodeScreen = ({ navigation }) => {
+
+    // Style Settings
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -30,13 +35,49 @@ const ScanQRCodeScreen = ({ navigation }) => {
         }
     })
 
-    const _imgwidth = Dimensions.get('screen').width * 0.1;
-    const _width = Dimensions.get('screen').width * 0.2;
+    // Camera
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
 
-    const [username, setUsername] = useState("");
-    const [points, setPoints] = useState(0);
+    // User State
+    useEffect(() => {
+        (async () => {
+            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            setHasPermission(status === 'granted');
+        })();
+    }, []);
 
-    const [request, setRequest] = useState(false);
+    const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        await AsyncStorage.getItem('user')
+        .then(email => {
+            UserDB.getUserPoints(email).then((result) => {
+                if(result.length != 0) {
+                    
+                    // '{"customID": unique_id, "Points": points }'
+                    var dict_input = JSON.parse(json);
+                    collected_pts = dict_input['Points']
+                    new_pts = result + collected_pts
+
+                    UserDB.updateUserPoints(email, new_pts);
+                    navigation.navigate("Home");
+                    return;
+                }
+                else {
+                    console.log("USER NOT FOUND");
+                    return;
+                }
+            });
+        });
+    };
+
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
@@ -44,24 +85,14 @@ const ScanQRCodeScreen = ({ navigation }) => {
 
             {/* Page Content */}
             <SafeAreaView style={{ flex: 1 }}>
-                <QRCodeScanner
-                    onRead={this.onSuccess}
-                    flashMode={RNCamera.Constants.FlashMode.torch}
-                    topContent={
-                        <Text style={styles.centerText}>
-                            Go to{' '}
-                            <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
-                            your computer and scan the QR code.
-                        </Text>
-                    }
-                    bottomContent={
-                        <TouchableOpacity style={styles.buttonTouchable}>
-                            <Text style={styles.buttonText}>OK. Got it!</Text>
-                        </TouchableOpacity>
-                    }
-                />
 
+                <BarCodeScanner
+                    onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    style={StyleSheet.absoluteFillObject}
+                />
+                {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
             </SafeAreaView>
+
         </View>
 
     );
@@ -132,6 +163,11 @@ const styles = StyleSheet.create({
         marginRight: 5,
         textAlign: "center",
         backgroundColor: 'green',
+    },
+
+    camera: {
+        wdith: '100%',
+        height: '100%'
     }
 
 
