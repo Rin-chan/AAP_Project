@@ -5,7 +5,7 @@ import { useDarkMode } from 'react-native-dynamic';
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
-const FaceLoginScreen = ({ navigation }) => {
+const ForgotPasswordScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
@@ -42,24 +42,15 @@ const FaceLoginScreen = ({ navigation }) => {
     const [email, onChangeEmail] = React.useState("");
 
     const [warning1, onWarning1] = useState(false);
-    const [warning2, onWarning2] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
     const continueClick = () => {
         onWarning1(false);
-        onWarning2(false);
 
         UserDB.getUser(email).then((result) => {
             if(result.length != 0) {
-                if (result[0][9] == 1) {
-                    setModalVisible(true);
-                    return;
-                }
-                if (result[0][6]){
-                    navigation.navigate('LoginCam', {faceImage: result[0][7], email: email});
-                    return;
-                }
-                onWarning2(true);
+                UserDB.addForgotPassword(email);
+                setModalVisible(true);
                 return;
             }
             else {
@@ -75,7 +66,7 @@ const FaceLoginScreen = ({ navigation }) => {
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'
                 >
-                    <Text style={[styles.title, schemeStyle.textColor]}>Face Verification</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>Forgot Password</Text>
 
                     <Text style={schemeStyle.textColor}>Email</Text>
                     <TextInput
@@ -102,7 +93,6 @@ const FaceLoginScreen = ({ navigation }) => {
                     </View>
 
                     <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email does not exist</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account does not have face verification enabled</Text>
                 </ScrollView>
 
                 <Modal
@@ -115,12 +105,13 @@ const FaceLoginScreen = ({ navigation }) => {
                     >
                     <View style={styles.centeredView}>
                         <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>THIS ACCOUNT HAS BEEN DISABLED</Text>
-                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please contact support for more information.</Text>
+                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Email has been sent</Text>
+                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please check your email to reset your password.</Text>
 
                             <TouchableOpacity
                                 style={[styles.modalButton, schemeStyle.continueScreenButton]}
-                                onPress={() => setModalVisible(!modalVisible)} >
+                                onPress={() => {setModalVisible(!modalVisible);
+                                    navigation.navigate("Login")}} >
                                 <Text style={styles.textStyle}>Done</Text>
                             </TouchableOpacity>
                         </View>
@@ -243,4 +234,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FaceLoginScreen;
+export default ForgotPasswordScreen;

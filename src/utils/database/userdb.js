@@ -70,4 +70,26 @@ const updateUserFace = async (email, faceImage, face) => {
     })
 }
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace };
+const addForgotPassword = async (email) => {
+    fetch(`http://${flaskIP}/forgotPassword`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+};
+
+const addEmailVerification = async (email) => {
+    fetch(`http://${flaskIP}/emailVerification`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+};
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, addForgotPassword, addEmailVerification };
