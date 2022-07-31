@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Image, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Image, Dimensions, ScrollView, Modal } from 'react-native';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic'
@@ -25,7 +25,6 @@ const LoginScreen = ({ navigation }) => {
     const schemeStyle = StyleSheet.create({
         backgroundColor: {
             backgroundColor: BACKGROUND_COLOR,
-            flex: 1,
         },
         textColor: {
             color: TEXT_COLOR,
@@ -48,6 +47,8 @@ const LoginScreen = ({ navigation }) => {
     const [password, onChangePassword] = React.useState("");
 
     const [warning1, onWarning1] = useState(false);
+    const [warning2, onWarning2] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const storeData = async (location, value) => {
         try {
@@ -60,6 +61,7 @@ const LoginScreen = ({ navigation }) => {
 
     const loginClick = () => {
         onWarning1(false);
+        onWarning2(false);
 
         UserDB.getUser(email).then((result) => {
             if(result.length != 0) {
@@ -67,6 +69,15 @@ const LoginScreen = ({ navigation }) => {
                     var hashedPassword = CryptoJS.SHA256(password).toString()
 
                     if (hashedPassword == result[0][3]){
+                        if (result[0][9] == 1) {
+                            setModalVisible(true);
+                            return;
+                        }
+                        if (result[0][10] == 0) {
+                            onWarning2(true);
+                            return;
+                        }
+
                         var randomNum = Math.floor(Math.random() * 999999) + 100000 // Generate a random number between 100000 and 999999
                         var userToken = CryptoJS.SHA256(email+randomNum.toString()).toString() // Generate a token
 
@@ -88,7 +99,7 @@ const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={schemeStyle.backgroundColor}>
+        <View style={[schemeStyle.backgroundColor, {flex: 1}]}>
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'>
@@ -129,10 +140,35 @@ const LoginScreen = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={[styles.warning, {display: 'flex', fontWeight: "bold", margin: 10, alignSelf: "flex-end"}]}>Forgot Password</Text>
+
                     <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account is not verified.</Text>
 
                     <Text onPress={() => navigation.navigate('Register')} style={[styles.redirectText, schemeStyle.textColor]}>Create an account</Text>
                 </ScrollView>
+
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        setModalVisible(!modalVisible);
+                    }}
+                    >
+                    <View style={styles.centeredView}>
+                        <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>THIS ACCOUNT HAS BEEN DISABLED</Text>
+                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please contact support for more information.</Text>
+
+                            <TouchableOpacity
+                                style={[styles.modalButton, schemeStyle.loginScreenButton]}
+                                onPress={() => setModalVisible(!modalVisible)} >
+                                <Text style={styles.textStyle}>Done</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
             </SafeAreaView>
         </View>
     );
@@ -160,6 +196,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     loginScreenButton: {
         marginRight: 10,
@@ -176,6 +213,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     loginButtonText: {
         textAlign: 'center',
@@ -194,6 +232,44 @@ const styles = StyleSheet.create({
     warning: {
         color: "red",
         display: 'none'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalSubtitle: {
+        fontWeight: "bold",
+        fontSize: 25,
+        marginBottom: 15,
+        color: "red"
+    },
+    modalInnertext: {
+        padding: 5,
+    },
+    modalButton: {
+        marginTop: 15,
+        padding: 10,
+        borderRadius: 60,
     },
 });
 

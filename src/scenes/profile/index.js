@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimens
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 
-import { HeaderBar } from "../../components/organisms";
+import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
@@ -55,6 +55,7 @@ const ProfileScreen = ({ navigation }) => {
     const [face, setFace] = useState(false);
 
     const [request, setRequest] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
 
     const getUser = async () => {
         if (request == false) {
@@ -70,6 +71,7 @@ const ProfileScreen = ({ navigation }) => {
                         setContact(result[0][4]);
                         setAddress(result[0][5]);
                         setFace(result[0][6]);
+                        setPageLoading(true);
                     }
                     else {
                         console.log("USER NOT FOUND");
@@ -118,86 +120,95 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
-            <HeaderBar navigation={navigation}/>
+            {
+                pageLoading == false?
+                <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
+                    <LoadingScreen/>
+                </View>
+                :
+                <View style={{flex: 1}}>
+                    <HeaderBar navigation={navigation}/>
 
-            <View style={{flex: 1}}>
-                <TouchableHighlight
-                    style={{padding: 10}}
-                    onPress={() => navigation.navigate('Main')}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to home</Text>
-                </TouchableHighlight>
+                    <View style={{flex: 1}}>
+                        <TouchableHighlight
+                            style={{padding: 10}}
+                            onPress={() => navigation.navigate('Main')}>
+                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to home</Text>
+                        </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
-                    <Image
-                        style={{ height: _width, width: _width, alignSelf: "center" }}
-                        source={require("../../assets/images/favicon.png")} />
+                        <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
+                            <Image
+                                style={{ height: _width, width: _width, alignSelf: "center" }}
+                                source={require("../../assets/images/favicon.png")} />
 
-                    <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
-                    <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{username}</Text>
+                            <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
+                            <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{username}</Text>
 
-                    <Text style={[styles.information, schemeStyle.textColor]}>Email:</Text>
-                    <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{email}</Text>
+                            <Text style={[styles.information, schemeStyle.textColor]}>Email:</Text>
+                            <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{email}</Text>
 
-                    {contact != ''? (<View>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
-                        <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{contact}</Text>
-                        </View>)
-                        : null }
+                            {contact != ''? (<View>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
+                                <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{contact}</Text>
+                                </View>)
+                                : null }
 
-                    {address != ''? (<View>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
-                        <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{address}</Text>
-                        </View>)
-                        : null }
-                    
-                    {face == true? (<View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
-                        <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Up and working</Text>
-                        <TouchableOpacity
-                            style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
-                            onPress={resetFaceVeri}
-                            underlayColor='#fff'>
-                            <Text style={[styles.logoutButtonText, schemeStyle.textColor]}>Reset face verification</Text>
-                        </TouchableOpacity>
-                        </View>)
-                        : (<View style={styles.row}>
-                            <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
-                            <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Not set up</Text>
-                            <TouchableOpacity
-                                style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
-                                onPress={addFaceVeri}
-                                underlayColor='#fff'>
-                                <Text style={[styles.buttonText, schemeStyle.textColor]}>Add face verification</Text>
-                            </TouchableOpacity>
-                            </View>)
-                            }
+                            {address != ''? (<View>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
+                                <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{address}</Text>
+                                </View>)
+                                : null }
+                            
+                            {face == true? (<View style={styles.row}>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
+                                <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Up and working</Text>
+                                <TouchableOpacity
+                                    style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
+                                    onPress={resetFaceVeri}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.logoutButtonText, schemeStyle.textColor]}>Reset face verification</Text>
+                                </TouchableOpacity>
+                                </View>)
+                                : (<View style={styles.row}>
+                                    <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
+                                    <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Not set up</Text>
+                                    <TouchableOpacity
+                                        style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
+                                        onPress={addFaceVeri}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>Add face verification</Text>
+                                    </TouchableOpacity>
+                                    </View>)
+                                    }
 
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                            onPress={() => navigation.navigate("editProfile")}
-                            underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Edit Profile</Text>
-                        </TouchableOpacity>
+                            <View style={styles.buttonRow}>
+                                <TouchableOpacity
+                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                    onPress={() => navigation.navigate("editProfile")}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Edit Profile</Text>
+                                </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                            onPress={() => navigation.navigate("editPassword")}
-                            underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Change Password</Text>
-                        </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                    onPress={() => navigation.navigate("editPassword")}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Change Password</Text>
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <SafeAreaView>
+                                <TouchableOpacity
+                                    style={[styles.logoutButton, schemeStyle.dangerScreenButton]}
+                                    onPress={() => logout()}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Log Out</Text>
+                                </TouchableOpacity>
+                            </SafeAreaView>
+                        </ScrollView>
                     </View>
-                    
-                    <SafeAreaView>
-                        <TouchableOpacity
-                            style={[styles.logoutButton, schemeStyle.dangerScreenButton]}
-                            onPress={() => logout()}
-                            underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Log Out</Text>
-                        </TouchableOpacity>
-                    </SafeAreaView>
-                </ScrollView>
-            </View>
+                </View>
+            }
         </View>
     );
 };
@@ -221,6 +232,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 5,
+        elevation: 5
     },
     information: {
         margin: "2%",
@@ -236,6 +248,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     logoutButton: {
         marginTop: 10,
@@ -253,6 +266,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     buttonText: {
         textAlign: 'center',
@@ -287,6 +301,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     editButton: {
         marginTop: 10,
@@ -306,6 +321,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     }
 });
 

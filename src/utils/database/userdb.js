@@ -70,7 +70,7 @@ const updateUserFace = async (email, faceImage, face) => {
     })
 }
 
-// Get Specific User
+// Get User Points
 const getUserPoints = async (email) => {
     let result = undefined;
 
@@ -91,6 +91,18 @@ const getUserPoints = async (email) => {
     return result
 }
 
+// Forget Password
+const addForgotPassword = async (email) => {
+    fetch(`http://${flaskIP}/forgotPassword`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+};
+
 // Update User Points
 const updateUserPoints = async (email, points) => {
     fetch(`http://${flaskIP}/updateUserPoints`, {
@@ -103,4 +115,17 @@ const updateUserPoints = async (email, points) => {
     })
 }
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserPoints, getUserPoints };
+// Email Verification
+const addEmailVerification = async (email) => {
+    fetch(`http://${flaskIP}/emailVerification`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+};
+
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, addForgotPassword, addEmailVerification , updateUserPoints, getUserPoints};

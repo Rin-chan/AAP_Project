@@ -163,14 +163,14 @@ const editPasswordScreen = ({ navigation }) => {
                             style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
                             onPress={() => navigation.navigate('Profile')}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Cancel</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
                             onPress={() => updateClick()}
                             underlayColor='#fff'>
-                            <Text style={styles.updateButtonText}>Update</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     row: {
         flexDirection: "row",
@@ -216,6 +217,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     information: {
         flexDirection: "column",
@@ -240,6 +242,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     updateButtonText: {
         textAlign: 'center',
@@ -261,6 +264,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 5,
+        elevation: 5
     },
     buttonRow: {
         flexDirection: "row",

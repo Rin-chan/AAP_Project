@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView, Modal } from 'react-native';
 import CryptoJS from 'crypto-js';
 import { useDarkMode } from 'react-native-dynamic';
 
@@ -22,7 +22,6 @@ const RegisterScreen = ({ navigation }) => {
     const schemeStyle = StyleSheet.create({
         backgroundColor: {
             backgroundColor: BACKGROUND_COLOR,
-            flex: 1,
         },
         textColor: {
             color: TEXT_COLOR,
@@ -45,6 +44,8 @@ const RegisterScreen = ({ navigation }) => {
     const [warning2, onWarning2] = useState(false);
     const [warning3, onWarning3] = useState(false);
     const [warning4, onWarning4] = useState(false);
+    const [warning5, onWarning5] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const registerClick = () => {
         let errors = [];
@@ -52,6 +53,7 @@ const RegisterScreen = ({ navigation }) => {
         onWarning2(false);
         onWarning3(false);
         onWarning4(false);
+        onWarning5(false);
 
         if (username === ''){
             errors.push('username')
@@ -74,9 +76,15 @@ const RegisterScreen = ({ navigation }) => {
             return;
         }
 
-        let check = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-        if (!password.match(check)) { 
+        let password_check = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+        if (!password.match(password_check)) { 
             onWarning4(true)
+            return;
+        }
+
+        let email_check = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        if (!email.match(email_check)) { 
+            onWarning5(true)
             return;
         }
 
@@ -90,7 +98,8 @@ const RegisterScreen = ({ navigation }) => {
                 var hashedPassword = CryptoJS.SHA256(password).toString()
 
                 UserDB.addUser(username, email, hashedPassword);
-                navigation.navigate('Login');
+                UserDB.addEmailVerification(email);
+                setModalVisible(true);
                 return;
             }
             else {
@@ -101,7 +110,7 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={schemeStyle.backgroundColor}>
+        <View style={[schemeStyle.backgroundColor, {flex: 1}]}>
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'>
@@ -154,10 +163,34 @@ const RegisterScreen = ({ navigation }) => {
                     <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
                     <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
                     <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
+                    <Text style={warning5?[styles.warning, {display: 'flex'}]:styles.warning}>This is not a valid email.</Text>
                     
                     <Text onPress={() => navigation.navigate('Login')} style={[styles.redirectText, schemeStyle.textColor]}>Already have an account?</Text>
                 </ScrollView>
             </SafeAreaView>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Email Verification Required</Text>
+                        <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please check your email to verify your email.</Text>
+
+                        <TouchableOpacity
+                            style={[styles.modalButton, schemeStyle.registerScreenButton]}
+                            onPress={() => {setModalVisible(!modalVisible);
+                                navigation.navigate("Login");}} >
+                            <Text style={styles.textStyle}>Done</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -184,6 +217,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 5,
+        elevation: 5
     },
     registerScreenButton: {
         marginRight: 10,
@@ -200,6 +234,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.4,
         shadowRadius: 3,
+        elevation: 5
     },
     registerButtonText: {
         textAlign: 'center',
@@ -219,6 +254,44 @@ const styles = StyleSheet.create({
     warning: {
         color: "red",
         display: 'none'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalSubtitle: {
+        fontWeight: "bold",
+        fontSize: 25,
+        marginBottom: 15,
+        color: "red"
+    },
+    modalInnertext: {
+        padding: 5,
+    },
+    modalButton: {
+        marginTop: 15,
+        padding: 10,
+        borderRadius: 60,
     },
 });
 
