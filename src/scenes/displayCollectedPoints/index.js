@@ -1,48 +1,75 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Button, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
-
+// DB Related
+import UserDB from '../../utils/database/userdb';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DisplayCollectedPointScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
+    var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
-    var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        FOREGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
     }
+
 
     const schemeStyle = StyleSheet.create({
         backgroundColor: {
             backgroundColor: BACKGROUND_COLOR,
         },
+        foregroundColor: {
+            backgroundColor: FOREGROUND_COLOR,
+        },
         textColor: {
             color: TEXT_COLOR,
         },
-        boxColor: {
-            backgroundColor: BOX_COLOR,
+        inputColor: {
+            backgroundColor: INPUT_COLOR,
+            color: TEXT_COLOR,
+        },
+        primaryScreenButton: {
+            backgroundColor: PRIMARY_BUTTON,
+        },
+        dangerScreenButton: {
+            backgroundColor: DANGER_BUTTON,
         }
     })
 
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.2;
 
-    const [username, setUsername] = useState("");
-    const [points, setPoints] = useState(0);
+    const collectedPoints = navigation.getParam('collectedPoints');;
+    console.log(collectedPoints);
 
-    const [request, setRequest] = useState(false);
+    // const [request, setRequest] = useState(false);
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation} />
 
             {/* Page Content */}
-            <SafeAreaView style={{ flex: 1 }}>
-                <Text style={[styles.h2, schemeStyle.textColor]}>Display Points Collected</Text>
+            <SafeAreaView style={{ flex: 1, marginTop: '30%'}}>
+            <Text style={[styles.h1, schemeStyle.textColor]}>Congratulations!!</Text>
+                <Text style={[styles.h1, schemeStyle.textColor]}>You gained {collectedPoints} CO2 points!</Text>
+                <TouchableOpacity
+                    style={[styles.action_btn, schemeStyle.primaryScreenButton]}
+                    onPress={() => navigation.navigate('Home')}
+                    underlayColor='#fff'>
+                    <Text style={[styles.buttonText ,schemeStyle.textColor]}>OK</Text>
+                </TouchableOpacity>
             </SafeAreaView>
         </View>
 
@@ -114,6 +141,20 @@ const styles = StyleSheet.create({
         marginRight: 5,
         textAlign: "center",
         backgroundColor: 'green',
+    },
+
+    action_btn: {
+        width: '20%',
+        padding: 15,
+        marginRight: '40%',
+        marginLeft: '40%',
+        borderRadius: 20,
+
+    },
+    buttonText: {
+        textAlign: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
     }
 
 
