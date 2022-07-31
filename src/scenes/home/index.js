@@ -93,23 +93,23 @@ const HomeScreen = ({ navigation }) => {
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
+                                onPress={() => navigation.navigate('RedeemList')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
                                     source={require("../../assets/images/favicon.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>1</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Redeem List</Text>
                         </View>
 
                         <View style={styles.outterBox}>
                             <TouchableHighlight
                                 style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
+                                onPress={() => navigation.navigate('About')}>
                                 <Image
                                     style={{ height: _width, width: _width }}
                                     source={require("../../assets/images/favicon.png")} />
                             </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>2</Text>
+                            <Text style={[styles.textCenter, schemeStyle.textColor]}>About</Text>
                         </View>
                     </View>
 

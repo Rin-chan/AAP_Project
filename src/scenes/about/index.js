@@ -30,7 +30,7 @@ const AboutScreen = ({ navigation }) => {
             <View style={{flex: 1}}>
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
                     <Text style={schemeStyle.textColor}>
-                        This app is made by Nian Ci, Sonia and Jaden.
+                        This app is made by Nian Ci, Sonia and Jaden :D
                     </Text>
                 </ScrollView>
             </View>
@@ -40,8 +40,7 @@ const AboutScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: Colors.GREY_BACKGROUND
+        flex: 1
     },
     innerContainer: {
         padding: 10,

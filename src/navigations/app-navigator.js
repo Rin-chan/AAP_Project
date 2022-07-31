@@ -8,6 +8,9 @@ import ProfileNavigator from './profile-navigation';
 import AlbaInfoNavigator from './albaInfo-navigator';
 import EWasteItScreen from '../scenes/games/EWasteIt';
 import StepItUpScreen from '../scenes/games/StepItUp';
+import RedeemListScreen from '../scenes/redeemList';
+import ScanQRScreen from '../scenes/redeemList';
+
 
 const colorScheme = Appearance.getColorScheme();
 var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -55,6 +58,12 @@ const RouteConfigs = {
     },
     About: {
         screen: AboutScreen,
+    },
+    RedeemList: {
+        screen: RedeemListScreen,
+    },
+    RedeemList: {
+        screen: RedeemListScreen,
     },
 };
 

@@ -1,3 +1,5 @@
 {
-    "flaskServer": "192.168.0.108:5000"
+    // Change the IP address to your Wireless LAN adapter Wi-Fi one
+    // You can find it in command prompt ipconfig
+    "flaskServer": "172.27.190.247:5000"
 }
