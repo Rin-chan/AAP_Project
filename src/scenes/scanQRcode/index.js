@@ -5,7 +5,10 @@ import { useDarkMode } from 'react-native-dynamic';
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 
-const ScranQRCodeScreen = ({ navigation }) => {
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
+
+const ScanQRCodeScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -35,69 +38,32 @@ const ScranQRCodeScreen = ({ navigation }) => {
 
     const [request, setRequest] = useState(false);
 
-    return(
+    return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
-            <HeaderBar navigation={navigation}/>
-            
+            <HeaderBar navigation={navigation} />
+
             {/* Page Content */}
-            <SafeAreaView style={{flex:1}}>
-                 {/* h1 - You have xxx points */}
-                <View style={styles.row}>
-                    <Text style={[styles.h1, schemeStyle.textColor]}>You have 0 C02 Points! :D  
-                        <Image
-                            style={{ height: _imgwidth, width: _imgwidth, paddingLeft:10}}
-                            source={require("../../assets/images/favicon.png")} />
-                    </Text>
-                </View>
-
-                {/* h2 - Reward list */}
-                <Text style={[styles.h2, schemeStyle.textColor]}>Reward list</Text>
-
-                {/* tab bar */}
-                <ScrollView horizontal={true} style={[styles.tabContainer, schemeStyle.foregroundColor]}>
-                    <View style={styles.row}>
-                        <TouchableHighlight
-                            style={[styles.tabs]}
-                            onPress={() => navigation.navigate('RedeemList')}>
-                            <Text style={[schemeStyle.textColor, styles.productTitle]}>All</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight
-                            style={[styles.tabs]}
-                            onPress={() => navigation.navigate('RedeemList')}>
-                            <Text style={[schemeStyle.textColor, styles.productTitle]}>Food</Text>
-                        </TouchableHighlight>
-                    </View>
-                </ScrollView>
-                
-
-                {/* List of Rewards */}
-                <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]}>
-                    <View style={styles.row}>
-                            <TouchableHighlight
-                                style={[styles.outterBox, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('RedeemList')}>
-                                <View style={styles.row}>
-                                    <View style={{backgroundColor:'yellow', width:'30%'}}>
-                                        <Image
-                                            style={{ height: _width, width: '80%', margin:0, marginLeft:'10%', backgroundColor:'blue'}}
-                                            source={require("../../assets/images/favicon.png")} />
-                                    </View >
-                                    <View style={{backgroundColor:'green', width:'60%'}}>
-                                        <Text style={[schemeStyle.textColor, styles.productTitle]}>Reward Name</Text>
-                                        <Text style={[schemeStyle.textColor]}>20 CO2 Points</Text>
-                                    </View>
-                                    
-                                </View>
-                            </TouchableHighlight>
-                        {/* </View> */}
-                    </View>
-                </ScrollView>
-
-                
+            <SafeAreaView style={{ flex: 1 }}>
+                <QRCodeScanner
+                    onRead={this.onSuccess}
+                    flashMode={RNCamera.Constants.FlashMode.torch}
+                    topContent={
+                        <Text style={styles.centerText}>
+                            Go to{' '}
+                            <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on
+                            your computer and scan the QR code.
+                        </Text>
+                    }
+                    bottomContent={
+                        <TouchableOpacity style={styles.buttonTouchable}>
+                            <Text style={styles.buttonText}>OK. Got it!</Text>
+                        </TouchableOpacity>
+                    }
+                />
 
             </SafeAreaView>
         </View>
-            
+
     );
 };
 
@@ -111,8 +77,8 @@ const styles = StyleSheet.create({
     },
     tabContainer: {
         padding: 0,
-        margin:0,
-        paddingLeft: 10,   
+        margin: 0,
+        paddingLeft: 10,
     },
     h1: {
         fontWeight: "bold",
@@ -145,10 +111,10 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 10,
-        overflow: 'hidden', 
+        overflow: 'hidden',
         marginBottom: '5%'
     },
-    
+
     productTitle: {
         fontWeight: "bold",
         fontSize: 20,
@@ -167,8 +133,8 @@ const styles = StyleSheet.create({
         textAlign: "center",
         backgroundColor: 'green',
     }
-    
+
 
 });
 
-export default ScranQRCodeScreen;
+export default ScanQRCodeScreen;

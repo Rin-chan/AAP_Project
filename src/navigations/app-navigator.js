@@ -9,8 +9,8 @@ import AlbaInfoNavigator from './albaInfo-navigator';
 import EWasteItScreen from '../scenes/games/EWasteIt';
 import StepItUpScreen from '../scenes/games/StepItUp';
 import RedeemListScreen from '../scenes/redeemList';
-import ScanQRScreen from '../scenes/redeemList';
-
+import ScanQRCodeScreen from '../scenes/scanQRcode';
+import DisplayCollectedPointScreen from "../scenes/displayCollectedPoints";
 
 const colorScheme = Appearance.getColorScheme();
 var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -62,9 +62,12 @@ const RouteConfigs = {
     RedeemList: {
         screen: RedeemListScreen,
     },
-    RedeemList: {
-        screen: RedeemListScreen,
+    ScanQRcode: {
+        screen: ScanQRCodeScreen,
     },
+    displayCollectedPoints: {
+        screen: DisplayCollectedPointScreen,
+    }
 };
 
 const AppNavigator = createDrawerNavigator(RouteConfigs, TabNavigatorConfig);
