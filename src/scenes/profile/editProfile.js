@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, TextInput, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, TextInput, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 
-import { HeaderBar } from "../../components/organisms";
+import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
@@ -55,6 +55,7 @@ const editProfileScreen = ({ navigation }) => {
     const [noDB, setNoDB] = useState(false);
 
     const [request, setRequest] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
 
     const getUser = async () => {
         if (request == false) {
@@ -67,6 +68,7 @@ const editProfileScreen = ({ navigation }) => {
                         setUsername(result[0][1]);
                         setContact(result[0][4]);
                         setAddress(result[0][5]);
+                        setPageLoading(true);
                     }
                     else {
                         console.log("USER NOT FOUND");
@@ -122,70 +124,79 @@ const editProfileScreen = ({ navigation }) => {
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
-            <HeaderBar navigation={navigation}/>
+            {
+                pageLoading == false?
+                <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
+                    <LoadingScreen/>
+                </View>
+                :
+                <View style={{flex: 1}}>
+                    <HeaderBar navigation={navigation}/>
 
-            <View style={{flex: 1}}>
-                <TouchableHighlight
-                    style={{padding: 10}}
-                    onPress={() => navigation.navigate('Profile')}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
-                </TouchableHighlight>
+                    <View style={{flex: 1}}>
+                        <TouchableHighlight
+                            style={{padding: 10}}
+                            onPress={() => navigation.navigate('Profile')}>
+                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
+                        </TouchableHighlight>
 
-                <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} keyboardShouldPersistTaps='handled'>
-                    <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>Edit Profile</Text>
+                        <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} keyboardShouldPersistTaps='handled'>
+                            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>Edit Profile</Text>
 
-                    <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
-                        <TextInput
-                            style={[styles.inputText, schemeStyle.inputColor]}
-                            onChangeText={(text) => {setUsername(text);
-                                setNoDB(true);}}
-                            value={username}
-                        />
+                            <View style={styles.row}>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
+                                <TextInput
+                                    style={[styles.inputText, schemeStyle.inputColor]}
+                                    onChangeText={(text) => {setUsername(text);
+                                        setNoDB(true);}}
+                                    value={username}
+                                />
+                            </View>
+
+                            <View style={styles.row}>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
+                                <TextInput
+                                    style={[styles.inputText, schemeStyle.inputColor]}
+                                    keyboardType = 'numeric'
+                                    onChangeText={(text) => {
+                                        setContact(text);
+                                        setNoDB(true);}}
+                                    value={contact}
+                                />
+                            </View>
+
+                            <View style={styles.row}>
+                                <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
+                                <TextInput
+                                    style={[styles.inputText, schemeStyle.inputColor]}
+                                    onChangeText={(text) => {setAddress(text);
+                                        setNoDB(true);}}
+                                    value={address}
+                                />
+                            </View>
+
+                            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Username cannot be empty</Text>
+                            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
+
+                            <View style={styles.buttonRow}>
+                                <TouchableOpacity
+                                    style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
+                                    onPress={() => navigation.navigate('Profile')}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
+                                    onPress={() => updateClick()}
+                                    underlayColor='#fff'>
+                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </ScrollView>
                     </View>
-
-                    <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
-                        <TextInput
-                            style={[styles.inputText, schemeStyle.inputColor]}
-                            keyboardType = 'numeric'
-                            onChangeText={(text) => {
-                                setContact(text);
-                                setNoDB(true);}}
-                            value={contact}
-                        />
-                    </View>
-
-                    <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
-                        <TextInput
-                            style={[styles.inputText, schemeStyle.inputColor]}
-                            onChangeText={(text) => {setAddress(text);
-                                setNoDB(true);}}
-                            value={address}
-                        />
-                    </View>
-
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Username cannot be empty</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
-
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity
-                            style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
-                            onPress={() => navigation.navigate('Profile')}
-                            underlayColor='#fff'>
-                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
-                            onPress={() => updateClick()}
-                            underlayColor='#fff'>
-                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </View>
+                </View>
+            }
         </View>
     );
 };

@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimens
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 
-import { HeaderBar } from "../../components/organisms";
+import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
@@ -46,6 +46,7 @@ const HomeScreen = ({ navigation }) => {
     const [points, setPoints] = useState(0);
 
     const [request, setRequest] = useState(false);
+    const [pageLoading, setPageLoading] = useState(false);
 
     const getUser = async () => {
         if (request == false) {
@@ -57,6 +58,7 @@ const HomeScreen = ({ navigation }) => {
                     if(result.length != 0) {
                         setUsername(result[0][1]);
                         setPoints(result[0][8]);
+                        setPageLoading(true);
                     }
                     else {
                         console.log("USER NOT FOUND");
@@ -71,97 +73,106 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
-            <HeaderBar navigation={navigation}/>
+            {
+                pageLoading == false?
+                <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
+                    <LoadingScreen/>
+                </View>
+                :
+                <View style={{flex: 1}}>
+                    <HeaderBar navigation={navigation}/>
 
-            <View style={{flex: 1}}>
-                <TouchableOpacity 
-                    style={[styles.userCard, schemeStyle.cardColor]}
-                    onPress={() => navigation.navigate('Profile')}>
-                    <Image
-                        style={{ height: _width, width: _width }}
-                        source={require("../../assets/images/favicon.png")} />
-                    <View style={{width: "60%"}}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{username}</Text>
-                        <Text style={schemeStyle.textColor}>Points: {points}</Text>
+                    <View style={{flex: 1}}>
+                        <TouchableOpacity 
+                            style={[styles.userCard, schemeStyle.cardColor]}
+                            onPress={() => navigation.navigate('Profile')}>
+                            <Image
+                                style={{ height: _width, width: _width }}
+                                source={require("../../assets/images/favicon.png")} />
+                            <View style={{width: "60%"}}>
+                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{username}</Text>
+                                <Text style={schemeStyle.textColor}>Points: {points}</Text>
 
-                        <Text style={[schemeStyle.textColor, {fontSize: 10, marginTop: "auto"}]}>Profile &gt;</Text>
+                                <Text style={[schemeStyle.textColor, {fontSize: 10, marginTop: "auto"}]}>Profile &gt;</Text>
+                            </View>
+                        </TouchableOpacity>
+
+                        <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]}>
+                            <View style={styles.row}>
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('Home')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/favicon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>1</Text>
+                                </View>
+
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('Home')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/favicon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>2</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.row}>
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('Home')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/favicon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>3</Text>
+                                </View>
+
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('Home')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/favicon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>4</Text>
+                                </View>
+                            </View>
+
+                            <View style={styles.row}>
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('EWasteIt')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/games/EWasteItIcon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>E-Waste It Game</Text>
+                                </View>
+
+                                <View style={styles.outterBox}>
+                                    <TouchableHighlight
+                                        style={[styles.box, schemeStyle.boxColor]}
+                                        onPress={() => navigation.navigate('StepItUp')}>
+                                        <Image
+                                            style={{ height: _width, width: _width }}
+                                            source={require("../../assets/images/games/StepItUpIcon.png")} />
+                                    </TouchableHighlight>
+                                    <Text style={[styles.textCenter, schemeStyle.textColor]}>Step It Up Game</Text>
+                                </View>
+                            </View>
+                        </ScrollView>
                     </View>
-                </TouchableOpacity>
-
-                <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]}>
-                    <View style={styles.row}>
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>1</Text>
-                        </View>
-
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>2</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.row}>
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>3</Text>
-                        </View>
-
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('Home')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/favicon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>4</Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.row}>
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('EWasteIt')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/games/EWasteItIcon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>E-Waste It Game</Text>
-                        </View>
-
-                        <View style={styles.outterBox}>
-                            <TouchableHighlight
-                                style={[styles.box, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('StepItUp')}>
-                                <Image
-                                    style={{ height: _width, width: _width }}
-                                    source={require("../../assets/images/games/StepItUpIcon.png")} />
-                            </TouchableHighlight>
-                            <Text style={[styles.textCenter, schemeStyle.textColor]}>Step It Up Game</Text>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+                </View>
+            }
         </View>
     );
 };

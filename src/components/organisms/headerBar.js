@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     container: {
-        backgroundColor: '#E8EBE8',
     },
 });
 
