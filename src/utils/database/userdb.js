@@ -81,6 +81,29 @@ const updateUserProfilePic = async (email, profilePic) => {
     })
 }
 
+// Get User Points
+const getUserPoints = async (email) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/getUserPoints`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email})
+    })
+    .then(response => response.json())
+    .then(data => {
+        result = data.result;
+    })
+    .catch(err => console.error(err));
+
+    return result
+}
+
+
+// Forget Password
 const addForgotPassword = async (email) => {
     fetch(`http://${flaskIP}/forgotPassword`, {
         method: "POST",
@@ -92,6 +115,19 @@ const addForgotPassword = async (email) => {
     })
 };
 
+// Update User Points
+const updateUserPoints = async (email, points) => {
+    fetch(`http://${flaskIP}/updateUserPoints`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({email: email, points: points})
+    })
+}
+
+// Email Verification
 const addEmailVerification = async (email) => {
     fetch(`http://${flaskIP}/emailVerification`, {
         method: "POST",
@@ -103,4 +139,5 @@ const addEmailVerification = async (email) => {
     })
 };
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification };
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification , updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification };
