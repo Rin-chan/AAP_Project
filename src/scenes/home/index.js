@@ -66,7 +66,7 @@ const HomeScreen = ({ navigation }) => {
                          setUsername(result[0][1]);
                          setPoints(result[0][8]);
                          setImage(result[0][11]);
-                         setPageLoading(true);
+                         setPageLoading(false);
                      }
                      else {
                          console.log("USER NOT FOUND");

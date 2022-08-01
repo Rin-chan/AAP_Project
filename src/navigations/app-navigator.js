@@ -61,12 +61,21 @@ const RouteConfigs = {
     },
     RedeemList: {
         screen: RedeemListScreen,
+        navigationOptions: {
+            title: "Redeem List"
+        }
     },
     ScanQRcode: {
         screen: ScanQRCodeScreen,
+        navigationOptions: {
+            title: "Scan QR code"
+        }
     },
     displayCollectedPoints: {
         screen: DisplayCollectedPointScreen,
+        navigationOptions: {
+            ttabBarVisible: false,
+        }
     }
 };
 

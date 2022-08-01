@@ -30,10 +30,30 @@ const RedeemListScreen = ({ navigation }) => {
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.2;
 
-    const [username, setUsername] = useState("");
     const [points, setPoints] = useState(0);
 
     const [request, setRequest] = useState(false);
+    const getUser = async () => {
+        if (request == false) {
+            setRequest(true);
+
+            await AsyncStorage.getItem('user')
+            .then(email => {
+                UserDB.getUser(email).then((result) => {
+                    if(result.length != 0) {
+                        setPoints(result[0][8]);
+                        setPageLoading(true);
+                    }
+                    else {
+                        console.log("USER NOT FOUND");
+                        return;
+                    }
+                });
+            });
+        }
+    };
+
+   getUser();
 
     return(
         <View style={[styles.container, schemeStyle.backgroundColor]}>
@@ -43,7 +63,7 @@ const RedeemListScreen = ({ navigation }) => {
             <SafeAreaView style={{flex:1}}>
                  {/* h1 - You have xxx points */}
                 <View style={styles.row}>
-                    <Text style={[styles.h1, schemeStyle.textColor]}>You have 0 C02 Points! :D  
+                    <Text style={[styles.h1, schemeStyle.textColor]}>You have {points} C02 Points! :D  
                         <Image
                             style={{ height: _imgwidth, width: _imgwidth, paddingLeft:10}}
                             source={require("../../assets/images/favicon.png")} />
