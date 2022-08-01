@@ -15,12 +15,14 @@ const HomeScreen = ({ navigation }) => {
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var CARD_COLOR = '#399ED5'
+    var ICON_COLOR = "black"
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         FOREGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
         BOX_COLOR = Colors.DARK_FOURTH_BACKGROUND
         CARD_COLOR = '#2682B5'
+        ICON_COLOR = "white"
     }
 
     const schemeStyle = StyleSheet.create({
@@ -38,7 +40,10 @@ const HomeScreen = ({ navigation }) => {
         },
         cardColor: {
             backgroundColor: CARD_COLOR,
-        }
+        },
+        iconColor: {
+            tintColor: ICON_COLOR
+        },
     })
 
     const _width = Dimensions.get('screen').width * 0.2;
@@ -110,7 +115,7 @@ const HomeScreen = ({ navigation }) => {
                                             style={[styles.box, schemeStyle.boxColor]}
                                             onPress={() => navigation.navigate('ScanQRcode')}>
                                             <Image
-                                                style={{ height: _width, width: _width }}
+                                                style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/scanqrcode.png")} />
                                         </TouchableHighlight>
                                         <Text style={[styles.textCenter, schemeStyle.textColor]}>Scan QR Code</Text>
@@ -121,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
                                             style={[styles.box, schemeStyle.boxColor]}
                                             onPress={() => navigation.navigate('RedeemList')}>
                                             <Image
-                                                style={{ height: _width, width: _width }}
+                                                style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/gift.png")} />
                                         </TouchableHighlight>
                                         <Text style={[styles.textCenter, schemeStyle.textColor]}>Redeem List</Text>
@@ -134,7 +139,7 @@ const HomeScreen = ({ navigation }) => {
                                             style={[styles.box, schemeStyle.boxColor]}
                                             onPress={() => navigation.navigate('Home')}>
                                             <Image
-                                                style={{ height: _width, width: _width }}
+                                                style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/mapbin.png")} />
                                         </TouchableHighlight>
                                         <Text style={[styles.textCenter, schemeStyle.textColor]}>Locate bins</Text>
@@ -145,7 +150,7 @@ const HomeScreen = ({ navigation }) => {
                                             style={[styles.box, schemeStyle.boxColor]}
                                             onPress={() => navigation.navigate('About')}>
                                             <Image
-                                                style={{ height: _width, width: _width }}
+                                                style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/abtus.png")} />
                                         </TouchableHighlight>
                                         <Text style={[styles.textCenter, schemeStyle.textColor]}>About</Text>
