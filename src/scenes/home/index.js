@@ -71,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         const interval = setInterval(() => {setTimer(timer => timer+1)}, 1000);
 
+
         if (pageLoading) {
             clearInterval(interval);
             setTimer(0);
@@ -97,7 +98,7 @@ const HomeScreen = ({ navigation }) => {
                          setUsername(result[0][1]);
                          setPoints(result[0][8]);
                          setImage(result[0][11]);
-                         setPageLoading(false);
+                         setPageLoading(true);
                      }
                      else {
                          console.log("USER NOT FOUND");
