@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
@@ -54,6 +54,37 @@ const HomeScreen = ({ navigation }) => {
 
     const [request, setRequest] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
+    const [timer, setTimer] = useState(0);
+
+    async function logout() {
+        try {
+            await AsyncStorage.removeItem("user");
+            await AsyncStorage.removeItem("userToken");
+            navigation.navigate('Login');
+        }
+        catch(exception) {
+            console.log("LOGOUT FAILED");
+            console.log(exception);
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {setTimer(timer => timer+1)}, 1000);
+
+        if (pageLoading) {
+            clearInterval(interval);
+            setTimer(0);
+        }
+        return () => {
+            clearInterval(interval);
+        };
+    }, [pageLoading]);
+
+    useEffect(() => {
+        if (timer >= 10) {
+            logout();
+        }
+    }, [timer]);
 
     const getUser = async () => {
          if (request == false) {
