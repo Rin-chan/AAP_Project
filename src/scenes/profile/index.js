@@ -5,11 +5,16 @@ import { useDarkMode } from 'react-native-dynamic';
 import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const ProfileScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -153,7 +158,7 @@ const ProfileScreen = ({ navigation }) => {
                         <TouchableHighlight
                             style={{padding: 10}}
                             onPress={() => navigation.navigate('Main')}>
-                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to home</Text>
+                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:profile_index:goBack')}</Text>
                         </TouchableHighlight>
 
                         <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
@@ -168,42 +173,42 @@ const ProfileScreen = ({ navigation }) => {
                                 }
                             </TouchableOpacity>
 
-                            <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
+                            <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:username')}</Text>
                             <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{username}</Text>
 
-                            <Text style={[styles.information, schemeStyle.textColor]}>Email:</Text>
+                            <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:email')}</Text>
                             <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{email}</Text>
 
                             {contact != ''? (<View>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:contact')}</Text>
                                 <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{contact}</Text>
                                 </View>)
                                 : null }
 
                             {address != ''? (<View>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:address')}</Text>
                                 <Text style={[styles.details, schemeStyle.textColor, schemeStyle.inputColor]}>{address}</Text>
                                 </View>)
                                 : null }
                             
                             {face == true? (<View style={styles.row}>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
-                                <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Up and working</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerification')}</Text>
+                                <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerificationYes')}</Text>
                                 <TouchableOpacity
                                     style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
                                     onPress={() => resetFaceVeri()}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.logoutButtonText, schemeStyle.textColor]}>Reset face verification</Text>
+                                    <Text style={[styles.logoutButtonText, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerificationYesButton')}</Text>
                                 </TouchableOpacity>
                                 </View>)
                                 : (<View style={styles.row}>
-                                    <Text style={[styles.information, schemeStyle.textColor]}>Face Verification Status:</Text>
-                                    <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>Not set up</Text>
+                                    <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerification')}</Text>
+                                    <Text style={[styles.faceVeriDetails, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerificationNo')}</Text>
                                     <TouchableOpacity
                                         style={[styles.faceVeriButton, schemeStyle.primaryScreenButton]}
                                         onPress={() => addFaceVeri()}
                                         underlayColor='#fff'>
-                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>Add face verification</Text>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:faceVerificationNoButton')}</Text>
                                     </TouchableOpacity>
                                     </View>)
                                     }
@@ -213,14 +218,14 @@ const ProfileScreen = ({ navigation }) => {
                                     style={[styles.editButton, schemeStyle.primaryScreenButton]}
                                     onPress={() => navigation.navigate("editProfile")}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Edit Profile</Text>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
                                     style={[styles.editButton, schemeStyle.primaryScreenButton]}
                                     onPress={() => navigation.navigate("editPassword")}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Change Password</Text>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:changePassword')}</Text>
                                 </TouchableOpacity>
                             </View>
                             
@@ -229,7 +234,7 @@ const ProfileScreen = ({ navigation }) => {
                                     style={[styles.logoutButton, schemeStyle.dangerScreenButton]}
                                     onPress={() => logout()}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>Log Out</Text>
+                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:logout')}</Text>
                                 </TouchableOpacity>
                             </SafeAreaView>
                         </ScrollView>

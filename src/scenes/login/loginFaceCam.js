@@ -7,10 +7,15 @@ import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import flaskServer from "../../../settings.json";
 import { Colors } from '../../styles';
 
 const faceVerificationScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -144,7 +149,7 @@ const faceVerificationScreen = ({ navigation }) => {
                     <TouchableHighlight
                         style={{padding: 10}}
                         onPress={() => navigation.navigate('Login')}>
-                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to Login</Text>
+                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:login_faceCam:goBack')}</Text>
                     </TouchableHighlight>
 
                     <SafeAreaView style={styles.innerContainer}>
@@ -155,12 +160,12 @@ const faceVerificationScreen = ({ navigation }) => {
                         </Camera>
                     </SafeAreaView>
                 </View>): (<View style={{flex: 1, flexDirection: "column", justifyContent: "center"}}>
-                    <Text style={styles.warning}>Face Verification Failed</Text>
+                    <Text style={styles.warning}>{t('scenes:login_faceCam:failed')}</Text>
 
                     <TouchableHighlight
                         style={{padding: 10, alignSelf: "center"}}
                         onPress={() => navigation.navigate('Login')}>
-                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to Login</Text>
+                            <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:login_faceCam:goBack')}</Text>
                     </TouchableHighlight>
                 </View>
                 )}

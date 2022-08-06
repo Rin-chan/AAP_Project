@@ -2,10 +2,15 @@ import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView, Modal } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
 const FaceLoginScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
@@ -75,14 +80,14 @@ const FaceLoginScreen = ({ navigation }) => {
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'
                 >
-                    <Text style={[styles.title, schemeStyle.textColor]}>Face Verification</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:login_faceEmail:title')}</Text>
 
-                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:login_faceEmail:email')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeEmail}
                         value={email}
-                        placeholder="Enter your email"
+                        placeholder={t('scenes:login_faceEmail:emailInput')}
                     />
 
                     <View style={styles.row}>
@@ -90,19 +95,19 @@ const FaceLoginScreen = ({ navigation }) => {
                             style={[styles.cancelScreenButton, schemeStyle.cancelScreenButton]}
                             onPress={() => navigation.navigate('Login')}
                             underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Cancel</Text>
+                            <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:login_faceEmail:cancel')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.continueScreenButton, schemeStyle.continueScreenButton]}
                             onPress={() => continueClick()}
                             underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Continue</Text>
+                            <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:login_faceEmail:continue')}</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email does not exist</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account does not have face verification enabled</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_faceEmail:warning1')}</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_faceEmail:warning2')}</Text>
                 </ScrollView>
 
                 <Modal
@@ -115,13 +120,13 @@ const FaceLoginScreen = ({ navigation }) => {
                     >
                     <View style={styles.centeredView}>
                         <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>THIS ACCOUNT HAS BEEN DISABLED</Text>
-                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please contact support for more information.</Text>
+                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:login_faceEmail:modalSubtitle')}</Text>
+                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>{t('scenes:login_faceEmail:modalText')}</Text>
 
                             <TouchableOpacity
                                 style={[styles.modalButton, schemeStyle.continueScreenButton]}
                                 onPress={() => setModalVisible(!modalVisible)} >
-                                <Text style={styles.textStyle}>Done</Text>
+                                <Text style={styles.textStyle}>{t('scenes:login_faceEmail:done')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 
 const AlbaInfoTypeScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -50,14 +55,14 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
 
             <SafeAreaView style={{flex:1}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={[styles.title, schemeStyle.textColor]}>Types of E-Waste</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:title')}</Text>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Regulated E-Waste</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>Consumer products generally refer to products largely marketed to, and bought or used for private consumption &#40;e.g. mobile phones and household appliances&#41;, and includes dual-use products that are supplied to both consumers and businesses.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:subtitle1')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:text1')}</Text>
                         
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Examples of regulated E-Waste</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>Click to show more details</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:subtitle2')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:text2')}</Text>
 
                         <TouchableOpacity
                             onPress={() => setModalVisible1(true)}>
@@ -110,8 +115,8 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Non-Regulated E-Waste</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>If your E-Waste cannot be found above &#40;regulated e-waste&#41;, it is currently non-regulated under the Extended Producer Responsibility Scheme for E-waste Management.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:subtitle3')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:text3')}</Text>
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
                             source={require("../../assets/images/albaInfo/image12.jpg")} />
@@ -128,18 +133,18 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Information and Communication Equipment &#40;ICT&#41;</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle1')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Printers &#40;&lt;20kg&#41;</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Computers &amp; Laptops</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Mobile phone &amp; Tablets</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- TVs &amp; Desktop Monitors</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- ICT Peripherals &#40;mouse, keyboard, cables and adaptor&#41;</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText1')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText2')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText3')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText4')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText5')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible1(!modalVisible1)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -155,18 +160,18 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Large Household Appliances</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle2')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Consumer Refrigerators &#40;≤900L&#41;</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Air-conditioners</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Washing machines</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Dryers</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Televisions</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText6')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText7')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText8')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText9')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText10')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible2(!modalVisible2)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -182,16 +187,16 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Electric Mobility Device</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle3')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Personal Mobility Device &#40;PMD&#41;</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Power Assisted Bicycle</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Electric Mobility Scooter</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText11')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText12')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText13')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible3(!modalVisible3)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -207,14 +212,14 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Household Battery</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle4')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- D, C, AA, AAA, AAAA, N, 9-volt, Button Cell</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText14')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible4(!modalVisible4)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -230,16 +235,16 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Lithium Ion Portable Battery</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle5')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Powerbank</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Mobile Telephone Battery &amp; laptop</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Battery</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText15')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText16')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText17')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible5(!modalVisible5)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -255,17 +260,17 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Consumer Electric Vehicle Battery</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle6')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Lithium-ion</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Nickel-metal hydride</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Lead-acid</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Ultracapacitors</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText18')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText19')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText20')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText21')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible6(!modalVisible6)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -281,15 +286,15 @@ const AlbaInfoTypeScreen = ({ navigation }) => {
                         >
                         <View style={styles.centeredView}>
                             <View style={[styles.modalView, schemeStyle.boxColor]}>
-                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Consumer Lamp</Text>
+                                <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:modalSubtitle7')}</Text>
 
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Bulb</Text>
-                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- Fluorescent Tube</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText22')}</Text>
+                                <Text style={[styles.modalInnertext, schemeStyle.textColor]}>- {t('scenes:albaInfo_typesOfEWaste:modalText23')}</Text>
 
                                 <TouchableOpacity
                                     style={[styles.button, schemeStyle.buttonColor]}
                                     onPress={() => setModalVisible7(!modalVisible7)} >
-                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>Done</Text>
+                                    <Text style={[styles.textStyle, schemeStyle.textColor]}>{t('scenes:albaInfo_typesOfEWaste:done')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

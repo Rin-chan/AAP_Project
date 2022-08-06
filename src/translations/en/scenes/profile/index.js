@@ -1,0 +1,15 @@
+export default {
+    goBack: "Go back to home",
+    username: 'Username:',
+    email: 'Email:',
+    contact: 'Contact:',
+    address: 'Address:',
+    faceVerification: 'Face Verification Status:',
+    faceVerificationYes: 'Up and working',
+    faceVerificationYesButton: 'Reset face verification',
+    faceVerificationNo: 'Not set up',
+    faceVerificationNoButton: 'Add face verification',
+    editProfile: 'Edit Profile',
+    changePassword: 'Change Password',
+    logout: 'Logout',
+};
