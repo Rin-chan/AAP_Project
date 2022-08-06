@@ -2,10 +2,15 @@ import React, {useState} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, ScrollView, Modal } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
 const ForgotPasswordScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
@@ -66,14 +71,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'
                 >
-                    <Text style={[styles.title, schemeStyle.textColor]}>Forgot Password</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:login_forgotPassword:title')}</Text>
 
-                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:login_forgotPassword:email')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeEmail}
                         value={email}
-                        placeholder="Enter your email"
+                        placeholder={t('scenes:login_forgotPassword:emailInput')}
                     />
 
                     <View style={styles.row}>
@@ -81,18 +86,18 @@ const ForgotPasswordScreen = ({ navigation }) => {
                             style={[styles.cancelScreenButton, schemeStyle.cancelScreenButton]}
                             onPress={() => navigation.navigate('Login')}
                             underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Cancel</Text>
+                            <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:login_forgotPassword:cancel')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.continueScreenButton, schemeStyle.continueScreenButton]}
                             onPress={() => continueClick()}
                             underlayColor='#fff'>
-                            <Text style={[styles.buttonText, schemeStyle.textColor]}>Continue</Text>
+                            <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:login_forgotPassword:continue')}</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email does not exist</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_forgotPassword:warning')}</Text>
                 </ScrollView>
 
                 <Modal
@@ -105,14 +110,14 @@ const ForgotPasswordScreen = ({ navigation }) => {
                     >
                     <View style={styles.centeredView}>
                         <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Email has been sent</Text>
-                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please check your email to reset your password.</Text>
+                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:login_forgotPassword:modalSubtitle')}</Text>
+                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>{t('scenes:login_forgotPassword:modalText')}</Text>
 
                             <TouchableOpacity
                                 style={[styles.modalButton, schemeStyle.continueScreenButton]}
                                 onPress={() => {setModalVisible(!modalVisible);
                                     navigation.navigate("Login")}} >
-                                <Text style={styles.textStyle}>Done</Text>
+                                <Text style={styles.textStyle}>{t('scenes:login_forgotPassword:done')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

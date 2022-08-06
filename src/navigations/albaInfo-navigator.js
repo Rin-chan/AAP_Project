@@ -2,6 +2,14 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Appearance } from 'react-native';
 
+// Language
+import i18n from 'i18next';
+var AlbaInformationTitle = i18n.t('albaInfo_navigator:AlbaInformation');
+var AlbaInfoTypeTitle = i18n.t('albaInfo_navigator:AlbaInfoType');
+var AlbaInfoWhoTitle = i18n.t('albaInfo_navigator:AlbaInfoWho');
+var AlbaInfoBinTitle = i18n.t('albaInfo_navigator:AlbaInfoBin');
+
+
 import { Colors } from '../styles';
 
 import AlbaInfoScreen from '../scenes/albaInfo';
@@ -41,7 +49,7 @@ const RouteConfigs = {
     AlbaInformation: {
         screen: AlbaInfoScreen,
         navigationOptions: {
-            tabBarLabel:"Information",
+            tabBarLabel: AlbaInformationTitle,
             tabBarIcon: ({ tintColor }) => (
                 <Icon name="info" size={30} color={ICON_COLOR} />
             )
@@ -50,7 +58,7 @@ const RouteConfigs = {
     AlbaInfoType: {
         screen: AlbaInfoTypeScreen,
         navigationOptions: {
-            tabBarLabel:"Types of E-Waste",
+            tabBarLabel: AlbaInfoTypeTitle,
             tabBarIcon: ({ tintColor }) => (
                 <Icon name="laptop" size={30} color={ICON_COLOR} />
             )
@@ -59,7 +67,7 @@ const RouteConfigs = {
     AlbaInfoWho: {
         screen: AlbaInfoWhoScreen,
         navigationOptions: {
-            tabBarLabel:"ALBA",
+            tabBarLabel: AlbaInfoWhoTitle,
             tabBarIcon: ({ tintColor }) => (
                 <Icon name="envira" size={30} color={ICON_COLOR} />
             )
@@ -68,7 +76,7 @@ const RouteConfigs = {
     AlbaInfoBinScreen: {
         screen: AlbaInfoBinScreen,
         navigationOptions: {
-            tabBarLabel:"E-Waste Bin",
+            tabBarLabel: AlbaInfoBinTitle,
             tabBarIcon: ({ tintColor }) => (
                 <Icon name="dumpster" size={30} color={ICON_COLOR} />
             )

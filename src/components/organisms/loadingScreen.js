@@ -3,9 +3,15 @@ import {SafeAreaView,Text,StyleSheet,} from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { useDarkMode } from 'react-native-dynamic'
 
+// Language
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { Colors } from '../../styles';
 
 const LoadingScreen = () => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -32,7 +38,7 @@ const LoadingScreen = () => {
                 color={TEXT_COLOR}
                 size={100}
             />
-            <Text style={[schemeStyle.textColor, {textAlign: "center", fontSize: 40, margin: 40}]}>Loading</Text>
+            <Text style={[schemeStyle.textColor, {textAlign: "center", fontSize: 40, margin: 40}]}>{t('organisms:loadingScreen:loading')}</Text>
         </SafeAreaView>
     );
 };

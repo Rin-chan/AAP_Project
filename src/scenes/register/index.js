@@ -3,10 +3,15 @@ import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Scro
 import CryptoJS from 'crypto-js';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import UserDB from '../../utils/database/userdb'
 import { Colors } from '../../styles';
 
 const RegisterScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
@@ -114,40 +119,40 @@ const RegisterScreen = ({ navigation }) => {
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'>
-                    <Text style={[styles.title, schemeStyle.textColor]}>Register</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:register_index:title')}</Text>
 
-                    <Text style={schemeStyle.textColor}>Username</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:register_index:username')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeUsername}
                         value={username}
-                        placeholder="Enter your username"
+                        placeholder={t('scenes:register_index:usernameInput')}
                     />
 
-                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:register_index:email')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeEmail}
                         value={email}
-                        placeholder="Enter your email"
+                        placeholder={t('scenes:register_index:emailInput')}
                     />
 
-                    <Text style={schemeStyle.textColor}>Password</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:register_index:password')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangePassword}
                         secureTextEntry={true}
                         value={password}
-                        placeholder="Enter your password"
+                        placeholder={t('scenes:register_index:passwordInput')}
                     />
 
-                    <Text style={schemeStyle.textColor}>Retype Your Password</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:register_index:rePassword')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeRePassword}
                         secureTextEntry={true}
                         value={repassword}
-                        placeholder="Enter your password again"
+                        placeholder={t('scenes:register_index:rePasswordInput')}
                     />
 
                     <View style={styles.row}>
@@ -155,17 +160,17 @@ const RegisterScreen = ({ navigation }) => {
                             style={[styles.registerScreenButton, schemeStyle.registerScreenButton]}
                             onPress={() => registerClick()}
                             underlayColor='#fff'>
-                            <Text style={[styles.registerButtonText, schemeStyle.textColor]}>Register</Text>
+                            <Text style={[styles.registerButtonText, schemeStyle.textColor]}>{t('scenes:register_index:register')}</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
-                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>This email is already in use</Text>
-                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
-                    <Text style={warning5?[styles.warning, {display: 'flex'}]:styles.warning}>This is not a valid email.</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:register_index:warning1')}</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:register_index:warning2')}</Text>
+                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:register_index:warning3')}</Text>
+                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:register_index:warning4')}</Text>
+                    <Text style={warning5?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:register_index:warning5')}</Text>
                     
-                    <Text onPress={() => navigation.navigate('Login')} style={[styles.redirectText, schemeStyle.textColor]}>Already have an account?</Text>
+                    <Text onPress={() => navigation.navigate('Login')} style={[styles.redirectText, schemeStyle.textColor]}>{t('scenes:register_index:redirect')}</Text>
                 </ScrollView>
             </SafeAreaView>
 
@@ -179,14 +184,14 @@ const RegisterScreen = ({ navigation }) => {
                 >
                 <View style={styles.centeredView}>
                     <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                        <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>Email Verification Required</Text>
-                        <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please check your email to verify your email.</Text>
+                        <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:register_index:modalSubtitle')}</Text>
+                        <Text style={[styles.modalInnertext, schemeStyle.textColor]}>{t('scenes:register_index:modalText')}</Text>
 
                         <TouchableOpacity
                             style={[styles.modalButton, schemeStyle.registerScreenButton]}
                             onPress={() => {setModalVisible(!modalVisible);
                                 navigation.navigate("Login");}} >
-                            <Text style={styles.textStyle}>Done</Text>
+                            <Text style={styles.textStyle}>{t('scenes:register_index:done')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 
 const AlbaInfoWhoScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -36,13 +41,13 @@ const AlbaInfoWhoScreen = ({ navigation }) => {
 
             <SafeAreaView style={{flex:1}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={[styles.title, schemeStyle.textColor]}>Introduction of ALBA</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:albaInfo_Alba:introductionOfAlba')}</Text>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Company</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_Alba:company')}</Text>
 
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- The ALBA Group, formed in 1968, has a demonstrated track record in operating Producer Responsibility Schemes in countries such as Germany and Hong Kong. With its local presence and technology expertise, the ALBA Group has been appointed by NEA to be the Public Waste Collector for the Jurong Sector since 1 April 2020, and E-Waste PRS operator for Singapore since 1 July 2021.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- E-Waste will be channelled through ALBA E-Waste sorting &amp; logistics hub for weighing and categorisation, before being sent to licensed E-Waste recyclers for recycling. Raw materials are then recovered and channelled back into production, thus creating a circular value chain and enabling minimal environmental impact.</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text1')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text2')}</Text>
                         
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
@@ -50,16 +55,16 @@ const AlbaInfoWhoScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>ALBA Step-up App</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_Alba:stepUpApp')}</Text>
 
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- ALBA Step-Up app was introduced to encourage Singaporeans to recycle more by having a point system that will be earned everytime users recycle and scan the QR Code.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Points can be exchanged for vouchers of different companies</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text3')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text4')}</Text>
                         
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Additional things which they added includes</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• A form that allows users to request for removal of bulky e-waste &#40;such as Fridge, TV, Washing Machine, etc…&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Tips and instructions &#40;Not in the app, but will lead to their website&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Tracking system for recycling habits</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Event calendar for ALBA events</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text5')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text6')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text7')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text8')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text9')}</Text>
 
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
@@ -67,25 +72,25 @@ const AlbaInfoWhoScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Points System &amp; Features</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_Alba:pointSystem')}</Text>
 
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Every time users recycle through any of ALBA E-Waste&apos;s collection channels, they will be rewarded with points on the app, which can then be used to exchanged for discounts and deals with our partners.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- With this, ALBA E-Waste aims to encourage the habit of recycling in Singapore, thus enabling a robust circular economy.</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text10')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text11')}</Text>
                         
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- How to redeem points</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>a. Check that all items being recycled is clean</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>b. Using the Step-Up app, use the QR Code scanner in the app to scan the QR Code on the E-Waste bin</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>c. Take a clear snapshot of the recyclables as a confirmation before throwing in the bin</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>d. Claim points that can be exchanged for vouchers</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text12')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>a. {t('scenes:albaInfo_Alba:text13')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>b. {t('scenes:albaInfo_Alba:text14')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>c. {t('scenes:albaInfo_Alba:text15')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>d. {t('scenes:albaInfo_Alba:text16')}</Text>
 
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Following are the companies that are participating in the points &#40;As of 17 June 2022&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Anywheel &#40;Bike Rental App&#41; &#40;Can be used to claim credit when renting bicycles&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• EZ-Link &#40;App, not card&#41; &#40;Exchange for credit that can be used for paying for things that can be paid for via EZ-Link&#41;;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Stojo &#40;Environmentally friendly cup company&#41; &#40;Can be exchanged for vouchers for their shop&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Crunch Cutlery &#40;Edible Cutlery Company&#41; &#40;Can be exchanged for % off their product from their stores&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Ecofrenli &#40;Sustainable Marketplace that sells many household and lifestyle stuff&#41; &#40;Can be used for credit that can be used in their store&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Urban Origins &#40;Food Marketplace that sells foods from “Urban Producers”&#41; &#40;Can be used for % off their products&#41;</Text>
-                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• Colour Me Mats &#40;Activity class for children to create homemade mats of their designs&#41; &#40;Can be used for % off of sessions&#41;</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text17')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text18')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text19')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text20')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text21')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text22')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text23')}</Text>
+                        <Text style={[styles.indentedText, schemeStyle.textColor]}>• {t('scenes:albaInfo_Alba:text24')}</Text>
 
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
@@ -93,15 +98,15 @@ const AlbaInfoWhoScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Issues and limitations &#40;For comparison with SIT Apps&#41;</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_Alba:issues')}</Text>
 
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Feel that the sponsors in the Step-Up programme is limited and not as appealing.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Filling up forms for removal of bulky e-waste items is tedious</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Point system did not state clearly when the vouchers expire</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Buggy sign-up process &#40;lagging, app crashing etc.&#41;</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Layout of certain things &#40;such as E-waste tips&#41; are not categorised well and eventually is messy.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Not interactive, which may affect encouragement for some users to use it.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Limited functionality &#40;e.g. no map to show where the e-waste bins are located at&#41;.</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text25')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text26')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text27')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text28')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text29')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text30')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_Alba:text31')}</Text>
 
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}

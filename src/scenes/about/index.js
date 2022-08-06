@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar, OldLoadingScreen, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 
 const AboutScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -37,7 +42,7 @@ const AboutScreen = ({ navigation }) => {
                 oldLoadingDisplay?
                 <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
                     <SafeAreaView>
-                        <Text onPress={() => setOldLoadingDisplay(false)} style={[schemeStyle.textColor, {margin: 10}]}>Close Loading Screen</Text>
+                        <Text onPress={() => setOldLoadingDisplay(false)} style={[schemeStyle.textColor, {margin: 10}]}>{t('scenes:about_index:closeLoading')}</Text>
                     </SafeAreaView>
                     <OldLoadingScreen/>
                 </View>
@@ -47,7 +52,7 @@ const AboutScreen = ({ navigation }) => {
                         newLoadingDisplay?
                         <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
                             <SafeAreaView>
-                                <Text onPress={() => setNewLoadingDisplay(false)} style={[schemeStyle.textColor, {margin: 10}]}>Close Loading Screen</Text>
+                                <Text onPress={() => setNewLoadingDisplay(false)} style={[schemeStyle.textColor, {margin: 10}]}>{t('scenes:about_index:closeLoading')}</Text>
                             </SafeAreaView>
                             <LoadingScreen/>
                         </View>
@@ -58,22 +63,40 @@ const AboutScreen = ({ navigation }) => {
                             <View style={{flex: 1}}>
                                 <ScrollView showsVerticalScrollIndicator={false} style={styles.innerContainer}>
                                     <Text style={schemeStyle.textColor}>
-                                        This app is made by Nian Ci, Sonia and Jaden.
+                                        {t('scenes:about_index:creditDeveloper')}
                                     </Text>
+
+                                    <View style={{marginTop: 10}}>
+                                        <Text style={schemeStyle.textColor}>
+                                            {t('scenes:about_index:creditTranslator')}
+                                        </Text>
+                                        <View style={{marginLeft: 20}}>
+                                            <Text style={schemeStyle.textColor}>
+                                            {t('scenes:about_index:czech')} - Kikina
+                                            </Text>
+                                            <Text style={schemeStyle.textColor}>
+                                                {t('scenes:about_index:malay')} - Neeza
+                                            </Text>
+                                            <Text style={schemeStyle.textColor}>
+                                                {t('scenes:about_index:chinese')} - Yu Hsi &amp; Caleb
+                                            </Text>
+                                        </View>
+                                    </View>
+                                    
 
                                     <View style={{marginTop: 50, flexDirection: "row", justifyContent: "space-between"}}>
                                         <TouchableOpacity
                                             style={[styles.button, schemeStyle.buttonColor]}
                                             onPress={() => setOldLoadingDisplay(true)}
                                             underlayColor='#fff'>
-                                            <Text style={schemeStyle.textColor}>Tree Loading Screen</Text>
+                                            <Text style={schemeStyle.textColor}>{t('scenes:about_index:treeLoading')}</Text>
                                         </TouchableOpacity>
 
                                         <TouchableOpacity
                                             style={[styles.button, schemeStyle.buttonColor]}
                                             onPress={() => setNewLoadingDisplay(true)}
                                             underlayColor='#fff'>
-                                            <Text style={schemeStyle.textColor}>Activity Loading Screen</Text>
+                                            <Text style={schemeStyle.textColor}>{t('scenes:about_index:activityLoading')}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </ScrollView>

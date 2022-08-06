@@ -16,9 +16,15 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { useDarkMode } from 'react-native-dynamic';
 
+// Language
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { Colors } from '../../styles';
 
 const OldLoadingScreen = () => {
+    const {t, i18n} = useTranslation();
+    
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TRUNK_COLOR = "#964B00";
@@ -160,7 +166,7 @@ const OldLoadingScreen = () => {
 
                 var loader = new FontLoader();
                 loader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
-                    var textGeo = new TextGeometry( "Loading...", {
+                    var textGeo = new TextGeometry( t('organisms:loadingScreen:loading'), {
                         font: font,
                         size: 0.2,
                         height: 0.05,

@@ -4,11 +4,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CryptoJS from 'crypto-js';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const editPasswordScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -117,14 +122,14 @@ const editPasswordScreen = ({ navigation }) => {
                 <TouchableHighlight
                     style={{padding: 10}}
                     onPress={() => navigation.navigate('Profile')}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
+                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:profile_editPassword:goBack')}</Text>
                 </TouchableHighlight>
 
                 <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} keyboardShouldPersistTaps='handled'>
-                    <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>Change Password</Text>
+                    <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>{t('scenes:profile_editPassword:changePassword')}</Text>
 
                     <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Current Password:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editPassword:currentPassword')}</Text>
                         <TextInput
                             style={[styles.inputText, schemeStyle.inputColor]}
                             onChangeText={(text) => {setCurPassword(text)}}
@@ -134,7 +139,7 @@ const editPasswordScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>New Password:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editPassword:newPassword')}</Text>
                         <TextInput
                             style={[styles.inputText, schemeStyle.inputColor]}
                             onChangeText={(text) => {setNewPassword(text)}}
@@ -144,7 +149,7 @@ const editPasswordScreen = ({ navigation }) => {
                     </View>
 
                     <View style={styles.row}>
-                        <Text style={[styles.information, schemeStyle.textColor]}>Retype New Password:</Text>
+                        <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editPassword:retypePassword')}</Text>
                         <TextInput
                             style={[styles.inputText, schemeStyle.inputColor]}
                             onChangeText={(text) => {setReNewPassword(text)}}
@@ -153,24 +158,24 @@ const editPasswordScreen = ({ navigation }) => {
                         />
                     </View>
 
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Current password is incorrect</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Passwords are not the same</Text>
-                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>Password must have at least 8 characters, inclusive of one uppercase, one lowercase and numerical number.</Text>
-                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>Fill in all the blanks</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editPassword:warning1')}</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editPassword:warning2')}</Text>
+                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editPassword:warning3')}</Text>
+                    <Text style={warning4?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editPassword:warning4')}</Text>
 
                     <View style={styles.buttonRow}>
                         <TouchableOpacity
                             style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
                             onPress={() => navigation.navigate('Profile')}
                             underlayColor='#fff'>
-                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>{t('scenes:profile_editPassword:cancel')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity
                             style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
                             onPress={() => updateClick()}
                             underlayColor='#fff'>
-                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
+                            <Text style={[styles.updateButtonText, schemeStyle.textColor]}>{t('scenes:profile_editPassword:update')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

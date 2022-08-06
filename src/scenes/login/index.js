@@ -1,25 +1,32 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Image, Dimensions, ScrollView, Modal } from 'react-native';
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDarkMode } from 'react-native-dynamic'
+import { useDarkMode } from 'react-native-dynamic';
+
+// Language
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
 
 const LoginScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
-    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
-    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
-    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
-    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
-    var IMAGE_COLOR = "#000000"
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND;
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND;
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT;
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON;
+    var IMAGE_COLOR = "#000000";
+    DropDownPicker.setTheme("LIGHT");
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
-        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
-        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
-        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
-        IMAGE_COLOR = "#FFFFFF"
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND;
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT;
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND;
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON;
+        IMAGE_COLOR = "#FFFFFF";
+        DropDownPicker.setTheme("DARK");
     }
 
     const schemeStyle = StyleSheet.create({
@@ -40,6 +47,28 @@ const LoginScreen = ({ navigation }) => {
             tintColor: IMAGE_COLOR
         }
     })
+
+    const {t, i18n} = useTranslation();
+    
+    const changeLanguage = value => {
+        i18n
+        .changeLanguage(value)
+        .catch(err => console.log(err));
+    };
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('en');
+    const [items, setItems] = useState([
+        {label: 'English', value: 'en'},
+        {label: 'Czech', value: 'cs', disabled: true},
+        {label: 'Chinese', value: 'zh', disabled: true},
+        {label: 'Malay', value: 'ms', disabled: true},
+    ]);
+
+    useEffect(() => {
+        changeLanguage(value);
+        AsyncStorage.setItem('language', value);
+    }, [value]);
 
     const _width = Dimensions.get('screen').width * 0.15;
 
@@ -103,23 +132,23 @@ const LoginScreen = ({ navigation }) => {
             <SafeAreaView style={styles.container}>
                 <ScrollView contentContainerStyle={{flexGrow: 1}}
                     keyboardShouldPersistTaps='handled'>
-                    <Text style={[styles.title, schemeStyle.textColor]}>Login</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:login_index:login')}</Text>
 
-                    <Text style={schemeStyle.textColor}>Email</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:login_index:email')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangeEmail}
                         value={email}
-                        placeholder="Enter your email"
+                        placeholder={t('scenes:login_index:emailPlaceholder')}
                     />
 
-                    <Text style={schemeStyle.textColor}>Password</Text>
+                    <Text style={schemeStyle.textColor}>{t('scenes:login_index:password')}</Text>
                     <TextInput
                         style={[styles.inputText, schemeStyle.inputColor]}
                         onChangeText={onChangePassword}
                         secureTextEntry={true}
                         value={password}
-                        placeholder="Enter your password"
+                        placeholder={t('scenes:login_index:passwordPlaceholder')}
                     />
 
                     <View style={styles.row}>
@@ -136,16 +165,31 @@ const LoginScreen = ({ navigation }) => {
                             style={[styles.loginScreenButton, schemeStyle.loginScreenButton]}
                             onPress={() => loginClick()}
                             underlayColor='#fff'>
-                            <Text style={[styles.loginButtonText, schemeStyle.textColor]}>Login</Text>
+                            <Text style={[styles.loginButtonText, schemeStyle.textColor]}>{t('scenes:login_index:login')}</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={[styles.warning, {display: 'flex', fontWeight: "bold", margin: 10, alignSelf: "flex-end"}]}>Forgot Password</Text>
+                    <Text onPress={() => navigation.navigate('ForgotPassword')} style={[styles.warning, {display: 'flex', fontWeight: "bold", margin: 10, alignSelf: "flex-end"}]}>{t('scenes:login_index:forgotPassword')}</Text>
 
-                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Email or password is incorrect</Text>
-                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>This account is not verified.</Text>
+                    <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_index:warning1')}</Text>
+                    <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_index:warning2')}</Text>
 
-                    <Text onPress={() => navigation.navigate('Register')} style={[styles.redirectText, schemeStyle.textColor]}>Create an account</Text>
+                    <View style={[styles.row, {justifyContent: "flex-start"}]}>
+                        <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                        <DropDownPicker
+                            containerStyle={{width: '50%'}}
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            placeholder="English"
+                            listMode="SCROLLVIEW"
+                        />
+                    </View>
+
+                    <Text onPress={() => navigation.navigate('Register')} style={[styles.redirectText, schemeStyle.textColor]}>{t('scenes:login_index:createAnAccount')}</Text>
                 </ScrollView>
 
                 <Modal
@@ -158,13 +202,13 @@ const LoginScreen = ({ navigation }) => {
                     >
                     <View style={styles.centeredView}>
                         <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>THIS ACCOUNT HAS BEEN DISABLED</Text>
-                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>Please contact support for more information.</Text>
+                            <Text style={[styles.modalSubtitle, schemeStyle.textColor]}>{t('scenes:login_index:modalSubtitle')}</Text>
+                            <Text style={[styles.modalInnertext, schemeStyle.textColor]}>{t('scenes:login_index:modalText')}</Text>
 
                             <TouchableOpacity
                                 style={[styles.modalButton, schemeStyle.loginScreenButton]}
                                 onPress={() => setModalVisible(!modalVisible)} >
-                                <Text style={styles.textStyle}>Done</Text>
+                                <Text style={styles.textStyle}>{t('scenes:login_index:done')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -177,7 +221,7 @@ const LoginScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         margin: '10%',
-        marginTop: '25%',
+        marginTop: "25%",
         flex: 1,
     },
     title: {
@@ -226,12 +270,14 @@ const styles = StyleSheet.create({
     },
     redirectText: {
         textAlign: 'center',
-        marginTop: 'auto',
         fontWeight: 'bold',
+        margin: 10,
+        marginTop: "auto"
     },
     warning: {
         color: "red",
-        display: 'none'
+        display: 'none',
+        margin: 10
     },
     centeredView: {
         flex: 1,

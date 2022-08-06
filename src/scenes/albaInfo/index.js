@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 
 const AlbaInfoScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -36,44 +41,44 @@ const AlbaInfoScreen = ({ navigation }) => {
 
             <SafeAreaView style={{flex:1}}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Text style={[styles.title, schemeStyle.textColor]}>Introduction of E-Waste</Text>
+                    <Text style={[styles.title, schemeStyle.textColor]}>{t('scenes:albaInfo_index:title')}</Text>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Definition of E-Waste</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>E-waste is electrical and electronic waste that include televisions, light bulbs, mobile phones and desktop monitors. While these items can often be refurbished, repaired or recycled, they are usually discarded instead.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_index:subtitle1')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>{t('scenes:albaInfo_index:text1')}</Text>
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
                             source={require("../../assets/images/albaInfo/image1.jpg")} />
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>What are the issuses?</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- E-waste contains harmful substances such as cadmium and lead which could potentially harm one&apos;s health and the environment if mis-handled.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- When e-waste is disposed of and incinerated, it results in the loss of resources as well as carbon emissions that contribute to global warming and climate change.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Recycling our e-waste appropriately decreases the amount of heavy metals &#40;cadmium &amp; lead&#41; in the incineration ash.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_index:subtitle2')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text2')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text3')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text4')}</Text>
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
                             source={require("../../assets/images/albaInfo/image2.jpg")} />
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Statistics &amp; Articles</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- According to the Ministry of Sustainability and the Environment &#40;MSE&#41;, Singapore generates about 60K tonnes of E-waste each year, that is equivalent to 70 mobile phones being discarded by 1 person.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- An article from The Straits Time states that due to the lack of knowledge in public, 30&#37; of non-regulated electronic waste are found in the E-waste bins which increased the burden and stress to the E-waste collection team and systems as more manpower and resources may be needed to filter out non-regulated E-waste.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_index:subtitle3')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text5')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text6')}</Text>
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
                             source={require("../../assets/images/albaInfo/image3.jpg")} />
                     </View>
 
                     <View style={[styles.box, schemeStyle.boxColor]}>
-                        <Text style={[styles.subtitle, schemeStyle.textColor]}>Ways to reduce e-waste</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>1. Buy only what you need.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>2. Repair instead of replace.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>3. Donate unwanted items.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>4. Recycle &#40;at designated place &amp; e-waste bins&#41;.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Broken or non-functional e-waste items should be recycled.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- Recycling allows for heavy materials such as gold, silver, copper and plastics to be recovered and made into new products.</Text>
-                        <Text style={[styles.innerText, schemeStyle.textColor]}>- A simple act of recycling reduces the amount of new materials being used and our carbon footprint.</Text>
+                        <Text style={[styles.subtitle, schemeStyle.textColor]}>{t('scenes:albaInfo_index:subtitle4')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>1. {t('scenes:albaInfo_index:text7')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>2. {t('scenes:albaInfo_index:text8')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>3. {t('scenes:albaInfo_index:text9')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>4. {t('scenes:albaInfo_index:text10')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text11')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text12')}</Text>
+                        <Text style={[styles.innerText, schemeStyle.textColor]}>- {t('scenes:albaInfo_index:text13')}</Text>
                         <Image 
                             style={{ height: _width, width: _width, resizeMode:"contain", alignSelf:"center" }}
                             source={require("../../assets/images/albaInfo/image4.jpg")} />

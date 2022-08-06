@@ -4,11 +4,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 import { Avatar } from 'react-native-paper';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const HomeScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var FOREGROUND_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -134,9 +139,9 @@ const HomeScreen = ({ navigation }) => {
                             }
                             <View style={{width: "60%"}}>
                                 <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{username}</Text>
-                                <Text style={schemeStyle.textColor}>Points: {points}</Text>
+                                <Text style={schemeStyle.textColor}>{t('scenes:home_index:points')}: {points}</Text>
 
-                                <Text style={[schemeStyle.textColor, {fontSize: 10, marginTop: "auto"}]}>Profile &gt;</Text>
+                                <Text style={[schemeStyle.textColor, {fontSize: 10, marginTop: "auto"}]}>{t('scenes:home_index:profile')} &gt;</Text>
                             </View>
                         </TouchableOpacity>
 
@@ -150,7 +155,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/scanqrcode.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>Scan QR Code</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:scanQrCode')}</Text>
                                     </View>
 
                                     <View style={styles.outterBox}>
@@ -161,7 +166,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/gift.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>Redeem List</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:redeemList')}</Text>
                                     </View>
                                 </View>
 
@@ -174,7 +179,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/mapbin.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>Locate bins</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:locatebins')}</Text>
                                     </View>
 
                                     <View style={styles.outterBox}>
@@ -185,7 +190,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/abtus.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>About</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:about')}</Text>
                                     </View>
                                 </View>
 
@@ -198,7 +203,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={{ height: _width, width: _width }}
                                                 source={require("../../assets/images/games/EWasteItIcon.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>E-Waste It Game</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:eWasteItGame')}</Text>
                                     </View>
 
                                     <View style={styles.outterBox}>
@@ -209,7 +214,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={{ height: _width, width: _width }}
                                                 source={require("../../assets/images/games/StepItUpIcon.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>Step It Up Game</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:stepItUpGame')}</Text>
                                     </View>
                                 </View>
                             </ScrollView>

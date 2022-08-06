@@ -3,11 +3,16 @@ import { StyleSheet, SafeAreaView, Text, TouchableHighlight, TextInput, View, Sc
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 
+import '../../translations/i18n';
+import {useTranslation} from 'react-i18next';
+
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const editProfileScreen = ({ navigation }) => {
+    const {t, i18n} = useTranslation();
+
     const isDarkMode = useDarkMode();
     var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
@@ -137,14 +142,14 @@ const editProfileScreen = ({ navigation }) => {
                         <TouchableHighlight
                             style={{padding: 10}}
                             onPress={() => navigation.navigate('Profile')}>
-                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>Go back to profile page</Text>
+                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:profile_editProfile:goBack')}</Text>
                         </TouchableHighlight>
 
                         <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} keyboardShouldPersistTaps='handled'>
-                            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>Edit Profile</Text>
+                            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold"}]}>{t('scenes:profile_editProfile:editProfile')}</Text>
 
                             <View style={styles.row}>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Username:</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editProfile:username')}</Text>
                                 <TextInput
                                     style={[styles.inputText, schemeStyle.inputColor]}
                                     onChangeText={(text) => {setUsername(text);
@@ -154,7 +159,7 @@ const editProfileScreen = ({ navigation }) => {
                             </View>
 
                             <View style={styles.row}>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Contact:</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editProfile:contact')}</Text>
                                 <TextInput
                                     style={[styles.inputText, schemeStyle.inputColor]}
                                     keyboardType = 'numeric'
@@ -166,7 +171,7 @@ const editProfileScreen = ({ navigation }) => {
                             </View>
 
                             <View style={styles.row}>
-                                <Text style={[styles.information, schemeStyle.textColor]}>Address:</Text>
+                                <Text style={[styles.information, schemeStyle.textColor]}>{t('scenes:profile_editProfile:address')}</Text>
                                 <TextInput
                                     style={[styles.inputText, schemeStyle.inputColor]}
                                     onChangeText={(text) => {setAddress(text);
@@ -175,22 +180,22 @@ const editProfileScreen = ({ navigation }) => {
                                 />
                             </View>
 
-                            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>Username cannot be empty</Text>
-                            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>Contact can only contain numbers and contain 8 digits</Text>
+                            <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editProfile:warning1')}</Text>
+                            <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:profile_editProfile:warning2')}</Text>
 
                             <View style={styles.buttonRow}>
                                 <TouchableOpacity
                                     style={[styles.cancelScreenButton, schemeStyle.dangerScreenButton]}
                                     onPress={() => navigation.navigate('Profile')}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Cancel</Text>
+                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>{t('scenes:profile_editProfile:cancel')}</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
                                     style={[styles.updateScreenButton, schemeStyle.primaryScreenButton]}
                                     onPress={() => updateClick()}
                                     underlayColor='#fff'>
-                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>Update</Text>
+                                    <Text style={[styles.updateButtonText, schemeStyle.textColor]}>{t('scenes:profile_editProfile:update')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </ScrollView>
