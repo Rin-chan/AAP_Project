@@ -13,6 +13,7 @@ import { default as profile_editProfile } from './profile/editProfile';
 import { default as profile_faceVerification } from './profile/faceVerification';
 import { default as profile_index } from './profile';
 import { default as register_index } from './register';
+import { default as login_info } from './login/loginInfo'
 
 export default {
     login_index,
@@ -29,5 +30,6 @@ export default {
     profile_editProfile,
     profile_faceVerification,
     profile_index,
-    register_index
+    register_index,
+    login_info
 };
