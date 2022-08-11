@@ -135,7 +135,7 @@ const HomeScreen = ({ navigation }) => {
                                     image == null ?
                                         <Avatar.Text size={80} label={username[0]} />
                                         :
-                                        <Avatar.Image size={80} source={{ uri: image }} />
+                                        <Avatar.Image size={80} source={{uri: `data:image/jpeg;base64,${image}`}} />
                                 }
                                 <View style={{ width: "60%" }}>
                                     <Text style={[schemeStyle.textColor, { fontWeight: "bold" }]}>{username}</Text>
