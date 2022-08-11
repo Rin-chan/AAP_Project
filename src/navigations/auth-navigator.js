@@ -5,9 +5,10 @@ import RegisterScreen from '../scenes/register';
 import LoginFaceEmailScreen from '../scenes/login/loginFaceEmail';
 import LoginFaceCamScreen from '../scenes/login/loginFaceCam';
 import ForgotPasswordScreen from '../scenes/login/forgotPassword';
+import LoginInfoScreen from '../scenes/login/loginInfo';
 
 const AuthNavigatorConfig = {
-    initialRouteName: 'Login',
+    initialRouteName: 'LoginInfo',
     header: null,
     headerMode: 'none',
 };
@@ -18,6 +19,7 @@ const RouteConfigs = {
     LoginEmail: LoginFaceEmailScreen,
     LoginCam: LoginFaceCamScreen,
     ForgotPassword: ForgotPasswordScreen,
+    LoginInfo: LoginInfoScreen,
 };
 
 const AuthNavigator = createStackNavigator(RouteConfigs, AuthNavigatorConfig);

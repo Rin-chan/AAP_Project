@@ -7,6 +7,7 @@ export const LIGHT_PRIMARY_TEXT = '#000000';
 export const LIGHT_BORDER = '#000000';
 export const LIGHT_GREEN_BUTTON = '#9CE8A8';
 export const LIGHT_PRIMARY_BUTTON = '#63bbf2';
+export const LIGHT_SECONDARY_BUTTON = '#E5E4E2';
 export const LIGHT_DANGER_BUTTON = '#E8A89C';
 export const LIGHT_BLUE_BUTTON = '#9CDCE8';
 
@@ -19,5 +20,6 @@ export const DARK_PRIMARY_TEXT = '#FFFFFF';
 export const DARK_BORDER = '#FFFDD0';
 export const DARK_GREEN_BUTTON = '#73DE84';
 export const DARK_PRIMARY_BUTTON = '#1183ca';
+export const DARK_SECONDARY_BUTTON = '#6B6E6B';
 export const DARK_DANGER_BUTTON = '#D4604A';
 export const DARK_BLUE_BUTTON = '#73CDDE';

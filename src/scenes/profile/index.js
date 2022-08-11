@@ -5,8 +5,10 @@ import { useDarkMode } from 'react-native-dynamic';
 import * as ImagePicker from 'expo-image-picker';
 import { Avatar } from 'react-native-paper';
 
+// Language
 import '../../translations/i18n';
 import {useTranslation} from 'react-i18next';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
@@ -15,20 +17,64 @@ import UserDB from '../../utils/database/userdb';
 const ProfileScreen = ({ navigation }) => {
     const {t, i18n} = useTranslation();
 
+    const changeLanguage = value => {
+        i18n
+        .changeLanguage(value)
+        .catch(err => console.log(err));
+    };
+
+    const [run, setRun] = useState(true);
+
+    async function getLanguage() {
+        try{
+            await AsyncStorage.getItem('language')
+            .then(language => {
+                setValue(language);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+        }
+        catch {
+        }
+
+        setRun(false);
+    }
+
+    if (run) {
+        getLanguage();
+    }
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState([
+        {label: 'English', value: 'en'},
+        {label: 'Čeština', value: 'cs'},
+        {label: '中文', value: 'zh', disabled: true},
+        {label: 'Bahasa melayu', value: 'ms', disabled: true},
+    ]);
+
+    useEffect(() => {
+        changeLanguage(value);
+        AsyncStorage.setItem('language', value);
+    }, [value]);
+
     const isDarkMode = useDarkMode();
-    var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
-    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
-    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
-    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
-    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
-    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    var FOREGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND;
+    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND;
+    var INPUT_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND;
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT;
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON;
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON;
+    DropDownPicker.setTheme("LIGHT");
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
-        FOREGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
-        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
-        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND
-        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
-        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND;
+        FOREGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND;
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT;
+        INPUT_COLOR = Colors.DARK_FOURTH_BACKGROUND;
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON;
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON;
+        DropDownPicker.setTheme("DARK");
     }
 
     const schemeStyle = StyleSheet.create({
@@ -237,6 +283,21 @@ const ProfileScreen = ({ navigation }) => {
                                     <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:logout')}</Text>
                                 </TouchableOpacity>
                             </SafeAreaView>
+
+                            <View style={[styles.dropdownRow, {justifyContent: "flex-start"}]}>
+                                <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                                <DropDownPicker
+                                    containerStyle={{width: '35%'}}
+                                    open={open}
+                                    value={value}
+                                    items={items}
+                                    setOpen={setOpen}
+                                    setValue={setValue}
+                                    setItems={setItems}
+                                    placeholder="English"
+                                    listMode="SCROLLVIEW"
+                                />
+                            </View>
                         </ScrollView>
                     </View>
                 </View>
@@ -354,7 +415,20 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.4,
         shadowRadius: 3,
         elevation: 5
-    }
+    },
+    dropdownRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 25,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+    },
 });
 
 export default ProfileScreen;
