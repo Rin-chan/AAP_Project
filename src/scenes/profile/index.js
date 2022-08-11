@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Dimensions, ScrollView, TouchableOpacity, Modal, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync } from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
+import { Camera, CameraType } from 'expo-camera';
 import { Avatar } from 'react-native-paper';
 
 // Language
@@ -99,8 +102,6 @@ const ProfileScreen = ({ navigation }) => {
         }
     })
 
-    const _width = Dimensions.get('screen').width * 0.4;
-
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [contact, setContact] = useState('');
@@ -110,6 +111,72 @@ const ProfileScreen = ({ navigation }) => {
 
     const [request, setRequest] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [hasPermission, setHasPermission] = useState(null);
+    const [type, setType] = useState(CameraType.front);
+    const [cam, setCam] = useState(false);
+    const [base64Image, setbase64Image] = useState("");
+    const [stopCam, setStopCam] = useState(false);
+    const [tempModal, setTempModal] = useState(false);
+
+    const _width = Dimensions.get('screen').width * 0.7;
+
+    const takePhoto = () => {
+        setModalVisible(false);
+        setStopCam(true);
+    }
+
+    const snapPhoto = async() => {
+        if (cam) {
+            const options = { quality: 1, base64: true, fixOrientation: true, 
+            exif: true};
+            await cam.takePictureAsync(options).then(photo => {
+                photo.exif.Orientation = 1;
+                setbase64Image(photo);
+                setStopCam(false);
+                setTempModal(true);
+            });     
+        }
+    }
+
+    const retakePhoto = () => {
+        setStopCam(true);
+        setTempModal(false);
+    }
+
+    async function manipResult() {
+        const manipResult = await manipulateAsync(
+            base64Image.uri,
+            [{ resize: { width: 160, height: 160 } }]
+        );
+        
+        const base64 = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+        return base64
+    };
+
+    const choosePhoto = async () => {
+        let maniImage = await manipResult();
+
+        setTempModal(false);
+        setImage(maniImage);
+        UserDB.updateUserProfilePic(email, maniImage);
+    }
+
+    useEffect(() => {
+        (async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === 'granted');
+        })();
+    }, []);
+
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
 
     const getUser = async () => {
         if (request == false) {
@@ -184,9 +251,11 @@ const ProfileScreen = ({ navigation }) => {
         });
     
         if (!result.cancelled) {
-            setImage(result.uri);
-            UserDB.updateUserProfilePic(email, result.uri);
+            setImage(result.base64);
+            UserDB.updateUserProfilePic(email, result.base64);
         }
+
+        setModalVisible(false);
     };
 
     return (
@@ -210,12 +279,12 @@ const ProfileScreen = ({ navigation }) => {
                         <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
                             <TouchableOpacity
                                 style={{alignSelf: "center"}}
-                                onPress={() => pickImage()}>
+                                onPress={() => setModalVisible(true)}>
                                 {
                                     image == null?
                                     <Avatar.Text size={160} label={username[0]} />
                                     :
-                                    <Avatar.Image size={160} source={{ uri: image }} />
+                                    <Avatar.Image size={160} source={{uri: `data:image/jpeg;base64,${image}`}} />
                                 }
                             </TouchableOpacity>
 
@@ -302,6 +371,106 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
             }
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => takePhoto()}>Take Photo</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => pickImage()}>Choose From Gallery</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => setModalVisible(!modalVisible)}>Cancel</Text>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={stopCam}
+                onRequestClose={() => {
+                    setStopCam(!stopCam);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setStopCam(!stopCam)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', marginBottom: 10}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <View style={{width: _width, height: _width}}>
+                            <Camera style={styles.camera}
+                                type={type}
+                                ref={setCam}
+                                ratio={"1:1"}>
+                                <View style={styles.buttonContainer}>
+                                    <Image style={{width: _width, height: _width}} source={require("../../assets/images/oval.png")} />
+                                </View>
+                            </Camera>
+                        </View>
+
+                        <TouchableOpacity style={{marginTop: 10, alignSelf: 'center'}} onPress={snapPhoto}>
+                            <Image style={{width: 50, height: 50}} source={require("../../assets/images/circle_button.png")} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={tempModal}
+                onRequestClose={() => {
+                    setTempModal(!tempModal);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setTempModal(!tempModal)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold'}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <Avatar.Image size={_width} source={base64Image} />
+                        
+                        <View style={styles.buttonRow}>
+                            <TouchableOpacity
+                                style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                onPress={() => retakePhoto()}
+                                underlayColor='#fff'>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>Retake Photo</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                onPress={() => choosePhoto()}
+                                underlayColor='#fff'>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>Choose Photo</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -373,7 +542,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap"
     },
     buttonRow: {
-        flex: 1,
         flexDirection: "row",
         marginBottom: "5%",
         marginTop: "5%",
@@ -428,6 +596,40 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        fontWeight: "bold",
+        textAlign: "center",
+        padding: 10
+    },
+    camera: {
+        aspectRatio: 1,
+    },
+    buttonContainer: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        alignSelf: "center",
     },
 });
 
