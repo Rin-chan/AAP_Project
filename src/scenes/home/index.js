@@ -5,14 +5,14 @@ import { useDarkMode } from 'react-native-dynamic';
 import { Avatar } from 'react-native-paper';
 
 import '../../translations/i18n';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { HeaderBar, LoadingScreen } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
 
 const HomeScreen = ({ navigation }) => {
-    const {t, i18n} = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const isDarkMode = useDarkMode();
     var FOREGROUND_COLOR = Colors.LIGHT_PRIMARY_BACKGROUND
@@ -67,14 +67,14 @@ const HomeScreen = ({ navigation }) => {
             await AsyncStorage.removeItem("userToken");
             navigation.navigate('Login');
         }
-        catch(exception) {
+        catch (exception) {
             console.log("LOGOUT FAILED");
             console.log(exception);
         }
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {setTimer(timer => timer+1)}, 1000);
+        const interval = setInterval(() => { setTimer(timer => timer + 1) }, 1000);
 
 
         if (pageLoading) {
@@ -93,57 +93,57 @@ const HomeScreen = ({ navigation }) => {
     }, [timer]);
 
     const getUser = async () => {
-         if (request == false) {
-             setRequest(true);
+        if (request == false) {
+            setRequest(true);
 
-             await AsyncStorage.getItem('user')
-             .then(email => {
-                 UserDB.getUser(email).then((result) => {
-                     if(result.length != 0) {
-                         setUsername(result[0][1]);
-                         setPoints(result[0][8]);
-                         setImage(result[0][11]);
-                         setPageLoading(true);
-                     }
-                     else {
-                         console.log("USER NOT FOUND");
-                         return;
-                     }
-                 });
-             });
-         }
-     };
+            await AsyncStorage.getItem('user')
+                .then(email => {
+                    UserDB.getUser(email).then((result) => {
+                        if (result.length != 0) {
+                            setUsername(result[0][1]);
+                            setPoints(result[0][8]);
+                            setImage(result[0][11]);
+                            setPageLoading(true);
+                        }
+                        else {
+                            console.log("USER NOT FOUND");
+                            return;
+                        }
+                    });
+                });
+        }
+    };
 
     getUser();
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             {
-                pageLoading == false?
-                <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
-                    <LoadingScreen/>
-                </View>
-                :
-                <View style={{flex: 1}}>
-                    <HeaderBar navigation={navigation}/>
+                pageLoading == false ?
+                    <View style={{ flex: 1, width: Dimensions.get('screen').width, height: Dimensions.get('screen').height }}>
+                        <LoadingScreen />
+                    </View>
+                    :
+                    <View style={{ flex: 1 }}>
+                        <HeaderBar navigation={navigation} />
 
-                    <View style={{flex: 1}}>
-                        <TouchableOpacity
-                            style={[styles.userCard, schemeStyle.cardColor]}
-                            onPress={() => navigation.navigate('Profile')}>
-                            {
-                                image == null?
-                                <Avatar.Text size={80} label={username[0]} />
-                                :
-                                <Avatar.Image size={80} source={{ uri: image }} />
-                            }
-                            <View style={{width: "60%"}}>
-                                <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{username}</Text>
-                                <Text style={schemeStyle.textColor}>{t('scenes:home_index:points')}: {points}</Text>
+                        <View style={{ flex: 1 }}>
+                            <TouchableOpacity
+                                style={[styles.userCard, schemeStyle.cardColor]}
+                                onPress={() => navigation.navigate('Profile')}>
+                                {
+                                    image == null ?
+                                        <Avatar.Text size={80} label={username[0]} />
+                                        :
+                                        <Avatar.Image size={80} source={{ uri: image }} />
+                                }
+                                <View style={{ width: "60%" }}>
+                                    <Text style={[schemeStyle.textColor, { fontWeight: "bold" }]}>{username}</Text>
+                                    <Text style={schemeStyle.textColor}>{t('scenes:home_index:points')}: {points}</Text>
 
-                                <Text style={[schemeStyle.textColor, {fontSize: 10, marginTop: "auto"}]}>{t('scenes:home_index:profile')} &gt;</Text>
-                            </View>
-                        </TouchableOpacity>
+                                    <Text style={[schemeStyle.textColor, { fontSize: 10, marginTop: "auto" }]}>{t('scenes:home_index:profile')} &gt;</Text>
+                                </View>
+                            </TouchableOpacity>
 
                             <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]}>
                                 <View style={styles.row}>

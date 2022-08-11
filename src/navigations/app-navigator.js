@@ -11,6 +11,7 @@ import StepItUpScreen from '../scenes/games/StepItUp';
 import RedeemListScreen from '../scenes/redeemList';
 import ScanQRCodeScreen from '../scenes/scanQRcode';
 import DisplayCollectedPointScreen from "../scenes/displayCollectedPoints";
+import ItemDescScreen from "../scenes/redeemList/itemDesc";
 
 // Language
 import i18n from 'i18next';
@@ -91,10 +92,18 @@ const RouteConfigs = {
     displayCollectedPoints: {
         screen: DisplayCollectedPointScreen,
         navigationOptions: {
-            ttabBarVisible: false,
+            tabBarVisible: false,
             title: displayCollectedPointsTitle
         }
+    },
+    ItemDesc: {
+        screen: ItemDescScreen,
+        tabBarVisible: false,
+        navigationOptions: {
+            title: "Item Desc"
+        }
     }
+
 };
 
 const AppNavigator = createDrawerNavigator(RouteConfigs, TabNavigatorConfig);

@@ -9,7 +9,7 @@ const addUser = async (username, email, hashedPassword) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username: username, email: email, password: hashedPassword})
+        body: JSON.stringify({ username: username, email: email, password: hashedPassword })
     })
 };
 
@@ -23,13 +23,13 @@ const getUser = async (email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email})
+        body: JSON.stringify({ email: email })
     })
-    .then(response => response.json())
-    .then(data => {
-        result = data.result;
-    })
-    .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
 
     return result
 }
@@ -42,7 +42,7 @@ const updateUserDetails = async (email, username, contact, address) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({username: username, email: email, contact: contact, address: address})
+        body: JSON.stringify({ username: username, email: email, contact: contact, address: address })
     })
 }
 
@@ -54,7 +54,7 @@ const updateUserPassword = async (email, password) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email, password: password})
+        body: JSON.stringify({ email: email, password: password })
     })
 }
 
@@ -66,7 +66,7 @@ const updateUserFace = async (email, faceImage, face) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email, faceImage: faceImage, face: face})
+        body: JSON.stringify({ email: email, faceImage: faceImage, face: face })
     })
 }
 
@@ -77,7 +77,7 @@ const updateUserProfilePic = async (email, profilePic) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email, profilePic: profilePic})
+        body: JSON.stringify({ email: email, profilePic: profilePic })
     })
 }
 
@@ -91,13 +91,13 @@ const getUserPoints = async (email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email})
+        body: JSON.stringify({ email: email })
     })
-    .then(response => response.json())
-    .then(data => {
-        result = data.result;
-    })
-    .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
 
     return result
 }
@@ -111,7 +111,7 @@ const addForgotPassword = async (email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email})
+        body: JSON.stringify({ email: email })
     })
 };
 
@@ -123,9 +123,9 @@ const updateUserPoints = async (email, points) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email, points: points})
+        body: JSON.stringify({ email: email, points: points })
     })
-}
+};
 
 // Email Verification
 const addEmailVerification = async (email) => {
@@ -135,9 +135,35 @@ const addEmailVerification = async (email) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email: email})
+        body: JSON.stringify({ email: email })
     })
 };
 
+// Get Specific User
+const getAllGifts = async (offset, pagelimit) => {
+    console.log('entered getAllGitfts');
+    let result1 = undefined;
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification , updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification };
+    await fetch(`http://${flaskIP}/getAllGifts`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ offset: offset, pagelimit: pagelimit })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result1 = data.result;
+            
+
+        })
+        .catch(err => console.error(err));
+
+    console.log("result11 =" + result1);
+    return result1;
+
+};
+
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts };
