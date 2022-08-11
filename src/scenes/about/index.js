@@ -78,7 +78,7 @@ const AboutScreen = ({ navigation }) => {
                                                 {t('scenes:about_index:malay')} - Neeza
                                             </Text>
                                             <Text style={schemeStyle.textColor}>
-                                                {t('scenes:about_index:chinese')} - Yu Hsi &amp; Caleb
+                                                {t('scenes:about_index:chinese')} - Yu Hsi
                                             </Text>
                                         </View>
                                     </View>

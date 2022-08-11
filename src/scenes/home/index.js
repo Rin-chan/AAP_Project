@@ -179,7 +179,7 @@ const HomeScreen = ({ navigation }) => {
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/mapbin.png")} />
                                         </TouchableHighlight>
-                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:locatebins')}</Text>
+                                        <Text style={[styles.textCenter, schemeStyle.textColor]}>{t('scenes:home_index:locateBins')}</Text>
                                     </View>
 
                                     <View style={styles.outterBox}>
