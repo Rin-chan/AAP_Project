@@ -2,14 +2,14 @@ import flaskServer from "../../../settings.json";
 const flaskIP = flaskServer.flaskServer;
 
 // Add User
-const addUser = async (username, email, hashedPassword) => {
+const addUser = async (username, email, hashedPassword, verified=0) => {
     fetch(`http://${flaskIP}/addUser`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username: username, email: email, password: hashedPassword })
+        body: JSON.stringify({ username: username, email: email, password: hashedPassword, verified: verified })
     })
 };
 

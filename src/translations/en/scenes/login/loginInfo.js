@@ -7,4 +7,5 @@ export default {
     text3: 'E-Waste It!',
     login: 'Log in',
     register: 'Sign up',
+    language: 'Language',
 };

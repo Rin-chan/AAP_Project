@@ -103,6 +103,7 @@ const ProfileScreen = ({ navigation }) => {
     })
 
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('None');
     const [username, setUsername] = useState('');
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
@@ -189,6 +190,7 @@ const ProfileScreen = ({ navigation }) => {
                 UserDB.getUser(email).then((result) => {
                     if(result != undefined) {
                         setUsername(result[0][1]);
+                        setPassword(result[0][3])
                         setContact(result[0][4]);
                         setAddress(result[0][5]);
                         setFace(result[0][6]);
@@ -208,6 +210,7 @@ const ProfileScreen = ({ navigation }) => {
         try {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("userToken");
+            await AsyncStorage.removeItem("google");
             navigation.navigate('Login');
         }
         catch(exception) {
@@ -251,8 +254,15 @@ const ProfileScreen = ({ navigation }) => {
         });
     
         if (!result.cancelled) {
-            setImage(result.base64);
-            UserDB.updateUserProfilePic(email, result.base64);
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 160, height: 160 } }]
+            );
+            
+            const reducedResult = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+
+            setImage(reducedResult);
+            UserDB.updateUserProfilePic(email, reducedResult);
         }
 
         setModalVisible(false);
@@ -334,21 +344,33 @@ const ProfileScreen = ({ navigation }) => {
                                     </View>)
                                     }
 
-                            <View style={styles.buttonRow}>
-                                <TouchableOpacity
-                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                                    onPress={() => navigation.navigate("editProfile")}
-                                    underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                                    onPress={() => navigation.navigate("editPassword")}
-                                    underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:changePassword')}</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {
+                                password != "None"?
+                                <View style={styles.buttonRow}>
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                        onPress={() => navigation.navigate("editProfile")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
+                                    </TouchableOpacity>
+                                    
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                        onPress={() => navigation.navigate("editPassword")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:changePassword')}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton, {width: "80%"}]}
+                                        onPress={() => navigation.navigate("editProfile")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                             
                             <SafeAreaView>
                                 <TouchableOpacity
@@ -360,7 +382,7 @@ const ProfileScreen = ({ navigation }) => {
                             </SafeAreaView>
 
                             <View style={[styles.dropdownRow, {justifyContent: "flex-start"}]}>
-                                <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                                <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:profile_index:language')}</Text>
                                 <DropDownPicker
                                     containerStyle={{width: '35%'}}
                                     open={open}
@@ -388,28 +410,28 @@ const ProfileScreen = ({ navigation }) => {
                 >
                 <View style={styles.centeredView}>
                     <View style={[styles.modalView, schemeStyle.backgroundColor]}>
-                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => takePhoto()}>Take Photo</Text>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => takePhoto()}>{t('scenes:profile_index:takePhoto')}</Text>
                         <View
                             style={{
                                 borderBottomColor: TEXT_COLOR,
                                 borderBottomWidth: StyleSheet.hairlineWidth,
                             }}
                         />
-                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => pickImage()}>Choose From Gallery</Text>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => pickImage()}>{t('scenes:profile_index:gallery')}</Text>
                         <View
                             style={{
                                 borderBottomColor: TEXT_COLOR,
                                 borderBottomWidth: StyleSheet.hairlineWidth,
                             }}
                         />
-                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => clearImage()}>Remove Photo</Text>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => clearImage()}>{t('scenes:profile_index:removePhoto')}</Text>
                         <View
                             style={{
                                 borderBottomColor: TEXT_COLOR,
                                 borderBottomWidth: StyleSheet.hairlineWidth,
                             }}
                         />
-                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => setModalVisible(!modalVisible)}>Cancel</Text>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => setModalVisible(!modalVisible)}>{t('scenes:profile_index:cancel')}</Text>
                     </View>
                 </View>
             </Modal>
@@ -427,7 +449,7 @@ const ProfileScreen = ({ navigation }) => {
                         <TouchableOpacity
                             onPress={() => setStopCam(!stopCam)}
                             underlayColor='#fff'>
-                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', marginBottom: 10}]}>X</Text>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', marginBottom: 10, fontSize: 25}]}>X</Text>
                         </TouchableOpacity>
 
                         <View style={{width: _width, height: _width}}>
@@ -461,7 +483,7 @@ const ProfileScreen = ({ navigation }) => {
                         <TouchableOpacity
                             onPress={() => setTempModal(!tempModal)}
                             underlayColor='#fff'>
-                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold'}]}>X</Text>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', fontSize: 25}]}>X</Text>
                         </TouchableOpacity>
 
                         <Avatar.Image size={_width} source={base64Image} />
@@ -471,14 +493,14 @@ const ProfileScreen = ({ navigation }) => {
                                 style={[styles.editButton, schemeStyle.primaryScreenButton]}
                                 onPress={() => retakePhoto()}
                                 underlayColor='#fff'>
-                                <Text style={[styles.buttonText, schemeStyle.textColor]}>Retake Photo</Text>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:retakePhoto')}</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 style={[styles.editButton, schemeStyle.primaryScreenButton]}
                                 onPress={() => choosePhoto()}
                                 underlayColor='#fff'>
-                                <Text style={[styles.buttonText, schemeStyle.textColor]}>Choose Photo</Text>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:choosePhoto')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
