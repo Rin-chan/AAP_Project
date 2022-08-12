@@ -258,6 +258,12 @@ const ProfileScreen = ({ navigation }) => {
         setModalVisible(false);
     };
 
+    const clearImage = async () => {
+        setImage(null);
+        UserDB.updateUserProfilePic(email, null);
+        setModalVisible(false);
+    }
+
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             {
@@ -390,6 +396,13 @@ const ProfileScreen = ({ navigation }) => {
                             }}
                         />
                         <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => pickImage()}>Choose From Gallery</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => clearImage()}>Remove Photo</Text>
                         <View
                             style={{
                                 borderBottomColor: TEXT_COLOR,
