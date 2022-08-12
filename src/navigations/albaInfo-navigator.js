@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Appearance } from 'react-native';
 
-// Language
+// Language (BACKUP)
 import i18n from 'i18next';
 var AlbaInformationTitle = i18n.t('albaInfo_navigator:AlbaInformation');
 var AlbaInfoTypeTitle = i18n.t('albaInfo_navigator:AlbaInfoType');
@@ -11,12 +11,14 @@ var AlbaInfoBinTitle = i18n.t('albaInfo_navigator:AlbaInfoBin');
 
 
 import { Colors } from '../styles';
+import { AlbaCustomTab } from '../components/molecules';
 
 import AlbaInfoScreen from '../scenes/albaInfo';
 import AlbaInfoTypeScreen from '../scenes/albaInfo/typesOfEWaste';
 import AlbaInfoWhoScreen from '../scenes/albaInfo/Alba';
 import AlbaInfoBinScreen from '../scenes/albaInfo/EWasteBin';
 
+// BACKUP
 const colorScheme = Appearance.getColorScheme();
 var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
 var ACTIVE_COLOR = Colors.DARK_PRIMARY_BUTTON
@@ -33,7 +35,7 @@ const AuthNavigatorConfig = {
     initialRouteName: 'AlbaInformation',
     header: null,
     headerMode: 'none',
-    tabBarOptions: {
+    tabBarOptions: { // BACKUP
         activeTintColor: ACTIVE_COLOR,
         inactiveTintColor: INACTIVE_COLOR,
         activeBackgroundColor: BACKGROUND_COLOR,
@@ -42,7 +44,8 @@ const AuthNavigatorConfig = {
             backgroundColor: BACKGROUND_COLOR,
             borderTopWidth: 0,
         }
-    }
+    },
+    tabBarComponent: AlbaCustomTab, // ACTUAL BAR
 };
 
 const RouteConfigs = {
