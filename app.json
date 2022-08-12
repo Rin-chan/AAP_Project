@@ -1,7 +1,9 @@
 {
   "expo": {
     "name": "AAP_Project",
-    "slug": "AAP_Project",
+    "slug": "aap-project",
+    "owner": "rinchan123",
+    "scheme": "aap-project",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

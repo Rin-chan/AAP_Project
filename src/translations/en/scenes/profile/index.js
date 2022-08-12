@@ -12,4 +12,11 @@ export default {
     editProfile: 'Edit Profile',
     changePassword: 'Change Password',
     logout: 'Logout',
+    language: 'Language',
+    takePhoto: 'Take Photo',
+    gallery: 'Choose From Gallery',
+    removePhoto: 'Remove Photo',
+    cancel: 'Cancel',
+    retakePhoto: 'Retake photo',
+    choosePhoto: 'Choose photo',
 };

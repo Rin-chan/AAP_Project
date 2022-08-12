@@ -165,7 +165,7 @@ const LoginInfoScreen = ({ navigation }) => {
                 </View>
 
                 <View style={[styles.dropdownRow, {justifyContent: "flex-start"}]}>
-                    <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                    <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_info:language')}</Text>
                     <DropDownPicker
                         containerStyle={{width: '35%'}}
                         open={open}

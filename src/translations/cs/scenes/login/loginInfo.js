@@ -7,4 +7,5 @@ export default {
     text3: 'E-Waste It!',
     login: 'Příhlásit se',
     register: 'Zaregistrovat se',
+    language: 'Jazyk',
 };

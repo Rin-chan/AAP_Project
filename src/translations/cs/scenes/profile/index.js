@@ -12,4 +12,11 @@ export default {
     editProfile: 'Upravit Profil',
     changePassword: 'Změnit Heslo',
     logout: 'Odhlásit se',
+    language: 'Jazyk',
+    //takePhoto: 'Take Photo',
+    //gallery: 'Choose From Gallery',
+    //removePhoto: 'Remove Photo',
+    cancel: 'Zrušit',
+    retakePhoto: 'Znovu pořídit fotografii',
+    //choosePhoto: 'Choose photo',
 };
