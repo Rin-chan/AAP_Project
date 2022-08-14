@@ -98,12 +98,13 @@ const RegisterScreen = ({ navigation }) => {
             return;
         }
 
-        UserDB.getUser(email).then((result) => {
+        let lowerEmail = email.toLowerCase();
+        UserDB.getUser(lowerEmail).then((result) => {
             if (result.length == 0) {
                 var hashedPassword = CryptoJS.SHA256(password).toString()
 
-                UserDB.addUser(username, email, hashedPassword);
-                UserDB.addEmailVerification(email);
+                UserDB.addUser(username, lowerEmail, hashedPassword);
+                UserDB.addEmailVerification(lowerEmail);
                 setModalVisible(true);
                 return;
             }

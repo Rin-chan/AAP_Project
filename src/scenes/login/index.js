@@ -121,9 +121,10 @@ const LoginScreen = ({ navigation }) => {
         onWarning2(false);
         onWarning3(false);
 
-        UserDB.getUser(email).then((result) => {
+        let lowerEmail = email.toLowerCase();
+        UserDB.getUser(lowerEmail).then((result) => {
             if(result.length != 0) {
-                if (email == result[0][2]) {
+                if (lowerEmail == result[0][2]) {
                     if (result[0][3] == "None") {
                         onWarning3(true);
                         return;
@@ -145,7 +146,7 @@ const LoginScreen = ({ navigation }) => {
                         var userToken = CryptoJS.SHA256(email+randomNum.toString()).toString() // Generate a token
 
                         storeData('userToken', userToken);
-                        storeData('user', email);
+                        storeData('user', lowerEmail);
 
                         navigation.navigate('Home');
                         return;
