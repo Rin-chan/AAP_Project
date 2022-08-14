@@ -53,8 +53,8 @@ const ProfileScreen = ({ navigation }) => {
     const [items, setItems] = useState([
         {label: 'English', value: 'en'},
         {label: 'Čeština', value: 'cs'},
-        {label: '中文', value: 'zh', disabled: true},
-        {label: 'Bahasa melayu', value: 'ms', disabled: true},
+        {label: '中文', value: 'zh'},
+        {label: 'Bahasa melayu', value: 'ms'},
     ]);
 
     useEffect(() => {

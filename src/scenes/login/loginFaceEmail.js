@@ -54,14 +54,15 @@ const FaceLoginScreen = ({ navigation }) => {
         onWarning1(false);
         onWarning2(false);
 
-        UserDB.getUser(email).then((result) => {
+        let lowerEmail = email.toLowerCase();
+        UserDB.getUser(lowerEmail).then((result) => {
             if(result.length != 0) {
                 if (result[0][9] == 1) {
                     setModalVisible(true);
                     return;
                 }
                 if (result[0][6]){
-                    navigation.navigate('LoginCam', {faceImage: result[0][7], email: email});
+                    navigation.navigate('LoginCam', {faceImage: result[0][7], email: lowerEmail});
                     return;
                 }
                 onWarning2(true);
