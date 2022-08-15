@@ -9,6 +9,7 @@ import zh from './zh';
 i18n
 .use(initReactI18next)
 .init({
+  compatibilityJSON: 'v3',
   fallbackLng: 'en',
   resources: {
     en: en,
