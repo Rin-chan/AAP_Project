@@ -2,6 +2,7 @@ import { createDrawerNavigator } from "react-navigation-drawer";
 import { Appearance } from 'react-native';
 
 import { Colors } from '../styles';
+import { CustomDrawer } from '../components/molecules';
 
 import AboutScreen from '../scenes/about';
 import ProfileNavigator from './profile-navigation';
@@ -15,7 +16,7 @@ import ItemDescScreen from "../scenes/redeemList/itemDesc";
 import RedeemHistoryScreen from "../scenes/redeemHistory";
 import RHItemDescScreen from "../scenes/redeemHistory/redeemedItemDesc";
 
-// Language
+// Language (BACKUP)
 import i18n from 'i18next';
 var HomeTitle = i18n.t('app_navigator:Home');
 var AlbaTitle = i18n.t('app_navigator:Alba');
@@ -26,6 +27,7 @@ var RedeemListTitle = i18n.t('app_navigator:RedeemList');
 var ScanQRcodeTitle = i18n.t('app_navigator:ScanQRcode');
 var displayCollectedPointsTitle = i18n.t('app_navigator:displayCollectedPoints');
 
+// Backup in case customDrawer.js is not function
 const colorScheme = Appearance.getColorScheme();
 var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
 var ACTIVE_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -39,13 +41,14 @@ const TabNavigatorConfig = {
     header: null,
     headerMode: 'none',
     unmountInactiveRoutes: true,
-    drawerBackgroundColor: BACKGROUND_COLOR,
-    contentOptions: {
+    drawerBackgroundColor: 'transparent', // Backup
+    contentOptions: { // Backup
         activeTintColor: ACTIVE_COLOR,
         activeBackgroundColor: 'transparent',
         inactiveTintColor: ACTIVE_COLOR,
         inactiveBackgroundColor: 'transparent',
     },
+    contentComponent: CustomDrawer, // ACTUAL DRAWER
 };
 
 const RouteConfigs = {

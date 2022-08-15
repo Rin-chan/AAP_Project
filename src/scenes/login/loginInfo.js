@@ -82,8 +82,8 @@ const LoginInfoScreen = ({ navigation }) => {
     const [items, setItems] = useState([
         {label: 'English', value: 'en'},
         {label: 'Čeština', value: 'cs'},
-        {label: '中文', value: 'zh', disabled: true},
-        {label: 'Bahasa melayu', value: 'ms', disabled: true},
+        {label: '中文', value: 'zh'},
+        {label: 'Bahasa melayu', value: 'ms'},
     ]);
 
     useEffect(() => {
@@ -165,7 +165,7 @@ const LoginInfoScreen = ({ navigation }) => {
                 </View>
 
                 <View style={[styles.dropdownRow, {justifyContent: "flex-start"}]}>
-                    <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                    <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_info:language')}</Text>
                     <DropDownPicker
                         containerStyle={{width: '35%'}}
                         open={open}

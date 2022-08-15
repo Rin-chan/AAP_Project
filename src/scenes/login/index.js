@@ -3,12 +3,18 @@ import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View, Imag
 import CryptoJS from 'crypto-js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import axios from "axios";
 
 // Language
 import {useTranslation} from 'react-i18next';
 
 import UserDB from '../../utils/database/userdb';
 import { Colors } from '../../styles';
+
+WebBrowser.maybeCompleteAuthSession();
 
 const LoginScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
@@ -46,6 +52,51 @@ const LoginScreen = ({ navigation }) => {
 
     const {t, i18n} = useTranslation();
 
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        expoClientId: '432797909197-0k3bnuvkonmmeatnqof2tgecgeq79bsk.apps.googleusercontent.com',
+        iosClientId: '432797909197-0k3bnuvkonmmeatnqof2tgecgeq79bsk.apps.googleusercontent.com',
+        androidClientId: '432797909197-0k3bnuvkonmmeatnqof2tgecgeq79bsk.apps.googleusercontent.com',
+        webClientId: '432797909197-0k3bnuvkonmmeatnqof2tgecgeq79bsk.apps.googleusercontent.com',
+    });
+
+    React.useEffect(() => {
+        if (response?.type === 'success') {
+          const { authentication } = response;
+            axios.get('https://www.googleapis.com/oauth2/v3/userinfo?access_token='+authentication.accessToken)
+                .then(function(response){
+                    const userDetails = response.data
+                    
+                    UserDB.getUser(userDetails.email).then((result) => {
+                        if(result.length != 0) {
+                            if (result[0][3] != "None") {
+                                UserDB.updateUserPassword(userDetails.email, null);
+                            }
+
+                            storeData('userToken', authentication.accessToken);
+                            storeData('user', userDetails.email);
+                            storeData('google', "true");
+    
+                            navigation.navigate('Home');
+                            return;
+                        }
+                        else {
+                            var hashedPassword = null;
+                            var verified = 1;
+
+                            UserDB.addUser(userDetails.name, userDetails.email, hashedPassword, verified);
+
+                            storeData('userToken', authentication.accessToken);
+                            storeData('user', userDetails.email);
+                            storeData('google', "true");
+
+                            navigation.navigate('Home');
+                            return;
+                        }
+                    })
+            })
+          }
+    }, [response]);
+
     const _width = Dimensions.get('screen').width * 0.15;
 
     const [email, onChangeEmail] = React.useState("");
@@ -53,6 +104,7 @@ const LoginScreen = ({ navigation }) => {
 
     const [warning1, onWarning1] = useState(false);
     const [warning2, onWarning2] = useState(false);
+    const [warning3, onWarning3] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
     const storeData = async (location, value) => {
@@ -67,10 +119,17 @@ const LoginScreen = ({ navigation }) => {
     const loginClick = () => {
         onWarning1(false);
         onWarning2(false);
+        onWarning3(false);
 
-        UserDB.getUser(email).then((result) => {
+        let lowerEmail = email.toLowerCase();
+        UserDB.getUser(lowerEmail).then((result) => {
             if(result.length != 0) {
-                if (email == result[0][2]) {
+                if (lowerEmail == result[0][2]) {
+                    if (result[0][3] == "None") {
+                        onWarning3(true);
+                        return;
+                    }
+
                     var hashedPassword = CryptoJS.SHA256(password).toString()
 
                     if (hashedPassword == result[0][3]){
@@ -87,7 +146,7 @@ const LoginScreen = ({ navigation }) => {
                         var userToken = CryptoJS.SHA256(email+randomNum.toString()).toString() // Generate a token
 
                         storeData('userToken', userToken);
-                        storeData('user', email);
+                        storeData('user', lowerEmail);
 
                         navigation.navigate('Home');
                         return;
@@ -128,14 +187,25 @@ const LoginScreen = ({ navigation }) => {
                     />
 
                     <View style={styles.row}>
-                        <TouchableOpacity
-                            style={{marginLeft: 10, marginTop: 5}}
-                            onPress={() => navigation.navigate('LoginEmail')}
-                            underlayColor='#fff'>
-                            <Image 
-                                style={[schemeStyle.imageColor, { height: _width, width: _width }]}
-                                source={require("../../assets/images/face-scan.png")}/>
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row'}}>
+                            <TouchableOpacity
+                                style={{marginLeft: 10, marginTop: 5}}
+                                onPress={() => navigation.navigate('LoginEmail')}
+                                underlayColor='#fff'>
+                                <Image 
+                                    style={[schemeStyle.imageColor, { height: _width, width: _width }]}
+                                    source={require("../../assets/images/face-scan.png")}/>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={{justifyContent: 'center', alignItems:'center', marginLeft: 10, marginTop: 5}}
+                                disabled={!request}
+                                onPress={() => {
+                                    promptAsync();
+                                }}>
+                                <Icon name="google" size={30} color={IMAGE_COLOR} />
+                            </TouchableOpacity>
+                        </View>
 
                         <TouchableOpacity
                             style={[styles.loginScreenButton, schemeStyle.loginScreenButton]}
@@ -149,6 +219,7 @@ const LoginScreen = ({ navigation }) => {
 
                     <Text style={warning1?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_index:warning1')}</Text>
                     <Text style={warning2?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_index:warning2')}</Text>
+                    <Text style={warning3?[styles.warning, {display: 'flex'}]:styles.warning}>{t('scenes:login_index:warning3')}</Text>
 
                     <Text onPress={() => navigation.navigate('Register')} style={[styles.redirectText, schemeStyle.textColor]}>{t('scenes:login_index:createAnAccount')}</Text>
                 </ScrollView>

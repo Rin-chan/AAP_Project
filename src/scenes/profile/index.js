@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Dimensions, ScrollView, TouchableOpacity, Modal, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDarkMode } from 'react-native-dynamic';
 import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync } from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
+import { Camera, CameraType } from 'expo-camera';
 import { Avatar } from 'react-native-paper';
 
 // Language
@@ -50,8 +53,8 @@ const ProfileScreen = ({ navigation }) => {
     const [items, setItems] = useState([
         {label: 'English', value: 'en'},
         {label: 'Čeština', value: 'cs'},
-        {label: '中文', value: 'zh', disabled: true},
-        {label: 'Bahasa melayu', value: 'ms', disabled: true},
+        {label: '中文', value: 'zh'},
+        {label: 'Bahasa melayu', value: 'ms'},
     ]);
 
     useEffect(() => {
@@ -99,9 +102,8 @@ const ProfileScreen = ({ navigation }) => {
         }
     })
 
-    const _width = Dimensions.get('screen').width * 0.4;
-
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('None');
     const [username, setUsername] = useState('');
     const [contact, setContact] = useState('');
     const [address, setAddress] = useState('');
@@ -110,6 +112,72 @@ const ProfileScreen = ({ navigation }) => {
 
     const [request, setRequest] = useState(false);
     const [pageLoading, setPageLoading] = useState(false);
+
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const [hasPermission, setHasPermission] = useState(null);
+    const [type, setType] = useState(CameraType.front);
+    const [cam, setCam] = useState(false);
+    const [base64Image, setbase64Image] = useState("");
+    const [stopCam, setStopCam] = useState(false);
+    const [tempModal, setTempModal] = useState(false);
+
+    const _width = Dimensions.get('screen').width * 0.7;
+
+    const takePhoto = () => {
+        setModalVisible(false);
+        setStopCam(true);
+    }
+
+    const snapPhoto = async() => {
+        if (cam) {
+            const options = { quality: 1, base64: true, fixOrientation: true, 
+            exif: true};
+            await cam.takePictureAsync(options).then(photo => {
+                photo.exif.Orientation = 1;
+                setbase64Image(photo);
+                setStopCam(false);
+                setTempModal(true);
+            });     
+        }
+    }
+
+    const retakePhoto = () => {
+        setStopCam(true);
+        setTempModal(false);
+    }
+
+    async function manipResult() {
+        const manipResult = await manipulateAsync(
+            base64Image.uri,
+            [{ resize: { width: 160, height: 160 } }]
+        );
+        
+        const base64 = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+        return base64
+    };
+
+    const choosePhoto = async () => {
+        let maniImage = await manipResult();
+
+        setTempModal(false);
+        setImage(maniImage);
+        UserDB.updateUserProfilePic(email, maniImage);
+    }
+
+    useEffect(() => {
+        (async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setHasPermission(status === 'granted');
+        })();
+    }, []);
+
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
 
     const getUser = async () => {
         if (request == false) {
@@ -122,6 +190,7 @@ const ProfileScreen = ({ navigation }) => {
                 UserDB.getUser(email).then((result) => {
                     if(result != undefined) {
                         setUsername(result[0][1]);
+                        setPassword(result[0][3])
                         setContact(result[0][4]);
                         setAddress(result[0][5]);
                         setFace(result[0][6]);
@@ -141,6 +210,7 @@ const ProfileScreen = ({ navigation }) => {
         try {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("userToken");
+            await AsyncStorage.removeItem("google");
             navigation.navigate('Login');
         }
         catch(exception) {
@@ -184,10 +254,25 @@ const ProfileScreen = ({ navigation }) => {
         });
     
         if (!result.cancelled) {
-            setImage(result.uri);
-            UserDB.updateUserProfilePic(email, result.uri);
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 160, height: 160 } }]
+            );
+            
+            const reducedResult = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+
+            setImage(reducedResult);
+            UserDB.updateUserProfilePic(email, reducedResult);
         }
+
+        setModalVisible(false);
     };
+
+    const clearImage = async () => {
+        setImage(null);
+        UserDB.updateUserProfilePic(email, null);
+        setModalVisible(false);
+    }
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
@@ -210,12 +295,12 @@ const ProfileScreen = ({ navigation }) => {
                         <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]} contentInsetAdjustmentBehavior="automatic">
                             <TouchableOpacity
                                 style={{alignSelf: "center"}}
-                                onPress={() => pickImage()}>
+                                onPress={() => setModalVisible(true)}>
                                 {
                                     image == null?
                                     <Avatar.Text size={160} label={username[0]} />
                                     :
-                                    <Avatar.Image size={160} source={{ uri: image }} />
+                                    <Avatar.Image size={160} source={{uri: `data:image/jpeg;base64,${image}`}} />
                                 }
                             </TouchableOpacity>
 
@@ -259,21 +344,33 @@ const ProfileScreen = ({ navigation }) => {
                                     </View>)
                                     }
 
-                            <View style={styles.buttonRow}>
-                                <TouchableOpacity
-                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                                    onPress={() => navigation.navigate("editProfile")}
-                                    underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={[styles.editButton, schemeStyle.primaryScreenButton]}
-                                    onPress={() => navigation.navigate("editPassword")}
-                                    underlayColor='#fff'>
-                                    <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:changePassword')}</Text>
-                                </TouchableOpacity>
-                            </View>
+                            {
+                                password != "None"?
+                                <View style={styles.buttonRow}>
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                        onPress={() => navigation.navigate("editProfile")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
+                                    </TouchableOpacity>
+                                    
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                        onPress={() => navigation.navigate("editPassword")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:changePassword')}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                :
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <TouchableOpacity
+                                        style={[styles.editButton, schemeStyle.primaryScreenButton, {width: "80%"}]}
+                                        onPress={() => navigation.navigate("editProfile")}
+                                        underlayColor='#fff'>
+                                        <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:editProfile')}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            }
                             
                             <SafeAreaView>
                                 <TouchableOpacity
@@ -285,7 +382,7 @@ const ProfileScreen = ({ navigation }) => {
                             </SafeAreaView>
 
                             <View style={[styles.dropdownRow, {justifyContent: "flex-start"}]}>
-                                <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:login_index:language')}</Text>
+                                <Text style={[schemeStyle.textColor, {alignSelf: "center", margin: 10}]}>{t('scenes:profile_index:language')}</Text>
                                 <DropDownPicker
                                     containerStyle={{width: '35%'}}
                                     open={open}
@@ -302,6 +399,113 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 </View>
             }
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => takePhoto()}>{t('scenes:profile_index:takePhoto')}</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => pickImage()}>{t('scenes:profile_index:gallery')}</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => clearImage()}>{t('scenes:profile_index:removePhoto')}</Text>
+                        <View
+                            style={{
+                                borderBottomColor: TEXT_COLOR,
+                                borderBottomWidth: StyleSheet.hairlineWidth,
+                            }}
+                        />
+                        <Text style={[styles.textStyle, schemeStyle.textColor]} onPress={() => setModalVisible(!modalVisible)}>{t('scenes:profile_index:cancel')}</Text>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={stopCam}
+                onRequestClose={() => {
+                    setStopCam(!stopCam);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setStopCam(!stopCam)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', marginBottom: 10, fontSize: 25}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <View style={{width: _width, height: _width}}>
+                            <Camera style={styles.camera}
+                                type={type}
+                                ref={setCam}
+                                ratio={"1:1"}>
+                                <View style={styles.buttonContainer}>
+                                    <Image style={{width: _width, height: _width}} source={require("../../assets/images/oval.png")} />
+                                </View>
+                            </Camera>
+                        </View>
+
+                        <TouchableOpacity style={{marginTop: 10, alignSelf: 'center'}} onPress={snapPhoto}>
+                            <Image style={{width: 50, height: 50}} source={require("../../assets/images/circle_button.png")} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={tempModal}
+                onRequestClose={() => {
+                    setTempModal(!tempModal);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setTempModal(!tempModal)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', fontSize: 25}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <Avatar.Image size={_width} source={base64Image} />
+                        
+                        <View style={styles.buttonRow}>
+                            <TouchableOpacity
+                                style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                onPress={() => retakePhoto()}
+                                underlayColor='#fff'>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:retakePhoto')}</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[styles.editButton, schemeStyle.primaryScreenButton]}
+                                onPress={() => choosePhoto()}
+                                underlayColor='#fff'>
+                                <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:profile_index:choosePhoto')}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -373,7 +577,6 @@ const styles = StyleSheet.create({
         flexWrap: "wrap"
     },
     buttonRow: {
-        flex: 1,
         flexDirection: "row",
         marginBottom: "5%",
         marginTop: "5%",
@@ -428,6 +631,40 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 5,
         elevation: 5,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        fontWeight: "bold",
+        textAlign: "center",
+        padding: 10
+    },
+    camera: {
+        aspectRatio: 1,
+    },
+    buttonContainer: {
+        flex: 1,
+        backgroundColor: 'transparent',
+        flexDirection: 'row',
+        alignSelf: "center",
     },
 });
 

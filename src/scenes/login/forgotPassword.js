@@ -52,9 +52,10 @@ const ForgotPasswordScreen = ({ navigation }) => {
     const continueClick = () => {
         onWarning1(false);
 
-        UserDB.getUser(email).then((result) => {
+        let lowerEmail = email.toLowerCase();
+        UserDB.getUser(lowerEmail).then((result) => {
             if(result.length != 0) {
-                UserDB.addForgotPassword(email);
+                UserDB.addForgotPassword(lowerEmail);
                 setModalVisible(true);
                 return;
             }
