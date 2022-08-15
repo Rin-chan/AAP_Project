@@ -1,94 +1,139 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, SafeAreaView, ScrollView, Text } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
-import { Drawer } from "react-native-paper";
 import { useTranslation } from 'react-i18next';
 
 import { Colors } from '../../styles';
 
 const customDrawer = ({ navigation }) => {
     const { t, i18n } = useTranslation();
-
+    
     const isDarkMode = useDarkMode();
-    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
-    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND;
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT;
+    var HIGHLIGHT_COLOR = Colors.LIGHT_GREEN_BUTTON;
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND
-        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        BACKGROUND_COLOR = Colors.DARK_SECONDARY_BACKGROUND;
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT;
+        HIGHLIGHT_COLOR = Colors.DARK_GREEN_BUTTON;
     }
 
     const schemeStyle = StyleSheet.create({
         backgroundColor: {
             backgroundColor: BACKGROUND_COLOR,
         },
+        textColor: {
+            color: TEXT_COLOR,
+        },
+        highlightColor: {
+            color: HIGHLIGHT_COLOR,
+        }
     })
 
-    const theme = {
-        colors: {
-          primary: TEXT_COLOR,
-        },
-    };
+    const [selected, setSelected] = useState(0);
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={schemeStyle.backgroundColor}>
             <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
-                <Drawer.Item
-                    label={t('app_navigator:Home')}
-                    active="true"
-                    onPress={() => navigation.navigate("Home")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:Alba')}
-                    active="true"
-                    onPress={() => navigation.navigate("Alba")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:EWasteIt')}
-                    active="true"
-                    onPress={() => navigation.navigate("EWasteIt")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:StepItUp')}
-                    active="true"
-                    onPress={() => navigation.navigate("StepItUp")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:About')}
-                    active="true"
-                    onPress={() => navigation.navigate("About")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:RedeemList')}
-                    active="true"
-                    onPress={() => navigation.navigate("RedeemList")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:ScanQRcode')}
-                    active="true"
-                    onPress={() => navigation.navigate("ScanQRcode")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label={t('app_navigator:displayCollectedPoints')}
-                    active="true"
-                    onPress={() => navigation.navigate("displayCollectedPoints")}
-                    theme={theme}
-                />
-                <Drawer.Item
-                    label="Item Desc"
-                    active="true"
-                    onPress={() => navigation.navigate("ItemDesc")}
-                    theme={theme}
-                />
+                {
+                    selected == 0?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Home')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("Home");
+                        setSelected(0);
+                    }}>{t('app_navigator:Home')}</Text>
+                }
+
+                {
+                    selected == 1?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Alba')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("Alba")
+                        setSelected(1);
+                    }}>{t('app_navigator:Alba')}</Text>
+                }
+
+                {
+                    selected == 2?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:EWasteIt')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("EWasteIt")
+                        setSelected(2);
+                    }}>{t('app_navigator:EWasteIt')}</Text>
+                }
+
+                {
+                    selected == 3?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:StepItUp')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("StepItUp")
+                        setSelected(3);
+                    }}>{t('app_navigator:StepItUp')}</Text>
+                }
+
+                {
+                    selected == 4?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:About')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("About")
+                        setSelected(4);
+                    }}>{t('app_navigator:About')}</Text>
+                }
+
+                {
+                    selected == 5?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemList')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("RedeemList")
+                        setSelected(5);
+                    }}>{t('app_navigator:RedeemList')}</Text>
+                }
+
+                {
+                    selected == 6?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ScanQRcode')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("ScanQRcode")
+                        setSelected(6);
+                    }}>{t('app_navigator:ScanQRcode')}</Text>
+                }
+
+                {
+                    selected == 7?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:displayCollectedPoints')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("displayCollectedPoints")
+                        setSelected(7);
+                    }}>{t('app_navigator:displayCollectedPoints')}</Text>
+                }
+
+                {
+                    selected == 8?
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ItemDesc')}</Text>
+                    :
+                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                        navigation.navigate("ItemDesc")
+                        setSelected(8);
+                    }}>Item Desc</Text>
+                }
             </SafeAreaView>
         </ScrollView>
     );
 };
+
+const styles = StyleSheet.create({
+    textStyle: {
+        margin: 15,
+        marginLeft: 25,
+    },
+})
 
 export default customDrawer;

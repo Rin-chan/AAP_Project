@@ -12,4 +12,5 @@ export default {
     editProfile: '修改个人资料',
     changePassword: '更换密码',
     logout: '退出',
+    language: '语言',
 };
