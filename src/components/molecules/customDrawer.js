@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Text } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 import { useTranslation } from 'react-i18next';
 
@@ -37,92 +37,128 @@ const customDrawer = ({ navigation }) => {
             <SafeAreaView forceInset={{ top: "always", horizontal: "never" }}>
                 {
                     selected == 0?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Home')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Home')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("Home");
                         setSelected(0);
-                    }}>{t('app_navigator:Home')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:Home')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 1?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Alba')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:Alba')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("Alba")
                         setSelected(1);
-                    }}>{t('app_navigator:Alba')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:Alba')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 2?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:EWasteIt')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:EWasteIt')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("EWasteIt")
                         setSelected(2);
-                    }}>{t('app_navigator:EWasteIt')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:EWasteIt')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 3?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:StepItUp')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:StepItUp')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("StepItUp")
                         setSelected(3);
-                    }}>{t('app_navigator:StepItUp')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:StepItUp')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 4?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:About')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:About')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("About")
                         setSelected(4);
-                    }}>{t('app_navigator:About')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:About')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 5?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemList')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemList')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("RedeemList")
                         setSelected(5);
-                    }}>{t('app_navigator:RedeemList')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:RedeemList')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 6?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ScanQRcode')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ScanQRcode')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("ScanQRcode")
                         setSelected(6);
-                    }}>{t('app_navigator:ScanQRcode')}</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:ScanQRcode')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 7?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:displayCollectedPoints')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:displayCollectedPoints')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("displayCollectedPoints")
                         setSelected(7);
-                    }}>{t('app_navigator:displayCollectedPoints')}</Text>
+                    }}>
+                    <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:displayCollectedPoints')}</Text>
+                    </TouchableOpacity>
                 }
 
                 {
                     selected == 8?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ItemDesc')}</Text>
+                    <TouchableOpacity>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ItemDesc')}</Text>
+                    </TouchableOpacity>
                     :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
+                    <TouchableOpacity onPress={() => {
                         navigation.navigate("ItemDesc")
                         setSelected(8);
-                    }}>Item Desc</Text>
+                    }}>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>Item Desc</Text>
+                    </TouchableOpacity>
                 }
             </SafeAreaView>
         </ScrollView>
