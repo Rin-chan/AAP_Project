@@ -221,14 +221,14 @@ const addRedeemItem = async (itemcode, email) => {
 };
 
 // Use Redeem Item
-const useRedeemItem = async (redeemcode) => {
+const useRedeemItem = async (redeemcode, giftname, email) => {
     fetch(`http://${flaskIP}/useRedeemItem`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ redeemcode: redeemcode })
+        body: JSON.stringify({ redeemcode: redeemcode, giftname: giftname, email: email })
     })
 };
 
@@ -278,6 +278,29 @@ const getUsedRedeemItems = async (email) => {
 
 };
 
+// Get Specific Gift
+const getSpecificRedeem = async (redeemcode) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/getSpecificRedeem`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ redeemcode: redeemcode })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
+
+    console.log("SpecificRedeem =" + result);
+    return result;
+
+};
 
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems };
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems, getSpecificRedeem };

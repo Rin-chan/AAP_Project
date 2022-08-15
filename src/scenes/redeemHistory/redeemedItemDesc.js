@@ -5,6 +5,7 @@ import { useDarkMode } from 'react-native-dynamic';
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const RHItemDescScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
@@ -33,31 +34,36 @@ const RHItemDescScreen = ({ navigation }) => {
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.3;
 
-    const code = navigation.getParam('code');
-    console.log("code = " + code);
+    const redeemcode = navigation.getParam('code');
+    console.log("redeemcode = " + redeemcode);
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible1, setModalVisible1] = useState(false);
 
     const [giftname, setGiftName] = useState("");
     const [giftDesc, setGiftDesc] = useState("");
     const [industry, setIndustry] = useState("");
     const [company, setCompany] = useState("");
-    const [points, setPoints] = useState(0);
     const [img, setImg] = useState("");
 
+    const [email, setEmail] = useState("");
+
     const [request, setRequest] = useState(false);
+    const [emailrequest, setEmailRequest] = useState(false);
+
+    const [redemptionMsg, setRedemptionMsg] = useState(false);
+
     const getSpecificGift = async () => {
         if (request == false) {
             setRequest(true);
 
-            await UserDB.getSpecificGift(code).then((result) => {
+            await UserDB.getSpecificRedeem(redeemcode).then((result) => {
                 if (result.length != 0) {
-                    setGiftName(result[0][1]);
-                    setPoints(result[0][6]);
+                    setGiftName(result[0][2]);
                     setImg(result[0][7]);
-                    setIndustry(result[0][3]);
-                    setCompany(result[0][4]);
-                    setGiftDesc(result[0][2]);
+                    setIndustry(result[0][4]);
+                    setCompany(result[0][5]);
+                    setGiftDesc(result[0][3]);
                 }
                 else {
                     console.log("GIFT NOT FOUND");
@@ -67,7 +73,29 @@ const RHItemDescScreen = ({ navigation }) => {
         }
     };
 
+    const getUser = async () => {
+        if (emailrequest == false) {
+            setEmailRequest(true);
 
+            await AsyncStorage.getItem('user')
+                .then(email => {
+                    console.log("a " + email);
+                    setEmail(email);
+                });
+        }
+    };
+
+    const redeemItem = async (redeemcode, giftname, email) => {
+        await UserDB.useRedeemItem(redeemcode, giftname, email);
+
+        const Msg = "The code has been sent to you. If you did not receive the email, please contact us at appdevproto123@gmail.com";
+        setRedemptionMsg(Msg);
+
+        setModalVisible(!modalVisible);
+        setModalVisible1(!modalVisible1);
+    };
+
+    getUser();
     getSpecificGift();
     const imgfilepath = "../../assets/images/" + img;
 
@@ -135,7 +163,7 @@ const RHItemDescScreen = ({ navigation }) => {
                                 <View style={styles.row}>
                                     <TouchableHighlight
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setModalVisible(!modalVisible)}
+                                        onPress={() => redeemItem(redeemcode, giftname, email)}
                                     >
                                         <Text style={styles.textStyle}>Yes</Text>
                                     </TouchableHighlight>
@@ -144,6 +172,31 @@ const RHItemDescScreen = ({ navigation }) => {
                                         onPress={() => setModalVisible(!modalVisible)}
                                     >
                                         <Text style={styles.textStyle}>No</Text>
+                                    </TouchableHighlight>
+                                </View>
+
+                            </View>
+                        </View>
+                    </Modal>
+
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible1}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                            setModalVisible1(!modalVisible1);
+                        }}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalText}>{redemptionMsg}</Text>
+                                <View style={styles.row}>
+                                    <TouchableHighlight
+                                        style={[styles.button, styles.buttonClose]}
+                                        onPress={() => navigation.navigate('RedeemHistory')}
+                                    >
+                                        <Text style={styles.textStyle}>Done</Text>
                                     </TouchableHighlight>
                                 </View>
 

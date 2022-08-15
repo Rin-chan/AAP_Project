@@ -28,7 +28,7 @@ const RedeemHistoryScreen = ({ navigation }) => {
             backgroundColor: BOX_COLOR,
         },
         usedboxcolor: {
-            backgroundColor: "#D7D8D4"
+            backgroundColor: "#DDDDDD"
         }
     })
 
@@ -106,10 +106,14 @@ const RedeemHistoryScreen = ({ navigation }) => {
         } else {
             return (
                 <View>
+                    {/* Item description Title */}
+                    <Text style={[styles.h2, schemeStyle.textColor]}>Not Used</Text>
+                    <Text style={[schemeStyle.textColor]}></Text>
+
                     {unuseditemArr && unuseditemArr.map(item => 
                         <TouchableHighlight
                             style={[styles.outterBox, schemeStyle.boxColor]}
-                            onPress={() => navigation.navigate('RHItemDesc', { code: item[8] })}>
+                            onPress={() => navigation.navigate('RHItemDesc', { code: item[1] })}>
                             <View style={styles.row}>
                                 <View style={{ width: '30%' }}>
                                     <Image
@@ -124,19 +128,25 @@ const RedeemHistoryScreen = ({ navigation }) => {
                             </View>
                         </TouchableHighlight>
                     )}
+                    {/* Item description Title */}
+                    <Text style={[schemeStyle.textColor]}></Text>
+                    <Text style={[styles.h2, schemeStyle.textColor]}>Used</Text>
+                    <Text style={[schemeStyle.textColor]}></Text>
+
                     {useditemArr && useditemArr.map(item =>
                         <TouchableHighlight
                             style={[styles.outterBox, schemeStyle.usedboxcolor]}
+                            underlayColor="#DDDDDD"
                             onPress={() => navigation.navigate('RedeemHistory')}>
                             <View style={styles.row}>
                                 <View style={{ width: '30%' }}>
                                     <Image
-                                        style={{ height: _width, width: _width, margin: "10%" }}
+                                        style={{ height: _width, width: _width, margin: "10%",  opacity: 0.5}}
                                         source={require("../../assets/images/grabfood.png")} />
                                 </View >
                                 <View style={{ width: '60%' }}>
-                                    <Text style={[schemeStyle.textColor, styles.productTitle]}>{item[2]}</Text>
-                                    <Text style={[schemeStyle.textColor]}>{item[5]} CO2 Points</Text>
+                                    <Text style={[schemeStyle.textColor, styles.productTitle, styles.lower_opacity]}>{item[2]}</Text>
+                                    <Text style={[schemeStyle.textColor, styles.lower_opacity]}>{item[5]}</Text>
                                 </View>
 
                             </View>
@@ -226,6 +236,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
+    lower_opacity: {
+        opacity: 0.5
+    },
     tabtext: {
         fontSize: 18,
         textAlign: "center",
