@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, Image, Dimensions, ScrollView, Modal } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 
 import { HeaderBar } from "../../components/organisms";
@@ -40,11 +40,8 @@ const RedeemListScreen = ({ navigation }) => {
     const [pageLoading, setPageLoading] = useState(false);
     const [timer, setTimer] = useState(0);
 
-
     useEffect(() => {
         const interval = setInterval(() => { setTimer(timer => timer + 1) }, 1000);
-
-
         if (pageLoading) {
             clearInterval(interval);
             setTimer(0);
@@ -53,6 +50,7 @@ const RedeemListScreen = ({ navigation }) => {
             clearInterval(interval);
         };
     }, [pageLoading]);
+
 
     const getAllGifts = async () => {
         if (request1 == false) {
@@ -83,7 +81,7 @@ const RedeemListScreen = ({ navigation }) => {
                         if (result.length != 0) {
                             console.log("user" + result);
                             setPoints(result[0][8]);
-
+                            getAllGifts();
                             setPageLoading(true);
                         }
                         else {
@@ -98,7 +96,6 @@ const RedeemListScreen = ({ navigation }) => {
 
 
     getUser();
-    getAllGifts();
 
     console.log("resultArr = " + resultArr);
 
@@ -123,12 +120,12 @@ const RedeemListScreen = ({ navigation }) => {
                         <TouchableHighlight
                             style={[styles.tabs]}
                             onPress={() => navigation.navigate('RedeemMainList')}>
-                            <Text style={[schemeStyle.textColor, styles.productTitle]}>All</Text>
+                            <Text style={[schemeStyle.textColor, styles.tabtext]}>All</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
                             style={[styles.tabs]}
                             onPress={() => navigation.navigate('RedeemMainList')}>
-                            <Text style={[schemeStyle.textColor, styles.productTitle]}>Food</Text>
+                            <Text style={[schemeStyle.textColor, styles.tabtext]}>Food</Text>
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
@@ -140,11 +137,11 @@ const RedeemListScreen = ({ navigation }) => {
                         {resultArr && resultArr.map(item =>
                             <TouchableHighlight
                                 style={[styles.outterBox, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('ItemDesc')}>
+                                onPress={() => navigation.navigate('ItemDesc', { code: item[4] })}>
                                 <View style={styles.row}>
                                     <View style={{ width: '30%' }}>
                                         <Image
-                                            style={{ height: _width, width: _width, margin: "10%"}}
+                                            style={{ height: _width, width: _width, margin: "10%" }}
                                             source={require("../../assets/images/grabfood.png")} />
                                     </View >
                                     <View style={{ width: '60%' }}>
@@ -217,18 +214,22 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
 
+    tabtext: {
+        fontSize: 18,
+        textAlign: "center",
+        paddingVertical: 2,
+    },
+
     tabs: {
-        width: 100,
-        height: 40,
+        width: 80,
+        height: 35,
         borderRadius: 10,
         fontSize: 15,
-        paddingLeft: 20,
-        paddingRight: 20,
         padding: 0,
         marginTop: 15,
         marginRight: 5,
         textAlign: "center",
-        backgroundColor: 'green',
+        backgroundColor: 'white',
     }
 
 

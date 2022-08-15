@@ -139,7 +139,7 @@ const addEmailVerification = async (email) => {
     })
 };
 
-// Get Specific User
+// Get All Gifts
 const getAllGifts = async (offset, pagelimit) => {
     console.log('entered getAllGitfts');
     let result1 = undefined;
@@ -155,7 +155,7 @@ const getAllGifts = async (offset, pagelimit) => {
         .then(response => response.json())
         .then(data => {
             result1 = data.result;
-            
+
 
         })
         .catch(err => console.error(err));
@@ -165,5 +165,119 @@ const getAllGifts = async (offset, pagelimit) => {
 
 };
 
+// Get Specific Gift
+const getSpecificGift = async (code) => {
+    let result = undefined;
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts };
+    await fetch(`http://${flaskIP}/getSpecificGift`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ code: code })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
+
+    console.log("SpecificGift =" + result);
+    return result;
+
+};
+
+// Add Redeem Item
+const addRedeemItem = async (itemcode, email) => {
+    console.log("ADD REDEEM ITEM");
+    await getSpecificGift(itemcode).then((result) => {
+        if (result.length != 0) {
+            const giftname = result[0][1];
+            const img = result[0][7];
+            const point = result[0][6];
+            const industry = result[0][3];
+            const company = result[0][4];
+            const giftdesc = result[0][2]
+
+            fetch(`http://${flaskIP}/addRedeemItem`, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ itemcode: itemcode, email: email, giftname: giftname, industry: industry, company: company, points: point, img: img, description:giftdesc })
+            })
+        }
+        else {
+            console.log("GIFT NOT REDEEMED!");
+            return;
+        }
+    });
+    ;
+
+
+
+};
+
+// Use Redeem Item
+const useRedeemItem = async (redeemcode) => {
+    fetch(`http://${flaskIP}/useRedeemItem`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ redeemcode: redeemcode })
+    })
+};
+
+// Get Unused Redeem Item
+const getUnusedRedeemItems = async (email) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/getUnusedRedeemItems`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
+
+    console.log("All Unused Items =" + result);
+    return result;
+
+};
+
+// get Used Redeem Items
+const getUsedRedeemItems = async (email) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/getUsedRedeemItems`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+        })
+        .catch(err => console.error(err));
+
+    console.log("All Used Items =" + result);
+    return result;
+
+};
+
+
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems };

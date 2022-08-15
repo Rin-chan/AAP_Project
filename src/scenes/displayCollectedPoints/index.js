@@ -51,7 +51,7 @@ const DisplayCollectedPointScreen = ({ navigation }) => {
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.2;
 
-    const collectedPoints = navigation.getParam('collectedPoints');;
+    const collectedPoints = navigation.getParam('collectedPoints');
     console.log(collectedPoints);
 
     // const [request, setRequest] = useState(false);

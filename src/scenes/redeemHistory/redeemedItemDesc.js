@@ -5,9 +5,8 @@ import { useDarkMode } from 'react-native-dynamic';
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
 import UserDB from '../../utils/database/userdb';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ItemDescScreen = ({ navigation }) => {
+const RHItemDescScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
@@ -38,23 +37,15 @@ const ItemDescScreen = ({ navigation }) => {
     console.log("code = " + code);
 
     const [modalVisible, setModalVisible] = useState(false);
-    const [modalVisible1, setModalVisible1] = useState(false);
 
     const [giftname, setGiftName] = useState("");
     const [giftDesc, setGiftDesc] = useState("");
     const [industry, setIndustry] = useState("");
     const [company, setCompany] = useState("");
     const [points, setPoints] = useState(0);
-    const [itemcode, setItemCode] = useState("");
     const [img, setImg] = useState("");
-    const [email, setEmail] = useState("");
 
     const [request, setRequest] = useState(false);
-    const [emailrequest, setEmailRequest] = useState(false);
-
-    const [redemptionMsg, setRedemptionMsg] = useState(false);
-
-    // FUNCTIONS
     const getSpecificGift = async () => {
         if (request == false) {
             setRequest(true);
@@ -64,7 +55,6 @@ const ItemDescScreen = ({ navigation }) => {
                     setGiftName(result[0][1]);
                     setPoints(result[0][6]);
                     setImg(result[0][7]);
-                    setItemCode(result[0][5]);
                     setIndustry(result[0][3]);
                     setCompany(result[0][4]);
                     setGiftDesc(result[0][2]);
@@ -77,45 +67,8 @@ const ItemDescScreen = ({ navigation }) => {
         }
     };
 
-    const getUser = async () => {
-        if (emailrequest == false) {
-            setEmailRequest(true);
 
-            await AsyncStorage.getItem('user')
-                .then(email => {
-                    console.log("a " + email);
-                    setEmail(email);
-                });
-        }
-    };
-
-
-    const redeemItem = async (itemcode, email) => {
-        await UserDB.getUserPoints(email).then(result => {
-            console.log("User points: " + result);
-            if (parseInt(result) > points){
-                var new_pts = parseInt(result) - points;
-
-                UserDB.updateUserPoints(email, new_pts);
-                UserDB.addRedeemItem(itemcode, email);
-
-                const Msg = "You have redeemed " + giftname + " for " + points + " C02 Points!";
-                setRedemptionMsg(Msg);
-
-            }else{
-                setRedemptionMsg("You do not have enough points to redeem :<");
-            }
-            
-        });
-
-        setModalVisible(!modalVisible);
-        setModalVisible1(!modalVisible1);
-    };
-
-
-    getUser();
     getSpecificGift();
-    console.log("user email is " + email);
     const imgfilepath = "../../assets/images/" + img;
 
     return (
@@ -126,8 +79,8 @@ const ItemDescScreen = ({ navigation }) => {
             <SafeAreaView style={{ flex: 1 }}>
                 <TouchableHighlight
                     style={{ padding: 10 }}
-                    onPress={() => navigation.navigate('RedeemList')}>
-                    <Text style={[schemeStyle.textColor, { fontWeight: "bold" }]}>go back to redeemList</Text>
+                    onPress={() => navigation.navigate('RedeemHistory')}>
+                    <Text style={[schemeStyle.textColor, { fontWeight: "bold" }]}>go back to Redeem History</Text>
                 </TouchableHighlight>
 
                 {/* Page Content */}
@@ -136,12 +89,11 @@ const ItemDescScreen = ({ navigation }) => {
                     <View style={styles.row}>
                         <View style={{ width: '30%' }}>
                             <Image
-                                style={{ height: _width, width: _width, padding: "5%"}}
+                                style={{ height: _width, width: _width, padding: "5%" }}
                                 source={require("../../assets/images/grabfood.png")} />
                         </View >
                         <View style={{ width: '60%', padding: '2%' }}>
                             <Text style={[schemeStyle.textColor, styles.productTitle]}>{giftname}</Text>
-                            <Text style={[schemeStyle.textColor,styles.normaltext]}>{points} CO2 Points</Text>
                         </View>
 
                     </View>
@@ -163,7 +115,7 @@ const ItemDescScreen = ({ navigation }) => {
                             style={[styles.btn, schemeStyle.boxColor]}
                             onPress={() => setModalVisible(true)}>
                             <View style={styles.row}>
-                                <Text style={[schemeStyle.textColor]}>Redeem?</Text>
+                                <Text style={[schemeStyle.textColor]}>Used?</Text>
                             </View>
                         </TouchableHighlight>
 
@@ -179,11 +131,11 @@ const ItemDescScreen = ({ navigation }) => {
                     >
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <Text style={styles.modalText}>Redemption process is irreversible. Are you sure you want to redeem item-name?</Text>
+                                <Text style={styles.modalText}> The code will be email you once only. Are you sure you want to redeem {giftname}?</Text>
                                 <View style={styles.row}>
                                     <TouchableHighlight
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={() => redeemItem(itemcode, email)}
+                                        onPress={() => setModalVisible(!modalVisible)}
                                     >
                                         <Text style={styles.textStyle}>Yes</Text>
                                     </TouchableHighlight>
@@ -192,31 +144,6 @@ const ItemDescScreen = ({ navigation }) => {
                                         onPress={() => setModalVisible(!modalVisible)}
                                     >
                                         <Text style={styles.textStyle}>No</Text>
-                                    </TouchableHighlight>
-                                </View>
-
-                            </View>
-                        </View>
-                    </Modal>
-
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={modalVisible1}
-                        onRequestClose={() => {
-                            Alert.alert("Modal has been closed.");
-                            setModalVisible1(!modalVisible1);
-                        }}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <Text style={styles.modalText}>{redemptionMsg}</Text>
-                                <View style={styles.row}>
-                                    <TouchableHighlight
-                                        style={[styles.button, styles.buttonClose]}
-                                        onPress={() => setModalVisible1(!modalVisible1)}
-                                    >
-                                        <Text style={styles.textStyle}>Done</Text>
                                     </TouchableHighlight>
                                 </View>
 
@@ -348,4 +275,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ItemDescScreen;
+export default RHItemDescScreen;

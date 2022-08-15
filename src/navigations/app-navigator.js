@@ -12,6 +12,8 @@ import RedeemListScreen from '../scenes/redeemList';
 import ScanQRCodeScreen from '../scenes/scanQRcode';
 import DisplayCollectedPointScreen from "../scenes/displayCollectedPoints";
 import ItemDescScreen from "../scenes/redeemList/itemDesc";
+import RedeemHistoryScreen from "../scenes/redeemHistory";
+import RHItemDescScreen from "../scenes/redeemHistory/redeemedItemDesc";
 
 // Language
 import i18n from 'i18next';
@@ -101,6 +103,20 @@ const RouteConfigs = {
         tabBarVisible: false,
         navigationOptions: {
             title: "Item Desc"
+        }
+    },
+    RedeemHistory: {
+        screen: RedeemHistoryScreen,
+        tabBarVisible: false,
+        navigationOptions: {
+            title: "Redeem History"
+        }
+    },
+    RHItemDesc: {
+        screen: RHItemDescScreen,
+        tabBarVisible: false,
+        navigationOptions: {
+            title: "Redeemed Item Desc"
         }
     }
 
