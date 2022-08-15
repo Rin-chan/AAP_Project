@@ -12,9 +12,14 @@ const RedeemListScreen = ({ navigation }) => {
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        BOX_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
     }
 
     const schemeStyle = StyleSheet.create({
@@ -118,12 +123,12 @@ const RedeemListScreen = ({ navigation }) => {
                 <ScrollView horizontal={true} style={[styles.tabContainer, schemeStyle.foregroundColor]}>
                     <View style={styles.row}>
                         <TouchableHighlight
-                            style={[styles.tabs]}
+                            style={[styles.tabs, schemeStyle.boxColor]}
                             onPress={() => navigation.navigate('RedeemMainList')}>
                             <Text style={[schemeStyle.textColor, styles.tabtext]}>All</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            style={[styles.tabs]}
+                            style={[styles.tabs, schemeStyle.boxColor]}
                             onPress={() => navigation.navigate('RedeemMainList')}>
                             <Text style={[schemeStyle.textColor, styles.tabtext]}>Food</Text>
                         </TouchableHighlight>
@@ -228,8 +233,7 @@ const styles = StyleSheet.create({
         padding: 0,
         marginTop: 15,
         marginRight: 5,
-        textAlign: "center",
-        backgroundColor: 'white',
+        textAlign: "center"
     }
 
 

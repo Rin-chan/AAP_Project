@@ -95,7 +95,7 @@ const RouteConfigs = {
         }
     },
     displayCollectedPoints: {
-        screen: DisplayCollectedPointScreen,
+        screen: RedeemHistoryScreen,
         navigationOptions: {
             tabBarVisible: false,
             title: displayCollectedPointsTitle
@@ -110,14 +110,12 @@ const RouteConfigs = {
     },
     RedeemHistory: {
         screen: RedeemHistoryScreen,
-        tabBarVisible: false,
         navigationOptions: {
             title: "Redeem History"
         }
     },
     RHItemDesc: {
         screen: RHItemDescScreen,
-        tabBarVisible: false,
         navigationOptions: {
             title: "Redeemed Item Desc"
         }

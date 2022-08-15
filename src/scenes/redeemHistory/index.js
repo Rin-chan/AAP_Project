@@ -12,9 +12,14 @@ const RedeemHistoryScreen = ({ navigation }) => {
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        BOX_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
     }
 
     const schemeStyle = StyleSheet.create({
@@ -135,8 +140,7 @@ const RedeemHistoryScreen = ({ navigation }) => {
 
                     {useditemArr && useditemArr.map(item =>
                         <TouchableHighlight
-                            style={[styles.outterBox, schemeStyle.usedboxcolor]}
-                            underlayColor="#DDDDDD"
+                            style={[styles.outterBox, schemeStyle.boxColor]}
                             onPress={() => navigation.navigate('RedeemHistory')}>
                             <View style={styles.row}>
                                 <View style={{ width: '30%' }}>

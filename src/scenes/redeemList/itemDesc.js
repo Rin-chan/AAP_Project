@@ -9,12 +9,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ItemDescScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
+
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
-    var BOX_COLOR = Colors.LIGHT_PRIMARY_BUTTON
+    var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        BOX_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
     }
 
     const schemeStyle = StyleSheet.create({
@@ -93,7 +99,7 @@ const ItemDescScreen = ({ navigation }) => {
     const redeemItem = async (itemcode, email) => {
         await UserDB.getUserPoints(email).then(result => {
             console.log("User points: " + result);
-            if (parseInt(result) > points){
+            if (parseInt(result) > points) {
                 var new_pts = parseInt(result) - points;
 
                 UserDB.updateUserPoints(email, new_pts);
@@ -102,10 +108,10 @@ const ItemDescScreen = ({ navigation }) => {
                 const Msg = "You have redeemed " + giftname + " for " + points + " C02 Points!";
                 setRedemptionMsg(Msg);
 
-            }else{
+            } else {
                 setRedemptionMsg("You do not have enough points to redeem :<");
             }
-            
+
         });
 
         setModalVisible(!modalVisible);
@@ -136,12 +142,12 @@ const ItemDescScreen = ({ navigation }) => {
                     <View style={styles.row}>
                         <View style={{ width: '30%' }}>
                             <Image
-                                style={{ height: _width, width: _width, padding: "5%"}}
+                                style={{ height: _width, width: _width, padding: "5%" }}
                                 source={require("../../assets/images/grabfood.png")} />
                         </View >
                         <View style={{ width: '60%', padding: '2%' }}>
                             <Text style={[schemeStyle.textColor, styles.productTitle]}>{giftname}</Text>
-                            <Text style={[schemeStyle.textColor,styles.normaltext]}>{points} CO2 Points</Text>
+                            <Text style={[schemeStyle.textColor, styles.normaltext]}>{points} CO2 Points</Text>
                         </View>
 
                     </View>
@@ -182,7 +188,7 @@ const ItemDescScreen = ({ navigation }) => {
                                 <Text style={styles.modalText}>Redemption process is irreversible. Are you sure you want to redeem item-name?</Text>
                                 <View style={styles.row}>
                                     <TouchableHighlight
-                                        style={[styles.button, styles.buttonClose]}
+                                        style={[schemeStyle.PRIMARY_BUTTON, styles.button, styles.buttonClose]}
                                         onPress={() => redeemItem(itemcode, email)}
                                     >
                                         <Text style={styles.textStyle}>Yes</Text>
