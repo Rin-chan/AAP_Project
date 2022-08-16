@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Tex, TouchableOpacityt } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useDarkMode } from 'react-native-dynamic';
 import { useTranslation } from 'react-i18next';
 
@@ -136,13 +136,14 @@ const customDrawer = ({ navigation }) => {
                 {
                     selected == 8?
                     <TouchableOpacity>
-                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemHistory')}</Text>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>Redeem History</Text>
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={() => {
                         navigation.navigate("RedeemHistory")
                         setSelected(8);
-                    }}><Text> Redeem History</Text>
+                    }}>
+                        <Text> Redeem History</Text>
                     </TouchableOpacity>
                 }
             </SafeAreaView>
