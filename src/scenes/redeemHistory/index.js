@@ -12,9 +12,14 @@ const RedeemHistoryScreen = ({ navigation }) => {
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var BOX_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
+    var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
+    var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        BOX_COLOR = Colors.DARK_SECONDARY_BACKGROUND
+        DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
+        PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
     }
 
     const schemeStyle = StyleSheet.create({
@@ -34,9 +39,7 @@ const RedeemHistoryScreen = ({ navigation }) => {
 
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.2;
-
-
-    const [points, setPoints] = useState(0);
+// 
     const [request, setRequest] = useState(false);
 
     const [useditemArr, setuseditemArr] = useState(null);
@@ -45,9 +48,20 @@ const RedeemHistoryScreen = ({ navigation }) => {
     const [pageLoading, setPageLoading] = useState(false);
     const [timer, setTimer] = useState(0);
 
+    const images = {
+        "Food": {
+          uri: require('../../assets/images/grabfood.png')
+        },
+        "Shopping": { 
+          uri: require('../../assets/images/popular.png')
+        },
+        "Nth" : {
+            uri: require('../../assets/images/logo.png')
+        }
+      }
+
     useEffect(() => {
         const interval = setInterval(() => { setTimer(timer => timer + 1) }, 1000);
-
 
         if (pageLoading) {
             clearInterval(interval);
@@ -58,19 +72,19 @@ const RedeemHistoryScreen = ({ navigation }) => {
         };
     }, [pageLoading]);
 
+    useEffect(() => {
+        getAllItems();
+    });
 
     const getAllItems = async () => {
         if (request == false) {
             setRequest(true);
-
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    setPageLoading(true);
-                    console.log(email);
                     UserDB.getUsedRedeemItems(email).then((result) => {
                         if (result.length != 0) {
                             setuseditemArr(result);
-                            console.log("Used Items:" + result);
+                            setPageLoading(true);
                         }
                         else {
                             console.log("No Used Items");
@@ -80,7 +94,7 @@ const RedeemHistoryScreen = ({ navigation }) => {
                     UserDB.getUnusedRedeemItems(email).then((result) => {
                         if (result.length != 0) {
                             setunuseditemArr(result);
-                            console.log("Unused Items:" + result);
+                            setPageLoading(true);
                         }
                         else {
                             console.log("No Unused Items");
@@ -91,9 +105,6 @@ const RedeemHistoryScreen = ({ navigation }) => {
                 });
         }
     };
-
-
-    getAllItems();
 
 
     const displayItems = () => {
@@ -118,7 +129,7 @@ const RedeemHistoryScreen = ({ navigation }) => {
                                 <View style={{ width: '30%' }}>
                                     <Image
                                         style={{ height: _width, width: _width, margin: "10%" }}
-                                        source={require("../../assets/images/grabfood.png")} />
+                                        source={images[item[4]].uri} />
                                 </View >
                                 <View style={{ width: '60%' }}>
                                     <Text style={[schemeStyle.textColor, styles.productTitle]}>{item[2]}</Text>
@@ -135,14 +146,14 @@ const RedeemHistoryScreen = ({ navigation }) => {
 
                     {useditemArr && useditemArr.map(item =>
                         <TouchableHighlight
-                            style={[styles.outterBox, schemeStyle.usedboxcolor]}
+                            style={[styles.outterBox, schemeStyle.boxColor]}
                             underlayColor="#DDDDDD"
                             onPress={() => navigation.navigate('RedeemHistory')}>
                             <View style={styles.row}>
                                 <View style={{ width: '30%' }}>
                                     <Image
                                         style={{ height: _width, width: _width, margin: "10%",  opacity: 0.5}}
-                                        source={require("../../assets/images/grabfood.png")} />
+                                        source={images[item[4]].uri} />
                                 </View >
                                 <View style={{ width: '60%' }}>
                                     <Text style={[schemeStyle.textColor, styles.productTitle, styles.lower_opacity]}>{item[2]}</Text>
@@ -168,9 +179,6 @@ const RedeemHistoryScreen = ({ navigation }) => {
                 <View style={styles.row}>
                     <Text style={[styles.h1, schemeStyle.textColor]}>Redeem History</Text>
                 </View>
-
-                {/* h2 - Reward list */}
-                {/* <Text style={[styles.h2, schemeStyle.textColor]}>Reward list</Text> */}
 
                 {/* List of Rewards */}
                 <ScrollView showsVerticalScrollIndicator={false} style={[styles.innerContainer, schemeStyle.foregroundColor]}>

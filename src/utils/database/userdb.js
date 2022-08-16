@@ -141,7 +141,6 @@ const addEmailVerification = async (email) => {
 
 // Get All Gifts
 const getAllGifts = async (offset, pagelimit) => {
-    console.log('entered getAllGitfts');
     let result1 = undefined;
 
     await fetch(`http://${flaskIP}/getAllGifts`, {
@@ -160,7 +159,6 @@ const getAllGifts = async (offset, pagelimit) => {
         })
         .catch(err => console.error(err));
 
-    console.log("result11 =" + result1);
     return result1;
 
 };
@@ -183,14 +181,12 @@ const getSpecificGift = async (code) => {
         })
         .catch(err => console.error(err));
 
-    console.log("SpecificGift =" + result);
     return result;
 
 };
 
 // Add Redeem Item
 const addRedeemItem = async (itemcode, email) => {
-    console.log("ADD REDEEM ITEM");
     await getSpecificGift(itemcode).then((result) => {
         if (result.length != 0) {
             const giftname = result[0][1];
@@ -210,13 +206,11 @@ const addRedeemItem = async (itemcode, email) => {
             })
         }
         else {
-            console.log("GIFT NOT REDEEMED!");
+            console.log("FAIL TO ADD GIFT REDEEMED!");
             return;
         }
     });
     ;
-
-
 
 };
 
@@ -249,8 +243,6 @@ const getUnusedRedeemItems = async (email) => {
             result = data.result;
         })
         .catch(err => console.error(err));
-
-    console.log("All Unused Items =" + result);
     return result;
 
 };
@@ -272,8 +264,6 @@ const getUsedRedeemItems = async (email) => {
             result = data.result;
         })
         .catch(err => console.error(err));
-
-    console.log("All Used Items =" + result);
     return result;
 
 };
@@ -295,12 +285,33 @@ const getSpecificRedeem = async (redeemcode) => {
             result = data.result;
         })
         .catch(err => console.error(err));
+    return result;
 
-    console.log("SpecificRedeem =" + result);
+};
+
+// Get All Gifts
+const filterGifts = async (filter) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/FilterGifts`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filter:filter })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+
+        })
+        .catch(err => console.error(err));
+
     return result;
 
 };
 
 
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems, getSpecificRedeem };
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems, getSpecificRedeem, filterGifts };

@@ -31,22 +31,20 @@ const ItemDescScreen = ({ navigation }) => {
 
     const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
-    const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.3;
 
     const code = navigation.getParam('code');
-    console.log("code = " + code);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
 
     const [giftname, setGiftName] = useState("");
     const [giftDesc, setGiftDesc] = useState("");
-    const [industry, setIndustry] = useState("");
+    const [industry, setIndustry] = useState("Nth");
     const [company, setCompany] = useState("");
     const [points, setPoints] = useState(0);
     const [itemcode, setItemCode] = useState("");
-    const [img, setImg] = useState("");
+    const [img, setImg] = useState("../../assets/images/logo.png");
     const [email, setEmail] = useState("");
 
     const [request, setRequest] = useState(false);
@@ -83,7 +81,6 @@ const ItemDescScreen = ({ navigation }) => {
 
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    console.log("a " + email);
                     setEmail(email);
                 });
         }
@@ -92,8 +89,7 @@ const ItemDescScreen = ({ navigation }) => {
 
     const redeemItem = async (itemcode, email) => {
         await UserDB.getUserPoints(email).then(result => {
-            console.log("User points: " + result);
-            if (parseInt(result) > points){
+            if (parseInt(result) >= points){
                 var new_pts = parseInt(result) - points;
 
                 UserDB.updateUserPoints(email, new_pts);
@@ -112,11 +108,21 @@ const ItemDescScreen = ({ navigation }) => {
         setModalVisible1(!modalVisible1);
     };
 
+    const images = {
+        "Food": {
+          uri: require('../../assets/images/grabfood.png')
+        },
+        "Shopping": { 
+          uri: require('../../assets/images/popular.png')
+        },
+        "Nth" : {
+            uri: require('../../assets/images/logo.png')
+        }
+      }
+
 
     getUser();
     getSpecificGift();
-    console.log("user email is " + email);
-    const imgfilepath = "../../assets/images/" + img;
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
@@ -137,7 +143,7 @@ const ItemDescScreen = ({ navigation }) => {
                         <View style={{ width: '30%' }}>
                             <Image
                                 style={{ height: _width, width: _width, padding: "5%"}}
-                                source={require("../../assets/images/grabfood.png")} />
+                                source={images[industry].uri} />
                         </View >
                         <View style={{ width: '60%', padding: '2%' }}>
                             <Text style={[schemeStyle.textColor, styles.productTitle]}>{giftname}</Text>
