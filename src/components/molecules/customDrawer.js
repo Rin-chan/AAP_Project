@@ -134,16 +134,16 @@ const customDrawer = ({ navigation }) => {
                 }
 
                 {
-                    selected == 8?
+                    selected == 7?
                     <TouchableOpacity>
-                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>Redeem History</Text>
+                        <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemHistory')}</Text>
                     </TouchableOpacity>
                     :
                     <TouchableOpacity onPress={() => {
                         navigation.navigate("RedeemHistory")
-                        setSelected(8);
+                        setSelected(7);
                     }}>
-                        <Text> Redeem History</Text>
+                        <Text style={[schemeStyle.textColor, styles.textStyle]}>Redeem History</Text>
                     </TouchableOpacity>
                 }
             </SafeAreaView>
