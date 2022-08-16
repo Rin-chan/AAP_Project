@@ -1,7 +1,11 @@
 # AAP_Project (Consumer App)
 
 ### settings.json
-"flaskServer":"Your-LAN-IP-here" 
+```
+{
+"flaskServer":"Your-LAN-IP-here"
+}
+```
 
 ### Issue with Drawer
 ```
