@@ -64,7 +64,6 @@ const RedeemListScreen = ({ navigation }) => {
 
     const getAllGifts = async () => {
         await UserDB.getAllGifts(0, 10).then((result1) => {
-            console.log("result1" + result1);
             if (result1.length != 0) {
                 setResultArr(result1);
                 setActiveFood(false);
@@ -95,10 +94,8 @@ const RedeemListScreen = ({ navigation }) => {
 
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    console.log(email);
                     UserDB.getUser(email).then((result) => {
                         if (result.length != 0) {
-                            console.log("user" + result);
                             setPoints(result[0][8]);
                             getAllGifts();
 
@@ -126,14 +123,12 @@ const RedeemListScreen = ({ navigation }) => {
             setActiveShop(true);
         }
         await UserDB.filterGifts(filter).then((result) => {
-            console.log("result" + result);
             if (result.length != 0) {
                 setResultArr(result);
-                console.log("result from db = " + resultArr);
             }
             else {
                 setResultArr(null);
-                console.log("GIFTS NOT FOUND");
+                console.log("Filter: GIFTS NOT FOUND");
                 return;
             }
         });
@@ -142,7 +137,6 @@ const RedeemListScreen = ({ navigation }) => {
 
     getUser();
 
-    console.log("resultArr = " + resultArr);
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>

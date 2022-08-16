@@ -31,11 +31,9 @@ const ItemDescScreen = ({ navigation }) => {
 
     const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
-    const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.3;
 
     const code = navigation.getParam('code');
-    console.log("code = " + code);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
@@ -83,7 +81,6 @@ const ItemDescScreen = ({ navigation }) => {
 
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    console.log("a " + email);
                     setEmail(email);
                 });
         }
@@ -92,7 +89,6 @@ const ItemDescScreen = ({ navigation }) => {
 
     const redeemItem = async (itemcode, email) => {
         await UserDB.getUserPoints(email).then(result => {
-            console.log("User points: " + result);
             if (parseInt(result) >= points){
                 var new_pts = parseInt(result) - points;
 
@@ -127,9 +123,6 @@ const ItemDescScreen = ({ navigation }) => {
 
     getUser();
     getSpecificGift();
-    console.log("user email is " + email);
-    console.log("img" + img);
-    const imgpath = img.toString();
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>

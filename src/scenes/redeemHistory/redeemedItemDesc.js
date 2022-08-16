@@ -43,11 +43,9 @@ const RHItemDescScreen = ({ navigation }) => {
 
     const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
-    const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.3;
 
     const redeemcode = navigation.getParam('code');
-    console.log("redeemcode = " + redeemcode);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalVisible1, setModalVisible1] = useState(false);
@@ -92,7 +90,6 @@ const RHItemDescScreen = ({ navigation }) => {
 
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    console.log("a " + email);
                     setEmail(email);
                 });
         }

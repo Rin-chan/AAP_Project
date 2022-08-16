@@ -81,12 +81,9 @@ const RedeemHistoryScreen = ({ navigation }) => {
             setRequest(true);
             await AsyncStorage.getItem('user')
                 .then(email => {
-                    
-                    console.log(email);
                     UserDB.getUsedRedeemItems(email).then((result) => {
                         if (result.length != 0) {
                             setuseditemArr(result);
-                            console.log("Used Items:" + result);
                             setPageLoading(true);
                         }
                         else {
@@ -97,7 +94,6 @@ const RedeemHistoryScreen = ({ navigation }) => {
                     UserDB.getUnusedRedeemItems(email).then((result) => {
                         if (result.length != 0) {
                             setunuseditemArr(result);
-                            console.log("Unused Items:" + result);
                             setPageLoading(true);
                         }
                         else {

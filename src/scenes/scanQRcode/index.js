@@ -51,16 +51,13 @@ const ScanQRCodeScreen = ({ navigation }) => {
         setScanned(true);
         await AsyncStorage.getItem('user')
         .then(email => {
-            console.log(email);
             UserDB.getUserPoints(email).then((result) => {
                 if(result.length != 0) {
                     // '{"customID": unique_id, "Points": points }'
                     console.log(data)
                     var dict_input = JSON.parse(data);
                     var collected_pts = dict_input['Points']
-                    console.log(collected_pts)
                     new_pts = parseInt(result) + parseInt(collected_pts)
-                    console.log(typeof new_pts)
                     UserDB.updateUserPoints(email, new_pts);
                     navigation.navigate("displayCollectedPoints", {collectedPoints: collected_pts});
                     return;
