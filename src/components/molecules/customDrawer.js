@@ -106,23 +106,13 @@ const customDrawer = ({ navigation }) => {
                 }
 
                 {
-                    selected == 7?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:displayCollectedPoints')}</Text>
-                    :
-                    <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
-                        navigation.navigate("displayCollectedPoints")
-                        setSelected(7);
-                    }}>{t('app_navigator:displayCollectedPoints')}</Text>
-                }
-
-                {
                     selected == 8?
-                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:ItemDesc')}</Text>
+                    <Text style={[schemeStyle.highlightColor, styles.textStyle]}>{t('app_navigator:RedeemHistory')}</Text>
                     :
                     <Text style={[schemeStyle.textColor, styles.textStyle]} onPress={() => {
-                        navigation.navigate("ItemDesc")
+                        navigation.navigate("RedeemHistory")
                         setSelected(8);
-                    }}>Item Desc</Text>
+                    }}>Redeem History</Text>
                 }
             </SafeAreaView>
         </ScrollView>

@@ -29,6 +29,18 @@ const RHItemDescScreen = ({ navigation }) => {
         }
     })
 
+    const images = {
+        "Food": {
+          uri: require('../../assets/images/grabfood.png')
+        },
+        "Shopping": { 
+          uri: require('../../assets/images/popular.png')
+        },
+        "Nth" : {
+            uri: require('../../assets/images/logo.png')
+        }
+      }
+
     const B = (props) => <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>
 
     const _imgwidth = Dimensions.get('screen').width * 0.1;
@@ -42,7 +54,7 @@ const RHItemDescScreen = ({ navigation }) => {
 
     const [giftname, setGiftName] = useState("");
     const [giftDesc, setGiftDesc] = useState("");
-    const [industry, setIndustry] = useState("");
+    const [industry, setIndustry] = useState("Nth");
     const [company, setCompany] = useState("");
     const [img, setImg] = useState("");
 
@@ -118,7 +130,7 @@ const RHItemDescScreen = ({ navigation }) => {
                         <View style={{ width: '30%' }}>
                             <Image
                                 style={{ height: _width, width: _width, padding: "5%" }}
-                                source={require("../../assets/images/grabfood.png")} />
+                                source={images[industry].uri} />
                         </View >
                         <View style={{ width: '60%', padding: '2%' }}>
                             <Text style={[schemeStyle.textColor, styles.productTitle]}>{giftname}</Text>
@@ -194,7 +206,8 @@ const RHItemDescScreen = ({ navigation }) => {
                                 <View style={styles.row}>
                                     <TouchableHighlight
                                         style={[styles.button, styles.buttonClose]}
-                                        onPress={() => navigation.navigate('RedeemHistory')}
+                                        onPress={() => setModalVisible1(!modalVisible1)
+                                        }
                                     >
                                         <Text style={styles.textStyle}>Done</Text>
                                     </TouchableHighlight>

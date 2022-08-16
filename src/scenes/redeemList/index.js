@@ -32,13 +32,15 @@ const RedeemListScreen = ({ navigation }) => {
     const _imgwidth = Dimensions.get('screen').width * 0.1;
     const _width = Dimensions.get('screen').width * 0.2;
 
-
     const [points, setPoints] = useState(0);
     const [request, setRequest] = useState(false);
-    const [request1, setRequest1] = useState(false);
     const [resultArr, setResultArr] = useState(null);
     const [pageLoading, setPageLoading] = useState(false);
     const [timer, setTimer] = useState(0);
+
+    const [activeAll, setActiveAll] = useState(false);
+    const [activeFood, setActiveFood] = useState(false);
+    const [activeShop, setActiveShop] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => { setTimer(timer => timer + 1) }, 1000);
@@ -53,22 +55,31 @@ const RedeemListScreen = ({ navigation }) => {
 
 
     const getAllGifts = async () => {
-        if (request1 == false) {
-            setRequest1(true);
-            await UserDB.getAllGifts(0, 10).then((result1) => {
-                console.log("result1" + result1);
-                if (result1.length != 0) {
-                    setResultArr(result1);
-                    console.log("result from db = " + resultArr);
-                }
-                else {
-                    console.log("GIFTS NOT FOUND");
-                    return;
-                }
-            });
-        }
+        await UserDB.getAllGifts(0, 10).then((result1) => {
+            console.log("result1" + result1);
+            if (result1.length != 0) {
+                setResultArr(result1);
+                setActiveFood(false);
+                setActiveAll(true);
+                setActiveShop(false);
+            }
+            else {
+                console.log("GIFTS NOT FOUND");
+                return;
+            }
+        });
 
     }
+
+    const images = {
+        "Food": {
+          uri: require('../../assets/images/grabfood.png')
+        },
+        "Shopping": { 
+          uri: require('../../assets/images/popular.png')
+        }
+      }
+
 
     const getUser = async () => {
         if (request == false) {
@@ -82,6 +93,7 @@ const RedeemListScreen = ({ navigation }) => {
                             console.log("user" + result);
                             setPoints(result[0][8]);
                             getAllGifts();
+
                             setPageLoading(true);
                         }
                         else {
@@ -93,6 +105,31 @@ const RedeemListScreen = ({ navigation }) => {
                 });
         }
     };
+
+    const filterGifts = async (filter) => {
+        if (filter == 'Food') {
+            setActiveFood(true);
+            setActiveAll(false);
+            setActiveShop(false);
+        }
+        else if (filter == "Shopping") {
+            setActiveFood(false);
+            setActiveAll(false);
+            setActiveShop(true);
+        }
+        await UserDB.filterGifts(filter).then((result) => {
+            console.log("result" + result);
+            if (result.length != 0) {
+                setResultArr(result);
+                console.log("result from db = " + resultArr);
+            }
+            else {
+                setResultArr(null);
+                console.log("GIFTS NOT FOUND");
+                return;
+            }
+        });
+    }
 
 
     getUser();
@@ -118,14 +155,19 @@ const RedeemListScreen = ({ navigation }) => {
                 <ScrollView horizontal={true} style={[styles.tabContainer, schemeStyle.foregroundColor]}>
                     <View style={styles.row}>
                         <TouchableHighlight
-                            style={[styles.tabs]}
-                            onPress={() => navigation.navigate('RedeemMainList')}>
+                            style={[styles.tabs, activeAll ? { opacity: 0.5 } : {}]}
+                            onPress={() => getAllGifts()}>
                             <Text style={[schemeStyle.textColor, styles.tabtext]}>All</Text>
                         </TouchableHighlight>
                         <TouchableHighlight
-                            style={[styles.tabs]}
-                            onPress={() => navigation.navigate('RedeemMainList')}>
+                            style={[styles.tabs, activeFood ? { opacity: 0.5 } : {}]}
+                            onPress={() => filterGifts('Food')}>
                             <Text style={[schemeStyle.textColor, styles.tabtext]}>Food</Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            style={[styles.tabs, activeShop ? { opacity: 0.5 } : {}]}
+                            onPress={() => filterGifts('Shopping')}>
+                            <Text style={[schemeStyle.textColor, styles.tabtext]}>Shopping</Text>
                         </TouchableHighlight>
                     </View>
                 </ScrollView>
@@ -137,12 +179,12 @@ const RedeemListScreen = ({ navigation }) => {
                         {resultArr && resultArr.map(item =>
                             <TouchableHighlight
                                 style={[styles.outterBox, schemeStyle.boxColor]}
-                                onPress={() => navigation.navigate('ItemDesc', { code: item[4] })}>
+                                onPress={() => navigation.navigate('ItemDesc', { code: item[5] })}>
                                 <View style={styles.row}>
                                     <View style={{ width: '30%' }}>
                                         <Image
                                             style={{ height: _width, width: _width, margin: "10%" }}
-                                            source={require("../../assets/images/grabfood.png")} />
+                                            source={images[item[2]].uri} />
                                     </View >
                                     <View style={{ width: '60%' }}>
                                         <Text style={[schemeStyle.textColor, styles.productTitle]}>{item[0]}</Text>

@@ -301,6 +301,30 @@ const getSpecificRedeem = async (redeemcode) => {
 
 };
 
+// Get All Gifts
+const filterGifts = async (filter) => {
+    let result = undefined;
+
+    await fetch(`http://${flaskIP}/FilterGifts`, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filter:filter })
+    })
+        .then(response => response.json())
+        .then(data => {
+            result = data.result;
+
+        })
+        .catch(err => console.error(err));
+
+    console.log("result =" + result);
+    return result;
+
+};
 
 
-export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems, getSpecificRedeem };
+
+export default { addUser, getUser, updateUserDetails, updateUserPassword, updateUserFace, updateUserProfilePic, addForgotPassword, addEmailVerification, updateUserPoints, getUserPoints, addForgotPassword, addEmailVerification, getAllGifts, getSpecificGift, addRedeemItem, useRedeemItem, getUnusedRedeemItems, getUsedRedeemItems, getSpecificRedeem, filterGifts };
