@@ -72,6 +72,11 @@ const LoginScreen = ({ navigation }) => {
                                 UserDB.updateUserPassword(userDetails.email, null);
                             }
 
+                            if (result[0][9] == 1) {
+                                setModalVisible(true);
+                                return;
+                            }
+
                             storeData('userToken', authentication.accessToken);
                             storeData('user', userDetails.email);
                             storeData('google', "true");
