@@ -1,11 +1,10 @@
-# AAP_Project
+# AAP_Project (Consumer App)
 
-## Setting up React Native Environment:
-https://reactnative.dev/docs/environment-setup
+### settings.json
+"flaskServer":"Your-LAN-IP-here" 
 
-## Helpful Links:
-- General helps: https://www.tutorialspoint.com/react_native/react_native_app.htm
-- Organisation: https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
-
-## Issue with Drawer that might require you to fix on your own
-https://stackoverflow.com/questions/67840220/getting-typeerror-interpolate-is-not-a-function-in-react-native
+### Issue with Drawer
+```
+1. Open the Drawer.js file found in /node_modules/react-navigation-drawer/lib/module/views/ folder
+2. You will find interpolate in two places, replace the interpolate with interpolateNode in those two places.
+```
