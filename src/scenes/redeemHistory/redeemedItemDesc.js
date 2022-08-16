@@ -57,6 +57,7 @@ const RHItemDescScreen = ({ navigation }) => {
     const [industry, setIndustry] = useState("Nth");
     const [company, setCompany] = useState("");
     const [img, setImg] = useState("");
+    const [used, setUsage] = useState(false);
 
     const [email, setEmail] = useState("");
 
@@ -102,6 +103,7 @@ const RHItemDescScreen = ({ navigation }) => {
 
         const Msg = "The code has been sent to you. If you did not receive the email, please contact us at appdevproto123@gmail.com";
         setRedemptionMsg(Msg);
+        setUsage(true);
 
         setModalVisible(!modalVisible);
         setModalVisible1(!modalVisible1);
@@ -152,8 +154,11 @@ const RHItemDescScreen = ({ navigation }) => {
                     {/* Redeem Button*/}
                     <View style={styles.row}>
                         <TouchableHighlight
-                            style={[styles.btn, schemeStyle.boxColor]}
-                            onPress={() => setModalVisible(true)}>
+                            style={[styles.btn, schemeStyle.boxColor, used ? { opacity: 0.5 } : {}]}
+                            onPress={() => {
+                                used ? navigation.navigate('RHItemDesc', {code: redeemItem}) : setModalVisible(true)
+                                
+                            }}>
                             <View style={styles.row}>
                                 <Text style={[schemeStyle.textColor]}>Used?</Text>
                             </View>
