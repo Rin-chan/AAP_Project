@@ -18,11 +18,11 @@ const findNearestBinMapScreen = ({ navigation }) => {
     const {t, i18n} = useTranslation();
 
     const isDarkMode = useDarkMode();
-    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var BUTTON_COLOR = Colors.LIGHT_GREEN_BUTTON
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        BACKGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
         BUTTON_COLOR = Colors.DARK_GREEN_BUTTON
     }

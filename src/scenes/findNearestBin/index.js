@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, Text, Modal, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from 'expo-image-picker';
 import { useDarkMode } from 'react-native-dynamic';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import '../../translations/i18n';
 import {useTranslation} from 'react-i18next';
@@ -18,13 +20,17 @@ const findNearestBinScreen = ({ navigation }) => {
     const {t, i18n} = useTranslation();
 
     const isDarkMode = useDarkMode();
-    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
-    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
-    var SKIP_COLOR = Colors.LIGHT_PRIMARY_BUTTON
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND;
+    var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT;
+    var SKIP_COLOR = Colors.LIGHT_PRIMARY_BUTTON;
+    var IMAGE_COLOR = "#000000";
+    var ICON_BG_COLOR = Colors.LIGHT_THIRD_BACKGROUND;
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
-        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
-        SKIP_COLOR = Colors.DARK_PRIMARY_BUTTON
+        BACKGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND;
+        TEXT_COLOR = Colors.DARK_PRIMARY_TEXT;
+        SKIP_COLOR = Colors.DARK_PRIMARY_BUTTON;
+        IMAGE_COLOR = "#FFFFFF";
+        ICON_BG_COLOR = Colors.DARK_FOURTH_BACKGROUND;
     }
 
     const schemeStyle = StyleSheet.create({
@@ -36,6 +42,9 @@ const findNearestBinScreen = ({ navigation }) => {
         },
         skipColor: {
             backgroundColor: SKIP_COLOR,
+        },
+        iconBGColor: {
+            backgroundColor: ICON_BG_COLOR,
         }
     })
 
@@ -44,6 +53,9 @@ const findNearestBinScreen = ({ navigation }) => {
     const [cam, setCam] = useState(false);
     const [base64Image, setbase64Image] = useState("");
     const [stopCam, setStopCam] = useState(false);
+    const [showCam, setShowCam] = useState(false);
+
+    const _width = Dimensions.get('screen').width * 0.75;
 
     useEffect(() => {
         (async () => {
@@ -76,6 +88,7 @@ const findNearestBinScreen = ({ navigation }) => {
             await cam.takePictureAsync(options).then(photo => {
                 photo.exif.Orientation = 1;
                 setbase64Image(photo);
+                setShowCam(false);
                 setStopCam(true);
             });     
         }
@@ -83,6 +96,7 @@ const findNearestBinScreen = ({ navigation }) => {
 
     const retakePhoto = () => {
         setStopCam(false);
+        setShowCam(true);
     }
 
     const choosePhoto = async () => {
@@ -112,6 +126,48 @@ const findNearestBinScreen = ({ navigation }) => {
         return;
     }
 
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+            base64: true,
+        });
+    
+        if (!result.cancelled) {
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [{ resize: { width: 150, height: 150 } }]
+            );
+            const reducedResult = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
+
+            let prediction = '';
+
+            await fetch(`http://${flaskIP}/predictItemApp`, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: reducedResult })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    prediction = data.prediction;
+                })
+                .catch(err => console.error(err));
+            
+            if (prediction != "") {
+                navigation.navigate('findNearestBinPrediction', {prediction: prediction, image: reducedResult});
+                return;
+            }
+
+            return;
+        }
+    };
+
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation}/>
@@ -119,50 +175,98 @@ const findNearestBinScreen = ({ navigation }) => {
             <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold", margin: 10}]}>{t('scenes:findNearestBin_index:title')}</Text>
             <Text style={[schemeStyle.textColor, {marginLeft: 10, marginRight: 10}]}>{t('scenes:findNearestBin_index:text')}</Text>
 
-            {stopCam == false ? (<View style={{flex: 1}}>
-                <SafeAreaView style={styles.innerContainer}>
-                    <Camera style={styles.camera} 
-                        type={type}
-                        ref={setCam}
-                        ratio={"1:1"}>
-                        <View style={styles.buttonContainer}> 
-                            <TouchableOpacity style={{marginTop: "auto", margin: 20}} onPress={snapPhoto}>
-                                <Image style={{width: 50, height: 50}} source={require("../../assets/images/circle_button.png")} />
-                            </TouchableOpacity>
+            <View style={styles.row}>
+                <TouchableOpacity style={[styles.buttonIcon, schemeStyle.iconBGColor]} onPress={() => setShowCam(true)}>
+                    <Icon name="camera" size={30} color={IMAGE_COLOR} style={{justifyContent: 'center', alignSelf: 'center'}}/>
+                    <Text style={[schemeStyle.textColor]}>{t('scenes:findNearestBin_index:camera')}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.buttonIcon, schemeStyle.iconBGColor]} onPress={() => pickImage()}>
+                    <Icon name="folder" size={30} color={IMAGE_COLOR} style={{justifyContent: 'center', alignSelf: 'center'}}/>
+                    <Text style={[schemeStyle.textColor]}>{t('scenes:findNearestBin_index:gallery')}</Text>
+                </TouchableOpacity>
+            </View>
+
+            <View style={[styles.innerContainer, {flex: 1}]}>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                        marginTop: 30,
+                        marginBottom: 30
+                    }}
+                />
+
+                <Text style={[schemeStyle.textColor]}>{t('scenes:findNearestBin_index:skipText')}</Text>
+
+                <TouchableOpacity style={[styles.skipScreenButton, schemeStyle.skipColor]} onPress={() => navigation.navigate('findNearestBinMap')}>
+                    <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:skipToBin')}</Text>
+                </TouchableOpacity>
+            </View>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={showCam}
+                onRequestClose={() => {
+                    setShowCam(!showCam);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setShowCam(!showCam)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', marginBottom: 10, fontSize: 20}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <View style={{width: _width, height: _width}}>
+                            <Camera style={styles.camera} 
+                                type={type}
+                                ref={setCam}
+                                ratio={"1:1"}>
+                                <View style={styles.buttonContainer}> 
+                                    <TouchableOpacity style={{marginTop: "auto", margin: 20}} onPress={snapPhoto}>
+                                        <Image style={{width: 50, height: 50}} source={require("../../assets/images/circle_button.png")} />
+                                    </TouchableOpacity>
+                                </View>
+                            </Camera>
                         </View>
-                    </Camera>
-
-                    <View
-                        style={{
-                            borderBottomColor: 'black',
-                            borderBottomWidth: 1,
-                            marginTop: 30,
-                            marginBottom: 30
-                        }}
-                    />
-
-                    <Text style={[schemeStyle.textColor]}>{t('scenes:findNearestBin_index:skipText')}</Text>
-
-                    <TouchableOpacity style={[styles.skipScreenButton, schemeStyle.skipColor]} onPress={() => navigation.navigate('findNearestBinMap')}>
-                        <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:skipToBin')}</Text>
-                    </TouchableOpacity>
-                </SafeAreaView>
-            </View>): (<View style={{flex: 1}}>
-                <View style={styles.innerContainer}>
-                    <Image style={{ height: 300, width: 300, alignSelf: "center" }} source={base64Image}/>
-
-                    <View style={styles.row}>
-                        <TouchableOpacity style={{margin: 20}} onPress={retakePhoto}>
-                            <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:retakePhoto')}</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity style={{margin: 20}} onPress={choosePhoto}>
-                            <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:choosePhoto')}</Text>
-                        </TouchableOpacity>
                     </View>
                 </View>
-            </View>
-            )}
+            </Modal>
+
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={stopCam}
+                onRequestClose={() => {
+                    setStopCam(!stopCam);
+                }}
+                >
+                <View style={styles.centeredView}>
+                    <View style={[styles.modalView, schemeStyle.backgroundColor]}>
+                        <TouchableOpacity
+                            onPress={() => setStopCam(!stopCam)}
+                            underlayColor='#fff'>
+                            <Text style={[schemeStyle.textColor, {textAlign: 'right', fontWeight: 'bold', fontSize: 25}]}>X</Text>
+                        </TouchableOpacity>
+
+                        <Image style={{ height: _width, width: _width, alignSelf: "center" }} source={base64Image}/>
+
+                        <View style={styles.row}>
+                            <TouchableOpacity style={{margin: 20}} onPress={retakePhoto}>
+                                <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:retakePhoto')}</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={{margin: 20}} onPress={choosePhoto}>
+                                <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:choosePhoto')}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
         </View>
     );
 };
@@ -190,6 +294,19 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around"
     },
+    buttonIcon: {
+        marginTop: 20,
+        padding: 25,
+        borderRadius: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+    },
     skipScreenButton: {
         marginRight: 10,
         marginTop: 10,
@@ -208,6 +325,31 @@ const styles = StyleSheet.create({
         elevation: 5,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    textStyle: {
+        fontWeight: "bold",
+        textAlign: "center",
+        padding: 10
     },
 });
 
