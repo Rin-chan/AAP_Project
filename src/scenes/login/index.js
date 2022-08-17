@@ -64,12 +64,13 @@ const LoginScreen = ({ navigation }) => {
           const { authentication } = response;
             axios.get('https://www.googleapis.com/oauth2/v3/userinfo?access_token='+authentication.accessToken)
                 .then(function(response){
-                    const userDetails = response.data
-                    
-                    UserDB.getUser(userDetails.email).then((result) => {
+                    const userDetails = response.data;
+                    const lower_email = userDetails.email;
+
+                    UserDB.getUser(lower_email).then((result) => {
                         if(result.length != 0) {
                             if (result[0][3] != "None") {
-                                UserDB.updateUserPassword(userDetails.email, null);
+                                UserDB.updateUserPassword(lower_email, null);
                             }
 
                             if (result[0][9] == 1) {
@@ -78,7 +79,7 @@ const LoginScreen = ({ navigation }) => {
                             }
 
                             storeData('userToken', authentication.accessToken);
-                            storeData('user', userDetails.email);
+                            storeData('user', lower_email);
                             storeData('google', "true");
     
                             navigation.navigate('Home');
@@ -88,10 +89,10 @@ const LoginScreen = ({ navigation }) => {
                             var hashedPassword = null;
                             var verified = 1;
 
-                            UserDB.addUser(userDetails.name, userDetails.email, hashedPassword, verified);
+                            UserDB.addUser(userDetails.name, lower_email, hashedPassword, verified);
 
                             storeData('userToken', authentication.accessToken);
-                            storeData('user', userDetails.email);
+                            storeData('user', lower_email);
                             storeData('google', "true");
 
                             navigation.navigate('Home');
