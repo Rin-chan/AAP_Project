@@ -35,6 +35,12 @@ const customDrawer = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => {
+                    navigation.navigate("findNearestBin")
+                }}>
+                    <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:findNearestBin')}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => {
                     navigation.navigate("Alba")
                 }}>
                     <Text style={[schemeStyle.textColor, styles.textStyle]}>{t('app_navigator:Alba')}</Text>

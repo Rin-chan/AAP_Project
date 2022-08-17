@@ -6,5 +6,6 @@ export default {
     About: 'About',
     RedeemList: 'Redeem List',
     ScanQRcode: 'Scan QR code',
-    displayCollectedPoints: 'displayCollectedPoints'
+    displayCollectedPoints: 'displayCollectedPoints',
+    findNearestBin: 'Find Nearest Bin'
 };
