@@ -174,7 +174,7 @@ const HomeScreen = ({ navigation }) => {
                                     <View style={styles.outterBox}>
                                         <TouchableHighlight
                                             style={[styles.box, schemeStyle.boxColor]}
-                                            onPress={() => navigation.navigate('Home')}>
+                                            onPress={() => navigation.navigate('findNearestBin')}>
                                             <Image
                                                 style={[schemeStyle.iconColor, { height: _width, width: _width }]}
                                                 source={require("../../assets/images/mapbin.png")} />
