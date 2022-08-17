@@ -1,5 +1,13 @@
 # AAP_Project (Consumer App)
 
+### secrets.json (Should not be shared but is placed there for submission purposes)
+Create your account here: https://openrouteservice.org/ and get a key.
+```
+{
+"ORSKey": "Your-key-here"
+}
+```
+
 ### settings.json
 ```
 {
