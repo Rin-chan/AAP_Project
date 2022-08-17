@@ -3,4 +3,6 @@ export default {
     text: 'Take a picture of your item to identify the item and the nearest bin.',
     retakePhoto: 'Retake Photo',
     choosePhoto: 'Choose Photo',
+    skipText: 'Or skip this step and find nearest bin immediately',
+    skipToBin: 'Skip to find nearest bin'
 };
