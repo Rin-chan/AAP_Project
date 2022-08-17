@@ -4,5 +4,8 @@ export default {
     retakePhoto: 'Retake Photo',
     choosePhoto: 'Choose Photo',
     skipText: 'Or skip this step and find nearest bin immediately',
-    skipToBin: 'Skip to find nearest bin'
+    skipToBin: 'Skip to find nearest bin',
+    camera: 'Camera',
+    gallery: 'Gallery',
+    closeCamera: 'Close Camera'
 };

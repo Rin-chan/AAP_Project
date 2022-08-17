@@ -15,12 +15,12 @@ const findNearestBinPredictionScreen = ({ navigation }) => {
     const {t, i18n} = useTranslation();
 
     const isDarkMode = useDarkMode();
-    var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
+    var BACKGROUND_COLOR = Colors.LIGHT_SECONDARY_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
     var PRIMARY_BUTTON = Colors.LIGHT_PRIMARY_BUTTON
     var DANGER_BUTTON = Colors.LIGHT_DANGER_BUTTON
     if (isDarkMode) {
-        BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
+        BACKGROUND_COLOR = Colors.DARK_THIRD_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
         PRIMARY_BUTTON = Colors.DARK_PRIMARY_BUTTON
         DANGER_BUTTON = Colors.DARK_DANGER_BUTTON
@@ -65,7 +65,7 @@ const findNearestBinPredictionScreen = ({ navigation }) => {
                 </ScrollView>
 
                 {
-                    prediction == 'non_regulated'?
+                    (prediction == 'non_regulated') || (prediction == 'others')?
                     <View style={{marginTop: 50}}>
                         <TouchableOpacity style={[styles.cancelScreenButton, schemeStyle.cancelScreenButton]} onPress={() => navigation.navigate("findNearestBin")}>
                             <Text style={[styles.buttonText, schemeStyle.textColor]}>{t('scenes:findNearestBin_prediction:goBack')}</Text>
