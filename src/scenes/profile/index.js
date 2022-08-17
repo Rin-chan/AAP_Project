@@ -276,6 +276,7 @@ const ProfileScreen = ({ navigation }) => {
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
+            <HeaderBar navigation={navigation} />
             {
                 pageLoading == false?
                 <View style={{flex: 1, width:Dimensions.get('screen').width, height:Dimensions.get('screen').height }}>
@@ -283,8 +284,6 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
                 :
                 <View style={{flex: 1}}>
-                    <HeaderBar navigation={navigation}/>
-
                     <View style={{flex: 1}}>
                         <TouchableHighlight
                             style={{padding: 10}}

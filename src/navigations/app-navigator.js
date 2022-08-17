@@ -15,6 +15,7 @@ import DisplayCollectedPointScreen from "../scenes/displayCollectedPoints";
 import ItemDescScreen from "../scenes/redeemList/itemDesc";
 import RedeemHistoryScreen from "../scenes/redeemHistory";
 import RHItemDescScreen from "../scenes/redeemHistory/redeemedItemDesc";
+import findNearestBinNavigator from './findNearestBin-navigator';
 
 // Language (BACKUP)
 import i18n from 'i18next';
@@ -120,6 +121,12 @@ const RouteConfigs = {
         tabBarVisible: false,
         navigationOptions: {
             title: "Redeemed Item Desc"
+        }
+    },
+    findNearestBin: {
+        screen: findNearestBinNavigator,
+        navigationOptions: {
+            title: "Find Nearest Bin"
         }
     }
 

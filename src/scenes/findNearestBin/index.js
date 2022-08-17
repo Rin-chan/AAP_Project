@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableHighlight, View, TouchableOpacity, Image } from 'react-native';
 import { Camera, CameraType } from 'expo-camera';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { useDarkMode } from 'react-native-dynamic';
@@ -11,9 +10,11 @@ import {useTranslation} from 'react-i18next';
 
 import { HeaderBar } from "../../components/organisms";
 import { Colors } from '../../styles';
-import UserDB from '../../utils/database/userdb';
 
-const faceVerificationScreen = ({ navigation }) => {
+import flaskServer from "../../../settings.json";
+const flaskIP = flaskServer.flaskServer;
+
+const findNearestBinScreen = ({ navigation }) => {
     const {t, i18n} = useTranslation();
 
     const isDarkMode = useDarkMode();
@@ -34,7 +35,7 @@ const faceVerificationScreen = ({ navigation }) => {
     })
 
     const [hasPermission, setHasPermission] = useState(null);
-    const [type, setType] = useState(CameraType.front);
+    const [type, setType] = useState(CameraType.back);
     const [cam, setCam] = useState(false);
     const [base64Image, setbase64Image] = useState("");
     const [stopCam, setStopCam] = useState(false);
@@ -56,7 +57,7 @@ const faceVerificationScreen = ({ navigation }) => {
     async function manipResult() {
         const manipResult = await manipulateAsync(
             base64Image.uri,
-            [{ resize: { width: 92, height: 112 } }]
+            [{ resize: { width: 150, height: 150 } }]
         );
         
         const base64 = await FileSystem.readAsStringAsync(manipResult.uri, { encoding: 'base64' });
@@ -81,36 +82,39 @@ const faceVerificationScreen = ({ navigation }) => {
 
     const choosePhoto = async () => {
         let image = await manipResult()
+        let prediction = '';
 
-        await AsyncStorage.getItem('user')
-        .then(email => {
-            UserDB.getUser(email).then((result) => {
-                if(result.length != 0) {
-                    UserDB.updateUserFace(email, image, 1);
-                    navigation.navigate("Profile");
-                    return;
-                }
-                else {
-                    console.log("USER NOT FOUND");
-                    return;
-                }
-            });
-        });
+        await fetch(`http://${flaskIP}/predictItemApp`, {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ image: image })
+        })
+            .then(response => response.json())
+            .then(data => {
+                prediction = data.prediction;
+            })
+            .catch(err => console.error(err));
+        
+        if (prediction != "") {
+            navigation.navigate('findNearestBinPrediction', {prediction: prediction, image: image});
+            return;
+        }
+
+        retakePhoto();
+        return;
     }
 
     return (
         <View style={[styles.container, schemeStyle.backgroundColor]}>
             <HeaderBar navigation={navigation}/>
 
-            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold", margin: 10}]}>{t('scenes:profile_faceVerification:editProfile')}</Text>
+            <Text style={[schemeStyle.textColor, {fontSize: 35, fontWeight: "bold", margin: 10}]}>{t('scenes:findNearestBin_index:title')}</Text>
+            <Text style={[schemeStyle.textColor, {marginLeft: 10, marginRight: 10}]}>{t('scenes:findNearestBin_index:text')}</Text>
 
             {stopCam == false ? (<View style={{flex: 1}}>
-                <TouchableHighlight
-                    style={{padding: 10}}
-                    onPress={() => navigation.navigate('Profile')}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:profile_faceVerification:goBack')}</Text>
-                </TouchableHighlight>
-
                 <SafeAreaView style={styles.innerContainer}>
                     <Camera style={styles.camera} 
                         type={type}
@@ -124,22 +128,16 @@ const faceVerificationScreen = ({ navigation }) => {
                     </Camera>
                 </SafeAreaView>
             </View>): (<View style={{flex: 1}}>
-                <TouchableHighlight
-                    style={{padding: 10}}
-                    onPress={() => navigation.navigate('Profile')}>
-                        <Text style={[schemeStyle.textColor, {fontWeight: "bold"}]}>{t('scenes:profile_faceVerification:goBack')}</Text>
-                </TouchableHighlight>
-
                 <View style={styles.innerContainer}>
                     <Image style={{ height: 300, width: 300, alignSelf: "center" }} source={base64Image}/>
 
                     <View style={styles.row}>
                         <TouchableOpacity style={{margin: 20}} onPress={retakePhoto}>
-                            <Text style={schemeStyle.textColor}>{t('scenes:profile_faceVerification:retakePhoto')}</Text>
+                            <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:retakePhoto')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={{margin: 20}} onPress={choosePhoto}>
-                            <Text style={schemeStyle.textColor}>{t('scenes:profile_faceVerification:choosePhoto')}</Text>
+                            <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:choosePhoto')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -174,4 +172,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default faceVerificationScreen;
+export default findNearestBinScreen;

@@ -13,7 +13,10 @@ import { default as profile_editProfile } from './profile/editProfile';
 import { default as profile_faceVerification } from './profile/faceVerification';
 import { default as profile_index } from './profile';
 import { default as register_index } from './register';
-import { default as login_info } from './login/loginInfo'
+import { default as login_info } from './login/loginInfo';
+import { default as findNearestBin_index } from'./findNearestBin';
+import { default as findNearestBin_prediction } from'./findNearestBin/prediction';
+import { default as findNearestBin_map } from'./findNearestBin/map';
 
 export default {
     login_index,
@@ -31,5 +34,8 @@ export default {
     profile_faceVerification,
     profile_index,
     register_index,
-    login_info
+    login_info,
+    findNearestBin_index,
+    findNearestBin_prediction,
+    findNearestBin_map
 };
