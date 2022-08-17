@@ -20,9 +20,11 @@ const findNearestBinScreen = ({ navigation }) => {
     const isDarkMode = useDarkMode();
     var BACKGROUND_COLOR = Colors.LIGHT_THIRD_BACKGROUND
     var TEXT_COLOR = Colors.LIGHT_PRIMARY_TEXT
+    var SKIP_COLOR = Colors.LIGHT_PRIMARY_BUTTON
     if (isDarkMode) {
         BACKGROUND_COLOR = Colors.DARK_FOURTH_BACKGROUND
         TEXT_COLOR = Colors.DARK_PRIMARY_TEXT
+        SKIP_COLOR = Colors.DARK_PRIMARY_BUTTON
     }
 
     const schemeStyle = StyleSheet.create({
@@ -32,6 +34,9 @@ const findNearestBinScreen = ({ navigation }) => {
         textColor: {
             color: TEXT_COLOR,
         },
+        skipColor: {
+            backgroundColor: SKIP_COLOR,
+        }
     })
 
     const [hasPermission, setHasPermission] = useState(null);
@@ -126,6 +131,21 @@ const findNearestBinScreen = ({ navigation }) => {
                             </TouchableOpacity>
                         </View>
                     </Camera>
+
+                    <View
+                        style={{
+                            borderBottomColor: 'black',
+                            borderBottomWidth: 1,
+                            marginTop: 30,
+                            marginBottom: 30
+                        }}
+                    />
+
+                    <Text style={[schemeStyle.textColor]}>{t('scenes:findNearestBin_index:skipText')}</Text>
+
+                    <TouchableOpacity style={[styles.skipScreenButton, schemeStyle.skipColor]} onPress={() => navigation.navigate('findNearestBinMap')}>
+                        <Text style={schemeStyle.textColor}>{t('scenes:findNearestBin_index:skipToBin')}</Text>
+                    </TouchableOpacity>
                 </SafeAreaView>
             </View>): (<View style={{flex: 1}}>
                 <View style={styles.innerContainer}>
@@ -169,6 +189,25 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         justifyContent: "space-around"
+    },
+    skipScreenButton: {
+        marginRight: 10,
+        marginTop: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 });
 
